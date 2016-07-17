@@ -8,11 +8,14 @@
 
 #import "THAppDelegate.h"
 
+#import "FBPlugInHeader.h"
+
 @implementation THAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [[LTRequest sharedInstance] initRequest];
+    
     return YES;
 }
 

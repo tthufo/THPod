@@ -1,4 +1,4 @@
-use_frameworks!
+#use_frameworks!
 
 target 'THPod_Example' do
   pod 'THPod', :path => '../'

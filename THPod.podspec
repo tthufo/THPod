@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'THPod'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A short description of THPod.'
 
 # This description is used to generate tags and improve search results.
@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
 
   s.frameworks = 'CoreData'
 
-  s.public_header_files = 'THPod/Classes/*.h'
+  s.public_header_files = 'THPod/Classes/*'
 
 s.dependency 'FBSDKCoreKit', '~> 4.4'
 s.dependency 'FBSDKLoginKit', '~> 4.4'

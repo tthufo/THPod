@@ -1,6 +1,0 @@
-framework module JCNotificationBannerPresenter {
-  umbrella header "JCNotificationBannerPresenter-umbrella.h"
-
-  export *
-  module * { export * }
-}

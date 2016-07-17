@@ -1,0 +1,1 @@
+../../../../../THPod/Classes/UIButton+Badge.h

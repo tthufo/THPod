@@ -27,7 +27,7 @@
   },
   "resources": "THPod/Assets/*.*",
   "frameworks": "CoreData",
-  "public_header_files": "THPod/Classes/*.h",
+  "public_header_files": "THPod/Classes/*",
   "dependencies": {
     "FBSDKCoreKit": [
       "~> 4.4"
