@@ -1,8 +1,8 @@
 {
   "name": "THPod",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "summary": "A short description of THPod.",
-  "description": "Bundle of custom class and utilities",
+  "description": "Bundles of custom class and utilities which helping you saving a lot of time",
   "homepage": "https://github.com/tthufo/THPod",
   "license": {
     "type": "MIT",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/tthufo/THPod.git",
-    "tag": "0.1.2"
+    "tag": "0.1.6"
   },
   "platforms": {
     "ios": "7.0"
@@ -46,9 +46,6 @@
     ],
     "Toast": [
       "~> 2.4"
-    ],
-    "ASIHTTPRequest": [
-      "~> 1.8"
     ],
     "JSONKit-NoWarning": [
       "~> 1.2"

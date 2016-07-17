@@ -1,17 +1,4 @@
 PODS:
-  - ASIHTTPRequest (1.8.2):
-    - ASIHTTPRequest/ASIWebPageRequest (= 1.8.2)
-    - ASIHTTPRequest/CloudFiles (= 1.8.2)
-    - ASIHTTPRequest/Core (= 1.8.2)
-    - ASIHTTPRequest/S3 (= 1.8.2)
-  - ASIHTTPRequest/ASIWebPageRequest (1.8.2):
-    - ASIHTTPRequest/Core
-  - ASIHTTPRequest/CloudFiles (1.8.2):
-    - ASIHTTPRequest/Core
-  - ASIHTTPRequest/Core (1.8.2):
-    - Reachability
-  - ASIHTTPRequest/S3 (1.8.2):
-    - ASIHTTPRequest/Core
   - AVHexColor (2.0.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
@@ -28,13 +15,11 @@ PODS:
   - hpple (0.2.0)
   - JCNotificationBannerPresenter (1.1.2)
   - JSONKit-NoWarning (1.2)
-  - Reachability (3.2)
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
   - SVProgressHUD (2.0.3)
-  - THPod (0.1.2):
-    - ASIHTTPRequest (~> 1.8)
+  - THPod (0.1.6):
     - AVHexColor (~> 2.0)
     - FBSDKCoreKit (~> 4.4)
     - FBSDKLoginKit (~> 4.4)
@@ -55,7 +40,6 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ASIHTTPRequest: ec013992946676b7978dcbde6396d57312d21db4
   AVHexColor: 33e5e102f3b6f3acd002779183ee226e21870c28
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
@@ -64,12 +48,11 @@ SPEC CHECKSUMS:
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   JCNotificationBannerPresenter: f40150961943048ed3b1d2628d29dbf66a959e21
   JSONKit-NoWarning: 3d27e6f9e6846ecf741e8c64dcadd7d5aa7193cb
-  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
-  THPod: a875534c20333f70048ccb782755f6ffe8d20e9e
+  THPod: 62e6f17ad643d88e97da20c24888033de1c1bf06
   Toast: 0773b8fc0e97352ca6054517bec7ebdd4110029d
 
-PODFILE CHECKSUM: 09faa5af86473afce1ed067ad5cf38bcdab7b898
+PODFILE CHECKSUM: 39762f5ab37e3537e1b89df8ecc75a19713f62b2
 
 COCOAPODS: 1.0.1
