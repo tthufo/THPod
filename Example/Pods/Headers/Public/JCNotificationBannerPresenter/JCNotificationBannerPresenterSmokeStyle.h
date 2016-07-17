@@ -1,1 +1,0 @@
-../../../JCNotificationBannerPresenter/Library/JCNotificationBannerPresenterSmokeStyle.h

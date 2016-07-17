@@ -1,4 +1,4 @@
-#use_frameworks!
+use_frameworks!
 
 target 'THPod_Example' do
   pod 'THPod', :path => '../'
@@ -8,4 +8,10 @@ target 'THPod_Example' do
 
     
   end
+end
+
+post_install do |installer|
+    installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
+        configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+    end
 end

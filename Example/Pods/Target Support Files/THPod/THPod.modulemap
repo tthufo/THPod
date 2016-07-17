@@ -1,0 +1,6 @@
+framework module THPod {
+  umbrella header "THPod-umbrella.h"
+
+  export *
+  module * { export * }
+}
