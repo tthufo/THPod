@@ -94,9 +94,9 @@ static const CGFloat kMinImageScale = 1.0f;
     __scrollView.delegate = self;
     __scrollView.backgroundColor = [UIColor clearColor];
     [self addSubview:__scrollView];
-
+    
     [_doneButton addTarget:self action:@selector(close:)
-              forControlEvents:UIControlEventTouchUpInside];
+          forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * b  = [[UIButton alloc] initWithFrame:CGRectFromString(dict[@"check"])];
     
@@ -108,17 +108,17 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void) setImageURL:(NSURL *)imageURL defaultImage:(UIImage*)defaultImage imageIndex:(NSInteger)imageIndex {
     _imageIndex = imageIndex;
     _defaultImage = defaultImage;
-
-        _senderView.alpha = 0.0f;
-        if(!__imageView){
-            __imageView = [[UIImageView alloc]init];
-            [__scrollView addSubview:__imageView];
-            __imageView.contentMode = UIViewContentModeScaleAspectFill;
-        }
-        __block UIImageView * _imageViewInTheBlock = __imageView;
-        __block MHFacebookImageViewerCell * _justMeInsideTheBlock = self;
-        __block UIScrollView * _scrollViewInsideBlock = __scrollView;
-
+    
+    _senderView.alpha = 0.0f;
+    if(!__imageView){
+        __imageView = [[UIImageView alloc]init];
+        [__scrollView addSubview:__imageView];
+        __imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    __block UIImageView * _imageViewInTheBlock = __imageView;
+    __block MHFacebookImageViewerCell * _justMeInsideTheBlock = self;
+    __block UIScrollView * _scrollViewInsideBlock = __scrollView;
+    
     __imageView.backgroundColor = [UIColor whiteColor];
     
     [__imageView sd_setImageWithURL:imageURL placeholderImage:defaultImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -128,25 +128,25 @@ static const CGFloat kMinImageScale = 1.0f;
         _imageViewInTheBlock.frame = [_justMeInsideTheBlock centerFrameFromImage:_imageViewInTheBlock.image];
     }];
     
-        if(_imageIndex==_initialIndex && !_isLoaded){
-            __imageView.frame = _originalFrameRelativeToScreen;
-            [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
-                __imageView.frame = [self centerFrameFromImage:__imageView.image];
-                CGAffineTransform transf = CGAffineTransformIdentity;
-                _rootViewController.view.transform = CGAffineTransformScale(transf, 0.95f, 0.95f);
-                _blackMask.alpha = 1;
-            }   completion:^(BOOL finished) {
-                if (finished) {
-                    _isAnimating = NO;
-                    _isLoaded = YES;
-                    if(_openingBlock)
-                        _openingBlock();
-                }
-            }];
-        }
-        __imageView.userInteractionEnabled = YES;
-        [self addPanGestureToView:__imageView];
-        [self addMultipleGesture];
+    if(_imageIndex==_initialIndex && !_isLoaded){
+        __imageView.frame = _originalFrameRelativeToScreen;
+        [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
+            __imageView.frame = [self centerFrameFromImage:__imageView.image];
+            CGAffineTransform transf = CGAffineTransformIdentity;
+            _rootViewController.view.transform = CGAffineTransformScale(transf, 0.95f, 0.95f);
+            _blackMask.alpha = 1;
+        }   completion:^(BOOL finished) {
+            if (finished) {
+                _isAnimating = NO;
+                _isLoaded = YES;
+                if(_openingBlock)
+                    _openingBlock();
+            }
+        }];
+    }
+    __imageView.userInteractionEnabled = YES;
+    [self addPanGestureToView:__imageView];
+    [self addMultipleGesture];
 }
 
 #pragma mark - Add Pan Gesture
@@ -155,11 +155,11 @@ static const CGFloat kMinImageScale = 1.0f;
     _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecognizerDidPan:)];
     _panGesture.cancelsTouchesInView = NO;
     _panGesture.delegate = self;
-     __weak UITableView * weakSuperView = (UITableView*) view.superview.superview.superview.superview.superview;
-   // [weakSuperView.panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
+    __weak UITableView * weakSuperView = (UITableView*) view.superview.superview.superview.superview.superview;
+    // [weakSuperView.panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
     [view addGestureRecognizer:_panGesture];
     [_gestures addObject:_panGesture];
-
+    
 }
 
 # pragma mark - Avoid Unwanted Horizontal Gesture
@@ -201,14 +201,14 @@ static const CGFloat kMinImageScale = 1.0f;
     CGFloat y = currentPoint.y + _panOrigin.y;
     CGRect frame = __imageView.frame;
     frame.origin.y = y;
-
+    
     __imageView.frame = frame;
-
+    
     CGFloat yDiff = abs((y + __imageView.frame.size.height/2) - windowSize.height/2);
     _blackMask.alpha = MAX(1 - yDiff/(windowSize.height/0.5),kMinBlackMaskAlpha);
-
+    
     if ((panGesture.state == UIGestureRecognizerStateEnded || panGesture.state == UIGestureRecognizerStateCancelled) && __scrollView.zoomScale == 1.0f) {
-
+        
         if(_blackMask.alpha < 0.85f) {
             [self dismissViewController];
         }else{
@@ -269,7 +269,7 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Compute the new size of image relative to width(window)
 - (CGRect) centerFrameFromImage:(UIImage*) image {
     if(!image) return CGRectZero;
-
+    
     CGRect windowBounds = _rootViewController.view.bounds;
     CGSize newImageSize = [self imageResizeBaseOnWidth:windowBounds
                            .size.width oldWidth:image
@@ -283,20 +283,20 @@ static const CGFloat kMinImageScale = 1.0f;
     CGFloat scaleFactor = newWidth / oldWidth;
     CGFloat newHeight = oldHeight * scaleFactor;
     return CGSizeMake(newWidth, newHeight);
-
+    
 }
 
 # pragma mark - UIScrollView Delegate
 - (void)centerScrollViewContents {
     CGSize boundsSize = _rootViewController.view.bounds.size;
     CGRect contentsFrame = __imageView.frame;
-
+    
     if (contentsFrame.size.width < boundsSize.width) {
         contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
     } else {
         contentsFrame.origin.x = 0.0f;
     }
-
+    
     if (contentsFrame.size.height < boundsSize.height) {
         contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
     } else {
@@ -324,19 +324,19 @@ static const CGFloat kMinImageScale = 1.0f;
     twoFingerTapGesture.numberOfTapsRequired = 1;
     twoFingerTapGesture.numberOfTouchesRequired = 2;
     [__scrollView addGestureRecognizer:twoFingerTapGesture];
-
+    
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSingleTap:)];
     singleTapRecognizer.numberOfTapsRequired = 1;
     singleTapRecognizer.numberOfTouchesRequired = 1;
     [__scrollView addGestureRecognizer:singleTapRecognizer];
-
+    
     UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didDobleTap:)];
     doubleTapRecognizer.numberOfTapsRequired = 2;
     doubleTapRecognizer.numberOfTouchesRequired = 1;
     [__scrollView addGestureRecognizer:doubleTapRecognizer];
-
+    
     [singleTapRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
-
+    
     __scrollView.minimumZoomScale = kMinImageScale;
     __scrollView.maximumZoomScale = kMaxImageScale;
     __scrollView.zoomScale = 1;
@@ -358,11 +358,11 @@ static const CGFloat kMinImageScale = 1.0f;
         if(__scrollView.zoomScale == __scrollView.minimumZoomScale){
             if(!_isDoneAnimating){
                 _isDoneAnimating = YES;
-//                if(_doneButton)
-                    [self.viewController.view addSubview:_doneButton];
-//                else
-//                    [self.viewController.view addSubview:_customButton];
-
+                //                if(_doneButton)
+                [self.viewController.view addSubview:_doneButton];
+                //                else
+                //                    [self.viewController.view addSubview:_customButton];
+                
                 _doneButton.alpha = 0.0f;
                 [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionAllowUserInteraction animations:^{
                     _doneButton.alpha = 1.0f;
@@ -387,7 +387,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void) zoomInZoomOut:(CGPoint)point {
     // Check if current Zoom Scale is greater than half of max scale then reduce zoom and vice versa
     CGFloat newZoomScale = __scrollView.zoomScale > (__scrollView.maximumZoomScale/2)?__scrollView.minimumZoomScale:__scrollView.maximumZoomScale;
-
+    
     CGSize scrollViewSize = __scrollView.bounds.size;
     CGFloat w = scrollViewSize.width / newZoomScale;
     CGFloat h = scrollViewSize.height / newZoomScale;
@@ -420,27 +420,31 @@ static const CGFloat kMinImageScale = 1.0f;
 }
 
 - (void) dealloc {
-
+    
 }
 
 @end
 
 @interface MHFacebookImageViewer()<UIGestureRecognizerDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>{
     NSMutableArray *_gestures;
-
+    
     UITableView * _tableView;
     UIView *_blackMask;
     UIImageView * _imageView;
     UIButton * _doneButton;
     UIView * _superView;
-
+    
     CGPoint _panOrigin;
     CGRect _originalFrameRelativeToScreen;
-
+    
     BOOL _isAnimating;
     BOOL _isDoneAnimating;
-
+    
+    int indexing;
+    
     UIStatusBarStyle _statusBarStyle;
+    
+    UIButton * right, * left;
 }
 
 @end
@@ -522,6 +526,21 @@ static const CGFloat kMinImageScale = 1.0f;
     return imageViewerCell;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    CGFloat pageWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    int currentIndex = (_tableView.contentOffset.y - pageWidth / 2) / pageWidth + 1;
+    
+    left.hidden = currentIndex == 0;
+    
+    right.hidden = currentIndex == [self.imageDatasource numberImagesForImageViewer:self] - 1;
+    
+    ((UIPageControl*)[self withView:self.view tag:9990]).currentPage = currentIndex;
+    
+    ((UILabel*)[self withView:self.view tag:9999]).text = [NSString stringWithFormat:@"%i/%i", currentIndex + 1, [self.imageDatasource numberImagesForImageViewer:self]];
+}
+
 - (void)didPressChangeState:(UIButton*)button
 {
     if(information[@"image"][@"delete"])
@@ -565,17 +584,17 @@ static const CGFloat kMinImageScale = 1.0f;
     _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
     [UIApplication sharedApplication].statusBarHidden = YES;
     CGRect windowBounds = [[UIScreen mainScreen] bounds];
-
+    
     // Compute Original Frame Relative To Screen
     CGRect newFrame = [_senderView convertRect:windowBounds toView:nil];
     newFrame.origin = CGPointMake(newFrame.origin.x, newFrame.origin.y);
     newFrame.size = _senderView.frame.size;
     _originalFrameRelativeToScreen = newFrame;
-
+    
     self.view = [[UIView alloc] initWithFrame:windowBounds];
     //    NSLog(@"WINDOW :%@",NSStringFromCGRect(windowBounds));
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
+    
     // Add a Tableview
     _tableView = [[UITableView alloc] initWithFrame:windowBounds style:UITableViewStylePlain];
     [self.view addSubview:_tableView];
@@ -591,23 +610,124 @@ static const CGFloat kMinImageScale = 1.0f;
     _tableView.delaysContentTouches = YES;
     [_tableView setShowsVerticalScrollIndicator:NO];
     [_tableView setContentOffset:CGPointMake(0, _initialIndex * windowBounds.size.width)];
-
+    
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
     _blackMask.backgroundColor = [UIColor blackColor];
     _blackMask.alpha = 0.0f;
     _blackMask.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [
      self.view insertSubview:_blackMask atIndex:0];
-
+    
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
+    //    [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
     [_doneButton setImage:[UIImage imageNamed:information[@"done"][@"img"]] forState:UIControlStateNormal];
     _doneButton.frame = CGRectFromString(information[@"done"][@"rect"]);
     if(information[@"done"][@"round"])
     {
         [_doneButton withBorder:information[@"done"][@"round"]];
     }
+    if(information[@"indicator"])
+    {
+        [self didCreatePager:information[@"indicator"]];
+    }
+}
+
+- (void)didCreatePager:(NSDictionary*)infor
+{
+    CGRect screenSize = [[UIScreen mainScreen] bounds];
+    
+    UIView * layer = [[UIView alloc] initWithFrame:CGRectMake(0, infor[@"bottom"] ? screenSize.size.height - [information[@"indicator"][@"height"] intValue] : 0, screenSize.size.width, [information[@"indicator"][@"height"] intValue])];
+    
+    layer.backgroundColor = [UIColor blackColor];
+    
+    layer.alpha = 0.4;
+    
+    [self.view addSubview:layer];
+    
+    
+    if(!infor[@"pager"])
+    {
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, infor[@"bottom"] ? screenSize.size.height - [information[@"indicator"][@"height"] intValue] : 0, [[UIScreen mainScreen] bounds].size.width, [information[@"indicator"][@"height"] intValue])];
+        
+        label.textAlignment = NSTextAlignmentCenter;
+        
+        label.font = [UIFont boldSystemFontOfSize:16];
+        
+        label.tag = 9999;
+        
+        label.textColor = [UIColor whiteColor];
+        
+        label.text = [NSString stringWithFormat:@"%i/%i", _initialIndex + 1, [self.imageDatasource numberImagesForImageViewer:self]];
+        
+        [self.view addSubview:label];
+    }
+    else
+    {
+        UIPageControl * pager = [[UIPageControl alloc] initWithFrame:CGRectMake(0, infor[@"bottom"] ? screenSize.size.height - [information[@"indicator"][@"height"] intValue] : 0, [[UIScreen mainScreen] bounds].size.width, [information[@"indicator"][@"height"] intValue])];
+        
+        pager.tag = 9990;
+        
+        pager.numberOfPages = [self.imageDatasource numberImagesForImageViewer:self];
+        
+        pager.currentPage = _initialIndex;
+        
+        [self.view addSubview:pager];
+    }
+    
+    right = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    right.tag == 69;
+    
+    right.frame = CGRectMake(screenSize.size.width - 50,( screenSize.size.height - 44 ) / 2, 44, 44);
+    
+    [right setImage:[UIImage imageNamed:infor[@"right"]] forState:UIControlStateNormal];
+    
+    [right addTarget:self action:@selector(didPressF) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    left = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    left.tag = 96;
+    
+    left.frame = CGRectMake(6,( screenSize.size.height - 44 ) / 2, 44, 44);
+    
+    [left setImage:[UIImage imageNamed:infor[@"left"]] forState:UIControlStateNormal];
+    
+    [left addTarget:self action:@selector(didPressP) forControlEvents:UIControlEventTouchUpInside];
+    
+    if(infor[@"arrow"])
+    {
+        [self.view addSubview:left];
+        
+        
+        [self.view addSubview:right];
+    }
+    
+    indexing = _initialIndex;
+    
+    left.hidden = indexing == 0;
+    
+    right.hidden = indexing == [self.imageDatasource numberImagesForImageViewer:self] - 1;
+}
+
+- (void)didPressP
+{
+    indexing --;
+    indexing = MAX(indexing, 0);
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexing inSection:0]
+                      atScrollPosition:UITableViewScrollPositionTop
+                              animated:YES];
+}
+
+- (void)didPressF
+{
+    indexing ++;
+    indexing = MIN(indexing, [self.imageDatasource numberImagesForImageViewer:self] - 1);
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexing inSection:0]
+                      atScrollPosition:UITableViewScrollPositionTop
+                              animated:YES];
 }
 
 #pragma mark - Show

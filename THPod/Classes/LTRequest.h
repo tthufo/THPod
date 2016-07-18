@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-//#import "ASIFormDataRequest.h"
-
 typedef NS_ENUM(NSInteger, PermisionType) {
     authorized = 0,
     denied,

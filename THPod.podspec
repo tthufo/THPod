@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'THPod'
-  s.version          = '0.2.1'
+  s.version          = '0.2.2'
   s.summary          = 'A short description of THPod.'
 
 # This description is used to generate tags and improve search results.
@@ -50,7 +50,6 @@ s.dependency 'FBSDKShareKit', '~> 4.4'
 s.dependency 'AVHexColor', '~> 2.0'
 s.dependency 'SVProgressHUD'
 s.dependency 'Toast', '~> 2.4'
-#s.dependency 'ASIHTTPRequest', '~> 1.8'
 s.dependency 'Reachability', '~> 3.2'
 s.dependency 'AFNetworking', '~> 3.1'
 s.dependency 'JSONKit-NoWarning', '~> 1.2'

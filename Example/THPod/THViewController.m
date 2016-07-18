@@ -20,10 +20,15 @@
 {
     [super viewDidLoad];
     
-    [[LTRequest sharedInstance] didRequestInfo:@{} withCache:^(NSString *cacheString) {
-        
+    [[LTRequest sharedInstance] didRequestInfo:@{@"absoluteLink":@"http://pns.ising.vn/api/register?id=78cb9a5c06fccd1d4d27b2cb428a4fd862c2a7e19a4ffe07f32847c3d607d49a&appid=9",
+                                                 @"host":self,
+                                                 @"overrideLoading":@(1),
+                                                 @"overrideError":@(1)
+                                                 
+                                                 } withCache:^(NSString *cacheString) {
+                                                     
     } andCompletion:^(NSString *responseString, NSString *errorCode, NSError *error, BOOL isValidated) {
-        
+                
     }];
     
 }

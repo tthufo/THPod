@@ -152,16 +152,6 @@ static LTRequest *__sharedLTRequest = nil;
     [self hideSVHUD];
 }
 
-//- (ASIFormDataRequest*)REQUEST
-//{
-//    return [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.address]];
-//}
-//
-//- (ASIFormDataRequest*)SERVICE:(NSString*)X
-//{
-//    return [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.address, X]]];
-//}
-
 - (void)didRequestInfo:(NSDictionary*)dict withCache:(RequestCache)cacheData andCompletion:(RequestCompletion)completion
 {
     if(!self.address)
@@ -179,23 +169,6 @@ static LTRequest *__sharedLTRequest = nil;
     [self didInitRequest:data];
 }
 
-//- (ASIFormDataRequest*)didRequestInfo:(NSDictionary*)dict withCache:(RequestCache)cacheData andCompletion:(RequestCompletion)completion
-//{
-//    if(!self.address)
-//    {
-//        NSLog(@"Please setup request url in Plist");
-//        
-//        return nil;
-//    }
-//    NSMutableDictionary * data = [dict mutableCopy];
-//    
-//    data[@"completion"] = completion;
-//    
-//    data[@"cache"] = cacheData;
-//    
-//    return [self didInitRequest:data];
-//}
-
 - (BOOL)didRespond:(NSMutableDictionary*)dict andHost:(UIViewController*)host
 {
     NSLog(@"+___+%@",dict);
@@ -207,10 +180,8 @@ static LTRequest *__sharedLTRequest = nil;
     
     if(!dict)
     {
-//        if(![dict responseForKey:@"overrideAlert"])
-        {
-            [self showToast:self.lang ? @"Server error" :  @"Hệ thống đang bận" andPos:0];
-        }
+        [self showToast:self.lang ? @"Server error" :  @"Hệ thống đang bận" andPos:0];
+        
         return NO;
     }
     
@@ -246,398 +217,159 @@ static LTRequest *__sharedLTRequest = nil;
 {
     NSMutableDictionary * post = nil;
     
-    NSURL *baseURL = [NSURL URLWithString:@"http://pns.ising.vn/api/register?id=123456&appid=9"];
+    AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
     
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-//    [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:@"http://pns.ising.vn/api/register?id=123456&appid=9" parameters:nil error:nil];
+    NSString * url;
 
-    
-//    NSString *path = @"resource/1";
-    
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];//[[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-//    
-//    [manager GET:@"http://pns.ising.vn/api/register?id=123456&appid=9" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject)
-//     {
-//         // Success
-//         NSLog(@"Success: %@", responseObject);
-//     }failure:^(NSURLSessionDataTask *task, NSError *error)
-//     {
-//         // Failure
-//         NSLog(@"Failure: %@", error);
-//     }];
-    
-    
-    AFHTTPSessionManager * manager1 = [AFHTTPSessionManager manager];
-    
-//    @"http://pns.ising.vn/api/register?id=123456&appid=9"
-    
-//    http://app.vaytieudung.net.vn:9088/api.php
-    
-//    NSDictionary * kenh = @{@"CMD_CODE":@"getappinfo"};
-    
-    NSDictionary * kenh = @{@"id":@"78cb9a5c06fccd1d4d27b2cb428a4fd862c2a7e19a4ffe07f32847c3d607d49a",@"appid":@"9"};
-
-    manager1.responseSerializer = [AFHTTPResponseSerializer serializer];
-
-    
-    
-    [manager1 POST:@"http://app.vaytieudung.net.vn:9088/api.php" parameters:kenh success:^(NSURLSessionTask *task, id responseObject) {
-        NSLog(@"JSON: %@", [responseObject objectFromJSONData]);
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-
-    
-    [manager1 POST:@"http://pns.ising.vn/api/register?id=78cb9a5c06fccd1d4d27b2cb428a4fd862c2a7e19a4ffe07f32847c3d607d49a&appid=9" parameters:@{} success:^(NSURLSessionTask *task, id responseObject)
+    if([dict responseForKey:@"method"])
     {
-        NSLog(@"JSON: %@", [responseObject objectFromJSONData]);
+        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@?%@",self.address, dict[@"CMD_CODE"], [self returnGetUrl:dict]];
+
+        if([self getValue: url])
+        {
+            ((RequestCache)dict[@"cache"])([self getValue: url]);
+        }
+        else
+        {
+            if([dict responseForKey:@"host"])
+            {
+                [(UIViewController*)dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
+            }
+        }
+        if([dict responseForKey:@"overrideLoading"])
+        {
+            if([dict responseForKey:@"host"])
+            {
+                [(UIViewController*)dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
+            }
+        }
+        
+        [manager GET:url parameters:nil success:^(NSURLSessionTask *task, id responseObject) {
+
+            NSLog(@"JSON: %@", [responseObject objectFromJSONData]);
+            
+            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] andUrl:url andPostData:post];
+
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+  
+            [self didFailedResult:dict andError:error];
+
+        }];
     }
-    failure:^(NSURLSessionTask *operation, NSError *error)
+    else
     {
-        NSLog(@"Error: %@", error);
-    }];
-    
-    
-    
-    
-    
-    
-//    NSDictionary *parameters = @{@"UserId": @"24",@"Name":@"Robin"};
-//    
-//    NSLog(@"%@",parameters);
-//    
-//    parameters = nil;
-//    
-//    manager1.requestSerializer = [AFJSONRequestSerializer serializer];
-//    
-//    [manager1 POST:@"http://maps.google.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=false" parameters:parameters success:^(NSURLSessionTask *operation, id responseObject)
-//     {
-//         
-//         NSLog(@"JSON: %@", responseObject);
-//         
-//         
-//     }failure:^(NSURLSessionTask *operation, NSError *error)
-//     {
-//         NSLog(@"Error: %@", error);
-//     }];
-//    
-    
-    
-    
-//    ["CMD_CODE":"getappinfo",
-//     "platform":"ios",
-//     "push_device_id":LTRequest.sharedInstance().deviceToken,
-//     "version_code":self.appInfor()["majorVersion"]!,
-//     "msisdn": self.getValue("phoneNumber") != nil ? self.getValue("phoneNumber") : "",
-//     "device_id":self.uniqueDeviceId()
-    
-//    NSString * url;
-//
-//    if([dict responseForKey:@"method"])
-//    {
-//        if([dict responseForKey:@"absoluteLink"])
-//        {
-//            request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:dict[@"absoluteLink"]]];
-//        }
-//        else
-//        {
-//            url = [NSString stringWithFormat:@"%@?%@",dict[@"CMD_CODE"],[self returnGetUrl:dict]];
-//            
-//            request = [self SERVICE:url];
-//        }
-//        
-//        [request setRequestMethod:dict[@"method"]];
-//        
-//        if([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url])
-//        {
-//            ((RequestCache)dict[@"cache"])([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url]);
-//        }
-//        else
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [(UIViewController*)dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//        if([dict responseForKey:@"overrideLoading"])
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [(UIViewController*)dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//    }
-//    else
-//    {
-//        if([dict responseForKey:@"absoluteLink"])
-//        {
-//            request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:dict[@"absoluteLink"]]];
-//        }
-//        else
-//        {
-//            request = [self REQUEST];
-//        }
-//        
-//        post = [[NSMutableDictionary alloc] initWithDictionary:dict];
-//        
-//        for(NSString * key in post.allKeys)
-//        {
-//            if([key isEqualToString:@"host"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"checkmark"] || [key isEqualToString:@"cache"])
-//            {
-//                [post removeObjectForKey:key];
-//            }
-//        }
-//        
-//        [request setPostBody:(NSMutableData*)[[post bv_jsonStringWithPrettyPrint:NO] dataUsingEncoding:NSUTF8StringEncoding]];
-//        
-//        if([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]])
-//        {
-//            ((RequestCache)dict[@"cache"])([self getValue:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]]);
-//        }
-//        else
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//        if([dict responseForKey:@"overrideLoading"])
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//    }
-//    
-//    __block ASIFormDataRequest *_request = request;
-//    
-//    [_request setFailedBlock:^{
-//        
-//        if(![self isConnectionAvailable])
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [self showToast:self.lang ? @"Please check your Internet connection" : @"Vui lòng kiểm tra lại kết nối Internet" andPos:0];
-//                
-//                [dict[@"host"] hideSVHUD];
-//            }
-//            
-//            ((RequestCompletion)dict[@"completion"])(nil, @"404", request.error, NO);
-//        }
-//        else
-//        {
-//            NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:[request.responseString objectFromJSONString]];
-//            
-//            if([dict responseForKey:@"overrideAlert"])
-//            {
-//                [result addEntriesFromDictionary:@{@"overrideAlert":dict[@"overrideAlert"]}];
-//            }
-//            
-//            if([dict responseForKey:@"checkmark"])
-//            {
-//                [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
-//            }
-//            
-//            ((RequestCompletion)dict[@"completion"])(nil, @"503", request.error, [self didRespond:result andHost:dict[@"host"]]);
-//        }
-//        
-//    }];
-//    
-//    [_request setCompletionBlock:^{
-//        
-//        NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:[request.responseString objectFromJSONString]];
-//        
-//        if([dict responseForKey:@"method"])
-//        {
-//            [self addValue:request.responseString andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url];
-//        }
-//        else
-//        {
-//            //            if([result responseForKindOfClass:@"ERR_CODE" andTarget:@"0"] && [[request.responseString objectFromJSONString] responseForKey:@"RESULT"])
-//            {
-//                [self addValue:request.responseString andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]];
-//            }
-//        }
-//        
-//        if([dict responseForKey:@"overrideAlert"])
-//        {
-//            [result addEntriesFromDictionary:@{@"overrideAlert":dict[@"overrideAlert"]}];
-//        }
-//        
-//        if([dict responseForKey:@"checkmark"])
-//        {
-//            [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
-//        }
-//        
-//        if([dict responseForKey:@"overrideError"] && dict[@"host"])
-//        {
-//            [self hideSVHUD];
-//        }
-//        
-//        ((RequestCompletion)dict[@"completion"])(request.responseString, [result responseForKey:@"ERR_CODE"] ? [result getValueFromKey:@"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
-//    }];
-//    
-//    [request startAsynchronous];
+        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : self.address;
+
+        post = [[NSMutableDictionary alloc] initWithDictionary:dict];
+        
+        for(NSString * key in post.allKeys)
+        {
+            if([key isEqualToString:@"host"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"checkmark"] || [key isEqualToString:@"cache"] || [key isEqualToString:@"absoluteLink"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"])
+            {
+                [post removeObjectForKey:key];
+            }
+        }
+        
+        if([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]])
+        {
+            ((RequestCache)dict[@"cache"])([self getValue:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]]);
+        }
+        else
+        {
+            if([dict responseForKey:@"host"])
+            {
+                [dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
+            }
+        }
+        if([dict responseForKey:@"overrideLoading"])
+        {
+            if([dict responseForKey:@"host"])
+            {
+                [dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
+            }
+        }
+        
+        [manager POST:url parameters:post success:^(NSURLSessionTask *task, id responseObject) {
+            
+            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] andUrl:url andPostData:post];
+            
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+            
+            [self didFailedResult:dict andError:error];
+            
+        }];
+    }
 }
 
-//- (ASIFormDataRequest*)didInitRequest:(NSMutableDictionary*)dict
-//{
-//    NSMutableDictionary * post = nil;
-//    
-//    ASIFormDataRequest * request;
-//    
-//    NSString * url;
-//    
-//    if([dict responseForKey:@"method"])
-//    {
-//        if([dict responseForKey:@"absoluteLink"])
-//        {
-//            request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:dict[@"absoluteLink"]]];
-//        }
-//        else
-//        {
-//            url = [NSString stringWithFormat:@"%@?%@",dict[@"CMD_CODE"],[self returnGetUrl:dict]];
-//            
-//            request = [self SERVICE:url];
-//        }
-//        
-//        [request setRequestMethod:dict[@"method"]];
-//        
-//        if([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url])
-//        {
-//            ((RequestCache)dict[@"cache"])([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url]);
-//        }
-//        else
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [(UIViewController*)dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//        if([dict responseForKey:@"overrideLoading"])
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [(UIViewController*)dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//    }
-//    else
-//    {
-//        if([dict responseForKey:@"absoluteLink"])
-//        {
-//            request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:dict[@"absoluteLink"]]];
-//        }
-//        else
-//        {
-//            request = [self REQUEST];
-//        }
-//        
-//        post = [[NSMutableDictionary alloc] initWithDictionary:dict];
-//        
-//        for(NSString * key in post.allKeys)
-//        {
-//            if([key isEqualToString:@"host"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"checkmark"] || [key isEqualToString:@"cache"])
-//            {
-//                [post removeObjectForKey:key];
-//            }
-//        }
-//        
-//        [request setPostBody:(NSMutableData*)[[post bv_jsonStringWithPrettyPrint:NO] dataUsingEncoding:NSUTF8StringEncoding]];
-//        
-//        if([self getValue: [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]])
-//        {
-//            ((RequestCache)dict[@"cache"])([self getValue:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]]);
-//        }
-//        else
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//        if([dict responseForKey:@"overrideLoading"])
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [dict[@"host"] showSVHUD: self.lang ? @"Loading" : @"Đang tải" andOption:0];
-//            }
-//        }
-//    }
-//    
-//    __block ASIFormDataRequest *_request = request;
-//    
-//    [_request setFailedBlock:^{
-//        
-//        if(![self isConnectionAvailable])
-//        {
-//            if([dict responseForKey:@"host"])
-//            {
-//                [self showToast:self.lang ? @"Please check your Internet connection" : @"Vui lòng kiểm tra lại kết nối Internet" andPos:0];
-//                
-//                [dict[@"host"] hideSVHUD];
-//            }
-//            
-//            ((RequestCompletion)dict[@"completion"])(nil, @"404", request.error, NO);
-//        }
-//        else
-//        {
-//            NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:[request.responseString objectFromJSONString]];
-//            
-//            if([dict responseForKey:@"overrideAlert"])
-//            {
-//                [result addEntriesFromDictionary:@{@"overrideAlert":dict[@"overrideAlert"]}];
-//            }
-//            
-//            if([dict responseForKey:@"checkmark"])
-//            {
-//                [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
-//            }
-//            
-//            ((RequestCompletion)dict[@"completion"])(nil, @"503", request.error, [self didRespond:result andHost:dict[@"host"]]);
-//        }
-//        
-//    }];
-//    
-//    [_request setCompletionBlock:^{
-//        
-//        NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:[request.responseString objectFromJSONString]];
-//        
-//        if([dict responseForKey:@"method"])
-//        {
-//            [self addValue:request.responseString andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url];
-//        }
-//        else
-//        {
-//            //            if([result responseForKindOfClass:@"ERR_CODE" andTarget:@"0"] && [[request.responseString objectFromJSONString] responseForKey:@"RESULT"])
-//            {
-//                [self addValue:request.responseString andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]];
-//            }
-//        }
-//        
-//        if([dict responseForKey:@"overrideAlert"])
-//        {
-//            [result addEntriesFromDictionary:@{@"overrideAlert":dict[@"overrideAlert"]}];
-//        }
-//        
-//        if([dict responseForKey:@"checkmark"])
-//        {
-//            [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
-//        }
-//        
-//        if([dict responseForKey:@"overrideError"] && dict[@"host"])
-//        {
-//            [self hideSVHUD];
-//        }
-//        
-//        ((RequestCompletion)dict[@"completion"])(request.responseString, [result responseForKey:@"ERR_CODE"] ? [result getValueFromKey:@"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
-//    }];
-//    
-//    [request startAsynchronous];
-//    
-//    return request;
-//}
+- (void)didFailedResult:(NSDictionary*)dict andError:(NSError*)error
+{
+    if(![self isConnectionAvailable])
+    {
+        if([dict responseForKey:@"host"])
+        {
+            [self showToast:self.lang ? @"Please check your Internet connection" : @"Vui lòng kiểm tra lại kết nối Internet" andPos:0];
+            
+            [dict[@"host"] hideSVHUD];
+        }
+        
+        ((RequestCompletion)dict[@"completion"])(nil, @"404", error, NO);
+    }
+    else
+    {
+        NSMutableDictionary * result = [NSMutableDictionary new];
+        
+        if([dict responseForKey:@"overrideAlert"])
+        {
+            [result addEntriesFromDictionary:@{@"overrideAlert":dict[@"overrideAlert"]}];
+        }
+        
+        if([dict responseForKey:@"checkmark"])
+        {
+            [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
+        }
+        
+        ((RequestCompletion)dict[@"completion"])(nil, @"503", error, [self didRespond:result andHost:dict[@"host"]]);
+    }
+}
+
+- (void)didSuccessResult:(NSDictionary*)dict andResult:(NSDictionary*)response andUrl:(NSString*)url andPostData:(NSDictionary*)post
+{
+    NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:response];
+    
+    if([dict responseForKey:@"method"])
+    {
+        if(response)
+        {
+            [self addValue:[response bv_jsonStringWithPrettyPrint:NO] andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url];
+        }
+    }
+    else
+    {
+        if(response)
+        {
+            [self addValue:[response bv_jsonStringWithPrettyPrint:NO] andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]];
+        }
+    }
+    
+    if([dict responseForKey:@"overrideAlert"])
+    {
+        [result addEntriesFromDictionary:@{@"overrideAlert":dict[@"overrideAlert"]}];
+    }
+    
+    if([dict responseForKey:@"checkmark"])
+    {
+        [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
+    }
+    
+    if([dict responseForKey:@"overrideError"] && dict[@"host"])
+    {
+        [self hideSVHUD];
+    }
+    
+    ((RequestCompletion)dict[@"completion"])([response bv_jsonStringWithPrettyPrint:NO], [result responseForKey:@"ERR_CODE"] ? [result getValueFromKey:@"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
+}
 
 - (NSString*)returnGetUrl:(NSDictionary*)dict
 {
