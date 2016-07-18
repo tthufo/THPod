@@ -17,7 +17,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@import AFNetworking;
+#import "AFNetworking.h"
 
 static LTRequest *__sharedLTRequest = nil;
 
