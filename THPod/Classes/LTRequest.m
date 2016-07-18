@@ -221,6 +221,8 @@ static LTRequest *__sharedLTRequest = nil;
     
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    
     NSString * url;
 
     if([dict responseForKey:@"method"])
@@ -247,8 +249,6 @@ static LTRequest *__sharedLTRequest = nil;
         }
         
         [manager GET:url parameters:nil success:^(NSURLSessionTask *task, id responseObject) {
-
-            NSLog(@"JSON: %@", [responseObject objectFromJSONData]);
             
             [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] andUrl:url andPostData:post];
 
