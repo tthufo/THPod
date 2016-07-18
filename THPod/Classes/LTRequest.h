@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ASIFormDataRequest.h"
+//#import "ASIFormDataRequest.h"
 
 typedef NS_ENUM(NSInteger, PermisionType) {
     authorized = 0,
@@ -44,7 +44,9 @@ typedef void (^RequestCache)(NSString * cacheString);
 
 - (void)initRequest;
 
-- (ASIFormDataRequest*)didRequestInfo:(NSDictionary*)dict withCache:(RequestCache)cache andCompletion:(RequestCompletion)completion;
+//- (ASIFormDataRequest*)didRequestInfo:(NSDictionary*)dict withCache:(RequestCache)cache andCompletion:(RequestCompletion)completion;
+
+- (void)didRequestInfo:(NSDictionary*)dict withCache:(RequestCache)cache andCompletion:(RequestCompletion)completion;
 
 - (void)didInitWithUrl:(NSDictionary*)dict withCache:(RequestCache)cache andCompletion:(RequestCompletion)completion;
 

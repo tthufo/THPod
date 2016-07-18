@@ -8,13 +8,13 @@
 
 #import "THAppDelegate.h"
 
-//#import "FBPlugInHeader.h"
+#import "FBPlugInHeader.h"
 
 @implementation THAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    [[LTRequest sharedInstance] initRequest];
+    [[LTRequest sharedInstance] initRequest];
     
     return YES;
 }

@@ -14,7 +14,7 @@
 
 #import "UIView+Toast.h"
 
-//#import "Reachability.h"
+#import "Reachability.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -98,20 +98,20 @@ CLLocationManager * locationManager;
     return YES;
 }
 
-//- (BOOL)isConnectionAvailable
-//{
-//    SCNetworkReachabilityFlags flags;
-//    SCNetworkReachabilityRef add;
-//    add = SCNetworkReachabilityCreateWithName(NULL, "www.apple.com" );
-//    Boolean success = SCNetworkReachabilityGetFlags(add, &flags);
-//    CFRelease(add);
-//    
-//    bool canReach = success
-//    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
-//    && (flags & kSCNetworkReachabilityFlagsReachable);
-//    
-//    return canReach;
-//}
+- (BOOL)isConnectionAvailable
+{
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityRef add;
+    add = SCNetworkReachabilityCreateWithName(NULL, "www.apple.com" );
+    Boolean success = SCNetworkReachabilityGetFlags(add, &flags);
+    CFRelease(add);
+    
+    bool canReach = success
+    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
+    && (flags & kSCNetworkReachabilityFlagsReachable);
+    
+    return canReach;
+}
 
 - (NSString *)uuidString
 {

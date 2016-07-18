@@ -8,6 +8,8 @@
 
 #import "THViewController.h"
 
+#import "FBPlugInHeader.h"
+
 @interface THViewController ()
 
 @end
@@ -17,7 +19,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    [[LTRequest sharedInstance] didRequestInfo:@{} withCache:^(NSString *cacheString) {
+        
+    } andCompletion:^(NSString *responseString, NSString *errorCode, NSError *error, BOOL isValidated) {
+        
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning
