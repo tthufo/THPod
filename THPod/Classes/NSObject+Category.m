@@ -415,6 +415,12 @@ CLLocationManager * locationManager;
     }
 }
 
+-(NSDictionary*)dictWithPlist:(NSString*)pList
+{
+    NSString* plistPath = [[NSBundle mainBundle] pathForResource:pList ofType:@"plist"];
+    return [[NSDictionary alloc] initWithContentsOfFile:plistPath];
+}
+
 @end
 
 @implementation NSDictionary (name)

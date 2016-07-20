@@ -82,6 +82,8 @@
 
 - (void)registerForKeyboardNotifications:(BOOL)isRegister andSelector:(NSArray*)selectors;
 
+- (NSDictionary*)dictWithPlist:(NSString*)pList;
+
 @end
 
 @interface NSDictionary (name)

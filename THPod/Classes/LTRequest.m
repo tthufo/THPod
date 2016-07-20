@@ -77,6 +77,8 @@ static LTRequest *__sharedLTRequest = nil;
 - (void)didReceiveToken:(NSData *)_deviceToken
 {
     deviceToken = [[[[_deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""] stringByReplacingOccurrencesOfString: @">" withString: @""] stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    NSLog(@"TokenPushInfor----->%@", deviceToken);
 }
 
 - (void)didFailToRegisterForRemoteNotification:(NSError *)error
@@ -86,7 +88,7 @@ static LTRequest *__sharedLTRequest = nil;
 
 - (void)didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"%@", userInfo);
+    NSLog(@"UserPushInfor----->%@", userInfo);
 }
 
 - (void)initRequest
@@ -173,6 +175,8 @@ static LTRequest *__sharedLTRequest = nil;
 {
     NSLog(@"+___+%@",dict);
     
+    NSDictionary * info = [self dictWithPlist:@"Info"];
+
     if(host)
     {
         [host hideSVHUD];
@@ -185,13 +189,27 @@ static LTRequest *__sharedLTRequest = nil;
         return NO;
     }
     
-    if([dict responseForKindOfClass:@"ERR_CODE" andTarget:@"0"])
+    if([info responseForKey:@"eCode"] && !dict[info[@"eCode"]])
+    {
+        [self showToast:@"Check for Plist/eCode" andPos:0];
+        
+        return NO;
+    }
+    
+    if([dict responseForKindOfClass:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE" andTarget:[info responseForKey:@"sCode"] ? info[@"sCode"] : @"0"])
     {
         if([dict responseForKey:@"checkmark"] && host)
         {
             dict[@"status"] = @(1);
             
             [self didAddCheckMark:dict andHost:host];
+        }
+        else
+        {
+            if(![dict responseForKey:@"overrideAlert"])
+            {
+                [self showToast:[dict responseForKey: [info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? dict[[info responseForKey:@"eMessage"] ? info[@"eMessage"] : @"ERR_MSG"] ? dict[[info responseForKey:@"eMessage"] ? info[@"eMessage"] : @"ERR_MSG"] : @"Check for Plist/eMessage" : self.lang ? @"Server error, please try again" : @"Lỗi hệ thống xảy ra, xin hãy thử lại" andPos:0];
+            }
         }
         return YES;
     }
@@ -206,7 +224,7 @@ static LTRequest *__sharedLTRequest = nil;
     {
         if(![dict responseForKey:@"overrideAlert"])
         {
-            [self showToast:[dict responseForKey:@"ERR_CODE"] ? dict[@"ERR_MSG"] : self.lang ? @"Server error, please try again" : @"Lỗi hệ thống xảy ra, xin hãy thử lại" andPos:0];
+            [self showToast:[dict responseForKey: [info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? dict[[info responseForKey:@"eMessage"] ? info[@"eMessage"] : @"ERR_MSG"] ? dict[[info responseForKey:@"eMessage"] ? info[@"eMessage"] : @"ERR_MSG"] : @"Check for Plist/eMessage" : self.lang ? @"Server error, please try again" : @"Lỗi hệ thống xảy ra, xin hãy thử lại" andPos:0];
         }
     }
     
@@ -215,6 +233,8 @@ static LTRequest *__sharedLTRequest = nil;
 
 - (void)didInitRequest:(NSMutableDictionary*)dict
 {
+    NSDictionary * info = [self dictWithPlist:@"Info"];
+    
     NSMutableDictionary * post = nil;
     
     AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
@@ -227,8 +247,8 @@ static LTRequest *__sharedLTRequest = nil;
 
     if([dict responseForKey:@"method"])
     {
-        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@?%@",self.address, dict[@"CMD_CODE"], [self returnGetUrl:dict]];
-
+        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@?%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [self returnGetUrl:dict]];
+        
         if([self getValue: url])
         {
             ((RequestCache)dict[@"cache"])([self getValue: url]);
@@ -336,6 +356,8 @@ static LTRequest *__sharedLTRequest = nil;
 
 - (void)didSuccessResult:(NSDictionary*)dict andResult:(NSDictionary*)response andUrl:(NSString*)url andPostData:(NSDictionary*)post
 {
+    NSDictionary * info = [self dictWithPlist:@"Info"];
+        
     NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:response];
     
     if([dict responseForKey:@"method"])
@@ -368,15 +390,23 @@ static LTRequest *__sharedLTRequest = nil;
         [self hideSVHUD];
     }
     
-    ((RequestCompletion)dict[@"completion"])([response bv_jsonStringWithPrettyPrint:NO], [result responseForKey:@"ERR_CODE"] ? [result getValueFromKey:@"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
+    if([info responseForKey:@"eCode"] && !response[info[@"eCode"]])
+    {
+        [self showToast:@"Check for Plist/eCode" andPos:0];
+    }
+    
+    ((RequestCompletion)dict[@"completion"])([response bv_jsonStringWithPrettyPrint:NO], [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
 }
 
 - (NSString*)returnGetUrl:(NSDictionary*)dict
 {
+    NSDictionary * info = [self dictWithPlist:@"Info"][@"eCode"];
+
     NSString * getUrl = @"";
+    
     for(NSString * key in dict.allKeys)
     {
-        if([key isEqualToString:@"host"] || [key isEqualToString:@"CMD_CODE"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"])
+        if([key isEqualToString:@"host"] || [key isEqualToString:[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"] || [key isEqualToString:@"overrideError"])
         {
             continue;
         }

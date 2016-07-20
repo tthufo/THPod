@@ -23,13 +23,14 @@
     [[LTRequest sharedInstance] didRequestInfo:@{@"CMD_CODE":@"getappinfo",
                                                  @"host":self,
                                                  @"overrideLoading":@(1),
-                                                 @"overrideError":@(1)
+                                                 @"overrideAlert":@(1)
+//                                                 @"overrideError":@(1)
                                                  
                                                  } withCache:^(NSString *cacheString) {
                                                      
     } andCompletion:^(NSString *responseString, NSString *errorCode, NSError *error, BOOL isValidated) {
         
-        NSLog(@"%@",responseString);
+        NSLog(@"%@ _ %@",responseString, errorCode);
         
     }];
     
