@@ -8,13 +8,15 @@
 
 #import "THAppDelegate.h"
 
-#import "FBPlugInHeader.h"
+#import "THViewController.h"
 
 @implementation THAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[LTRequest sharedInstance] initRequest];
+    
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[THViewController new]];
     
     return YES;
 }

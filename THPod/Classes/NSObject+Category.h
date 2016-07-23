@@ -12,9 +12,11 @@
 
 @interface NSObject (Extension_Category) <CLLocationManagerDelegate>
 
-- (BOOL)isSimulator;
+- (float)screenWidth;
 
-- (BOOL)isCamera;
+- (float)screenHeight;
+
+- (BOOL)isSimulator;
 
 - (BOOL)isGallery;
 
@@ -230,8 +232,6 @@
 - (void)didScrolltoBottom:(BOOL)animate;
 
 - (void)reloadDataWithAnimation:(BOOL)animate;
-
-//@property(nonatomic, assign) NSString* borderUIColor;
 
 @end
 

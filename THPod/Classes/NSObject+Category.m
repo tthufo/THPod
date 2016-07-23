@@ -36,6 +36,16 @@
 
 CLLocationManager * locationManager;
 
+- (float)screenWidth
+{
+    return [[UIScreen mainScreen] bounds].size.width;
+}
+
+- (float)screenHeight
+{
+    return [[UIScreen mainScreen] bounds].size.height;
+}
+
 - (BOOL)isSimulator
 {
     #if TARGET_IPHONE_SIMULATOR
@@ -47,24 +57,6 @@ CLLocationManager * locationManager;
         return NO;
         
     #endif
-}
-
-- (BOOL)isCamera
-{
-    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    
-    if(status == AVAuthorizationStatusAuthorized) {
-        return YES;
-    }
-    else if(status == AVAuthorizationStatusDenied){
-        return NO;
-    }
-    else if(status == AVAuthorizationStatusRestricted){
-        return NO;
-    }
-    else if(status == AVAuthorizationStatusNotDetermined){
-        return NO;
-    }
 }
 
 - (BOOL)isGallery
@@ -256,6 +248,7 @@ CLLocationManager * locationManager;
 - (NSDictionary *)currentLocation
 {
     if(!locationManager) return nil;
+    
     if(![CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
     {
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
@@ -268,7 +261,9 @@ CLLocationManager * locationManager;
         }
         return nil;
     }
+    
     NSLog(@"_%@",@{@"lat":@(locationManager.location.coordinate.longitude),@"lng":@(locationManager.location.coordinate.latitude)});
+    
     return @{@"lat":@(locationManager.location.coordinate.longitude),@"lng":@(locationManager.location.coordinate.latitude)};
 }
 
@@ -405,12 +400,12 @@ CLLocationManager * locationManager;
 {
     if(isRegister)
     {
-        [[NSNotificationCenter defaultCenter] addUniqueObserver:self selector:NSSelectorFromString(selectors[0]) name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addUniqueObserver:self selector:NSSelectorFromString(selectors[0]) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addUniqueObserver:self selector:NSSelectorFromString(selectors[1]) name:UIKeyboardWillHideNotification object:nil];
     }
     else
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     }
 }
@@ -518,7 +513,6 @@ CLLocationManager * locationManager;
                                                          error:&error];
     if (! jsonData)
     {
-        //NSLog(@"bv_jsonStringWithPrettyPrint: error: %@", error.localizedDescription);
         return @"{}";
     }
     else

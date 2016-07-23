@@ -16,6 +16,8 @@ typedef void (^KeyBoardEvents)(CGFloat kbHeight, BOOL isOn);
 
 - (KeyBoard*)keyboardOn:(KeyBoardEvents)kbEvent;
 
+- (KeyBoard*)keyboardOn:(NSDictionary*)dict andCompletion:(KeyBoardEvents)kbEvent;
+
 - (void)keyboardOff;
 
 @property(nonatomic,copy) KeyBoardEvents event;
