@@ -541,6 +541,27 @@
 		FB7B76F9942AE0F7DEC11FAAEE4739B7 /* FBSDKLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A23EFDF9046EFDC6869E6ED4967E2D /* FBSDKLogger.m */; };
 		FBE9ECC4946A8FAF7DB8B42B4D547C1D /* FBSDKAudioResourceLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 01F8E23881F03D56A3BC30D47F570657 /* FBSDKAudioResourceLoader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FBF5C46C3A67689F425C5C70DBA922A8 /* JCNotificationBannerPresenter_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2992C3F64F27553EF8C59617DD4899 /* JCNotificationBannerPresenter_Private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC05A0C31D4A73970020737E /* gui_expand@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0B71D4A73970020737E /* gui_expand@1x.png */; };
+		FC05A0C41D4A73970020737E /* gui_expand@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0B81D4A73970020737E /* gui_expand@2x.png */; };
+		FC05A0C51D4A73970020737E /* gui_expand@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0B91D4A73970020737E /* gui_expand@3x.png */; };
+		FC05A0C61D4A73970020737E /* gui_pause@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0BA1D4A73970020737E /* gui_pause@1x.png */; };
+		FC05A0C71D4A73970020737E /* gui_pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0BB1D4A73970020737E /* gui_pause@2x.png */; };
+		FC05A0C81D4A73970020737E /* gui_pause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0BC1D4A73970020737E /* gui_pause@3x.png */; };
+		FC05A0C91D4A73970020737E /* gui_play@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0BD1D4A73970020737E /* gui_play@1x.png */; };
+		FC05A0CA1D4A73970020737E /* gui_play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0BE1D4A73970020737E /* gui_play@2x.png */; };
+		FC05A0CB1D4A73970020737E /* gui_play@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0BF1D4A73970020737E /* gui_play@3x.png */; };
+		FC05A0CC1D4A73970020737E /* gui_shrink@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0C01D4A73970020737E /* gui_shrink@1x.png */; };
+		FC05A0CD1D4A73970020737E /* gui_shrink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0C11D4A73970020737E /* gui_shrink@2x.png */; };
+		FC05A0CE1D4A73970020737E /* gui_shrink@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0C21D4A73970020737E /* gui_shrink@3x.png */; };
+		FC05A0D51D4A73B90020737E /* GUIPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = FC05A0CF1D4A73B90020737E /* GUIPlayerView.h */; };
+		FC05A0D61D4A73B90020737E /* GUIPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC05A0D01D4A73B90020737E /* GUIPlayerView.m */; };
+		FC05A0D71D4A73B90020737E /* GUISlider.h in Headers */ = {isa = PBXBuildFile; fileRef = FC05A0D11D4A73B90020737E /* GUISlider.h */; };
+		FC05A0D81D4A73B90020737E /* GUISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FC05A0D21D4A73B90020737E /* GUISlider.m */; };
+		FC05A0D91D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.h in Headers */ = {isa = PBXBuildFile; fileRef = FC05A0D31D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.h */; };
+		FC05A0DA1D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = FC05A0D41D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.m */; };
+		FC05A0E41D4A75020020737E /* retry@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0E11D4A75020020737E /* retry@2x.png */; };
+		FC05A0E51D4A75020020737E /* retry.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0E21D4A75020020737E /* retry.png */; };
+		FC05A0E61D4A75020020737E /* retry@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC05A0E31D4A75020020737E /* retry@3x.png */; };
 		FC4C7FA94B9B25828BC94A10E24CC21B /* FBSDKBoltsMeasurementEventListener.h in Headers */ = {isa = PBXBuildFile; fileRef = DC52142F6998A8E097D7072431E9C96F /* FBSDKBoltsMeasurementEventListener.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FC7F0A1FFB2641FAB705A0CF9EFC1303 /* FBSDKShareKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C7350DC8ECB71848953B2C5E53D7C0F /* FBSDKShareKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FD7525FCB49FB135D59559C8A7D13D65 /* FBSDKLikeButtonPopWAV.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E228E7E1AD3B8760D0B8991169B5C9 /* FBSDKLikeButtonPopWAV.m */; };
@@ -1383,6 +1404,27 @@
 		FA4733CAA355B8A1F33AEC31EBA85F23 /* FBSDKGraphRequestBody.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKGraphRequestBody.h; path = FBSDKCoreKit/FBSDKCoreKit/Internal/Network/FBSDKGraphRequestBody.h; sourceTree = "<group>"; };
 		FAA1D93D491DE7CAE0DBD935D09F3DC2 /* FBSDKLoginManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKLoginManager.m; path = FBSDKLoginKit/FBSDKLoginKit/FBSDKLoginManager.m; sourceTree = "<group>"; };
 		FAEC8E11A7E0C67176B87E4E6DF392C7 /* FBSDKGameRequestContent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKGameRequestContent.h; path = FBSDKShareKit/FBSDKShareKit/FBSDKGameRequestContent.h; sourceTree = "<group>"; };
+		FC05A0B71D4A73970020737E /* gui_expand@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_expand@1x.png"; sourceTree = "<group>"; };
+		FC05A0B81D4A73970020737E /* gui_expand@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_expand@2x.png"; sourceTree = "<group>"; };
+		FC05A0B91D4A73970020737E /* gui_expand@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_expand@3x.png"; sourceTree = "<group>"; };
+		FC05A0BA1D4A73970020737E /* gui_pause@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_pause@1x.png"; sourceTree = "<group>"; };
+		FC05A0BB1D4A73970020737E /* gui_pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_pause@2x.png"; sourceTree = "<group>"; };
+		FC05A0BC1D4A73970020737E /* gui_pause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_pause@3x.png"; sourceTree = "<group>"; };
+		FC05A0BD1D4A73970020737E /* gui_play@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_play@1x.png"; sourceTree = "<group>"; };
+		FC05A0BE1D4A73970020737E /* gui_play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_play@2x.png"; sourceTree = "<group>"; };
+		FC05A0BF1D4A73970020737E /* gui_play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_play@3x.png"; sourceTree = "<group>"; };
+		FC05A0C01D4A73970020737E /* gui_shrink@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_shrink@1x.png"; sourceTree = "<group>"; };
+		FC05A0C11D4A73970020737E /* gui_shrink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_shrink@2x.png"; sourceTree = "<group>"; };
+		FC05A0C21D4A73970020737E /* gui_shrink@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gui_shrink@3x.png"; sourceTree = "<group>"; };
+		FC05A0CF1D4A73B90020737E /* GUIPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUIPlayerView.h; sourceTree = "<group>"; };
+		FC05A0D01D4A73B90020737E /* GUIPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUIPlayerView.m; sourceTree = "<group>"; };
+		FC05A0D11D4A73B90020737E /* GUISlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUISlider.h; sourceTree = "<group>"; };
+		FC05A0D21D4A73B90020737E /* GUISlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUISlider.m; sourceTree = "<group>"; };
+		FC05A0D31D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UpdateAutoLayoutConstraints.h"; sourceTree = "<group>"; };
+		FC05A0D41D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UpdateAutoLayoutConstraints.m"; sourceTree = "<group>"; };
+		FC05A0E11D4A75020020737E /* retry@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@2x.png"; sourceTree = "<group>"; };
+		FC05A0E21D4A75020020737E /* retry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retry.png; sourceTree = "<group>"; };
+		FC05A0E31D4A75020020737E /* retry@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@3x.png"; sourceTree = "<group>"; };
 		FC2992C3F64F27553EF8C59617DD4899 /* JCNotificationBannerPresenter_Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JCNotificationBannerPresenter_Private.h; path = Library/JCNotificationBannerPresenter_Private.h; sourceTree = "<group>"; };
 		FC337351E2B7C42AA8683BD5983B452A /* BFURL.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BFURL.m; path = Bolts/iOS/BFURL.m; sourceTree = "<group>"; };
 		FC8F9621B5BAE9A5361BA7528297440A /* Reachability.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Reachability.xcconfig; sourceTree = "<group>"; };
@@ -1678,6 +1720,21 @@
 			isa = PBXGroup;
 			children = (
 				3833BD8A4044F70ACDBBA590BA989557 /* model.xcdatamodel */,
+				FC05A0E21D4A75020020737E /* retry.png */,
+				FC05A0E11D4A75020020737E /* retry@2x.png */,
+				FC05A0E31D4A75020020737E /* retry@3x.png */,
+				FC05A0B71D4A73970020737E /* gui_expand@1x.png */,
+				FC05A0B81D4A73970020737E /* gui_expand@2x.png */,
+				FC05A0B91D4A73970020737E /* gui_expand@3x.png */,
+				FC05A0BA1D4A73970020737E /* gui_pause@1x.png */,
+				FC05A0BB1D4A73970020737E /* gui_pause@2x.png */,
+				FC05A0BC1D4A73970020737E /* gui_pause@3x.png */,
+				FC05A0BD1D4A73970020737E /* gui_play@1x.png */,
+				FC05A0BE1D4A73970020737E /* gui_play@2x.png */,
+				FC05A0BF1D4A73970020737E /* gui_play@3x.png */,
+				FC05A0C01D4A73970020737E /* gui_shrink@1x.png */,
+				FC05A0C11D4A73970020737E /* gui_shrink@2x.png */,
+				FC05A0C21D4A73970020737E /* gui_shrink@3x.png */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1977,6 +2034,12 @@
 		76D115C2914B079669C829B134A0ED26 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FC05A0CF1D4A73B90020737E /* GUIPlayerView.h */,
+				FC05A0D01D4A73B90020737E /* GUIPlayerView.m */,
+				FC05A0D11D4A73B90020737E /* GUISlider.h */,
+				FC05A0D21D4A73B90020737E /* GUISlider.m */,
+				FC05A0D31D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.h */,
+				FC05A0D41D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.m */,
 				FEEF40AD6466D2E0819FF9D64B7EB09E /* CustomIOS7AlertView.h */,
 				00F77417D05E454618E420D36DE47A6F /* CustomIOS7AlertView.m */,
 				FDE970B40EE814A1157D9C6A54D1910C /* DropAlert.h */,
@@ -2806,10 +2869,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC05A0D91D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.h in Headers */,
 				C9D66DF2C856D9F572BACA093CBD258E /* SVIndefiniteAnimatedView.h in Headers */,
+				FC05A0D71D4A73B90020737E /* GUISlider.h in Headers */,
 				7A323B8F23590F4B2F56AD5E7BF5B0F2 /* SVProgressAnimatedView.h in Headers */,
 				50226ADC602C8504F3D25387023F9657 /* SVProgressHUD-umbrella.h in Headers */,
 				01C25FF9B93F003C7B253A9F41A9AE58 /* SVProgressHUD.h in Headers */,
+				FC05A0D51D4A73B90020737E /* GUIPlayerView.h in Headers */,
 				74F7B719B3F466FB01D58D1773E07938 /* SVRadialGradientLayer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3357,7 +3423,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC05A0E61D4A75020020737E /* retry@3x.png in Resources */,
 				7B49964E739A58A865EB02671DA5346E /* SVProgressHUD.bundle in Resources */,
+				FC05A0E51D4A75020020737E /* retry.png in Resources */,
+				FC05A0CC1D4A73970020737E /* gui_shrink@1x.png in Resources */,
+				FC05A0C41D4A73970020737E /* gui_expand@2x.png in Resources */,
+				FC05A0C31D4A73970020737E /* gui_expand@1x.png in Resources */,
+				FC05A0C81D4A73970020737E /* gui_pause@3x.png in Resources */,
+				FC05A0CD1D4A73970020737E /* gui_shrink@2x.png in Resources */,
+				FC05A0C61D4A73970020737E /* gui_pause@1x.png in Resources */,
+				FC05A0E41D4A75020020737E /* retry@2x.png in Resources */,
+				FC05A0CB1D4A73970020737E /* gui_play@3x.png in Resources */,
+				FC05A0C91D4A73970020737E /* gui_play@1x.png in Resources */,
+				FC05A0C51D4A73970020737E /* gui_expand@3x.png in Resources */,
+				FC05A0C71D4A73970020737E /* gui_pause@2x.png in Resources */,
+				FC05A0CE1D4A73970020737E /* gui_shrink@3x.png in Resources */,
+				FC05A0CA1D4A73970020737E /* gui_play@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3682,9 +3763,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E585C1DCA287E9383317457FF4F5CE5 /* SVIndefiniteAnimatedView.m in Sources */,
+				FC05A0D61D4A73B90020737E /* GUIPlayerView.m in Sources */,
 				91DD0D95AB02BBF86D7257F74864668C /* SVProgressAnimatedView.m in Sources */,
 				034F297D1B5B0213C90F5E731C405A90 /* SVProgressHUD-dummy.m in Sources */,
 				23A9B41FBCE1A2A658F3948D9F4C2B80 /* SVProgressHUD.m in Sources */,
+				FC05A0DA1D4A73B90020737E /* UIView+UpdateAutoLayoutConstraints.m in Sources */,
+				FC05A0D81D4A73B90020737E /* GUISlider.m in Sources */,
 				DC02AD53D44141F73F756094CD4292D2 /* SVRadialGradientLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

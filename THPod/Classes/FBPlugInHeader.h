@@ -38,4 +38,6 @@
 
 #import "KeyBoard.h"
 
+#import "GUIPlayerView.h"
+
 //#endif /* FBPlugInHeader_h */
