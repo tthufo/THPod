@@ -176,7 +176,7 @@ static LTRequest *__sharedLTRequest = nil;
     NSLog(@"+___+%@",dict);
     
     NSDictionary * info = [self dictWithPlist:@"Info"];
-
+    
     if(host)
     {
         [host hideSVHUD];
@@ -244,7 +244,7 @@ static LTRequest *__sharedLTRequest = nil;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     
     NSString * url;
-
+    
     if([dict responseForKey:@"method"])
     {
         url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@?%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [self returnGetUrl:dict]];
@@ -270,18 +270,18 @@ static LTRequest *__sharedLTRequest = nil;
         
         [manager GET:url parameters:nil success:^(NSURLSessionTask *task, id responseObject) {
             
-            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] andUrl:url andPostData:post];
-
+            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post];
+            
         } failure:^(NSURLSessionTask *operation, NSError *error) {
-  
+            
             [self didFailedResult:dict andError:error];
-
+            
         }];
     }
     else
     {
         url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : self.address;
-
+        
         post = [[NSMutableDictionary alloc] initWithDictionary:dict];
         
         for(NSString * key in post.allKeys)
@@ -313,7 +313,7 @@ static LTRequest *__sharedLTRequest = nil;
         
         [manager POST:url parameters:post success:^(NSURLSessionTask *task, id responseObject) {
             
-            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] andUrl:url andPostData:post];
+            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post];
             
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
@@ -354,24 +354,24 @@ static LTRequest *__sharedLTRequest = nil;
     }
 }
 
-- (void)didSuccessResult:(NSDictionary*)dict andResult:(NSDictionary*)response andUrl:(NSString*)url andPostData:(NSDictionary*)post
+- (void)didSuccessResult:(NSDictionary*)dict andResult:(id)response andUrl:(NSString*)url andPostData:(NSDictionary*)post
 {
     NSDictionary * info = [self dictWithPlist:@"Info"];
-        
-    NSMutableDictionary * result = [NSMutableDictionary dictionaryWithDictionary:response];
+    
+    NSMutableDictionary * result = [NSMutableDictionary new];//[NSMutableDictionary dictionaryWithDictionary:response];
     
     if([dict responseForKey:@"method"])
     {
         if(response)
         {
-            [self addValue:[response bv_jsonStringWithPrettyPrint:NO] andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url];
+            [self addValue:[response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : response andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url];
         }
     }
     else
     {
         if(response)
         {
-            [self addValue:[response bv_jsonStringWithPrettyPrint:NO] andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]];
+            [self addValue:[response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : response andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [post bv_jsonStringWithPrettyPrint:NO]];
         }
     }
     
@@ -395,13 +395,13 @@ static LTRequest *__sharedLTRequest = nil;
         [self showToast:@"Check for Plist/eCode" andPos:0];
     }
     
-    ((RequestCompletion)dict[@"completion"])([response bv_jsonStringWithPrettyPrint:NO], [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
+    ((RequestCompletion)dict[@"completion"])([response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : response, [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
 }
 
 - (NSString*)returnGetUrl:(NSDictionary*)dict
 {
     NSDictionary * info = [self dictWithPlist:@"Info"][@"eCode"];
-
+    
     NSString * getUrl = @"";
     
     for(NSString * key in dict.allKeys)

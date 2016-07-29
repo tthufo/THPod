@@ -5,6 +5,8 @@
 #import "DropButton.h"
 #import "FB.h"
 #import "FBPlugInHeader.h"
+#import "GUIPlayerView.h"
+#import "GUISlider.h"
 #import "HPGrowingTextView.h"
 #import "HPTextViewInternal.h"
 #import "KeyBoard.h"
@@ -20,6 +22,7 @@
 #import "UIButton+Badge.h"
 #import "UIImageView+MHFacebookImageViewer.h"
 #import "UIScrollView+DXRefresh.h"
+#import "UIView+UpdateAutoLayoutConstraints.h"
 #import "ViewPagerController.h"
 #import "XMLReader.h"
 

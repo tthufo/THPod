@@ -1,6 +1,6 @@
 {
   "name": "THPod",
-  "version": "0.2.5",
+  "version": "0.2.8",
   "summary": "A short description of THPod.",
   "description": "Bundles of custom class and utilities which helping you saving a lot of time",
   "homepage": "https://github.com/tthufo/THPod",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/tthufo/THPod.git",
-    "tag": "0.2.5"
+    "tag": "0.2.8"
   },
   "platforms": {
     "ios": "7.0"
@@ -25,7 +25,7 @@
       "THPod/Assets/*"
     ]
   },
-  "resources": "THPod/Assets/*.*",
+  "resources": "THPod/Assets/*",
   "frameworks": "CoreData",
   "public_header_files": "THPod/Classes/*.h",
   "dependencies": {

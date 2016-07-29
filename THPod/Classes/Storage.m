@@ -36,13 +36,13 @@ static Storage * __instance = nil;
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    
+
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
         
-    NSURL *modelURL = [bundle URLForResource:@"model" withExtension:@"momd"];
+    NSURL *modelURL = [bundle URLForResource:@"model" withExtension:@"mom"];
     
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-
+    
     return _managedObjectModel;
 }
 

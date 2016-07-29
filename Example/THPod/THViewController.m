@@ -45,6 +45,9 @@
 //    
 //    [self.view addSubview:v];
     
+    [System addValue:@"1" andKey:@"key"];
+    
+    NSLog(@"%@", ((System*)[[System getAll] lastObject]).key);
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'THPod'
-  s.version          = '0.2.7'
+  s.version          = '0.2.8'
   s.summary          = 'A short description of THPod.'
 
 # This description is used to generate tags and improve search results.
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
     'THPod' => ['THPod/Assets/*']
   }
 
-  s.resources = 'THPod/Assets/*.*'
+  s.resources = 'THPod/Assets/*'
 
   s.frameworks = 'CoreData'
 
