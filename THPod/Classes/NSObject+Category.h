@@ -155,7 +155,6 @@
 
 - (void)addLeftBorderWithColor:(UIColor *)color andWidth:(CGFloat) borderWidth;
 
-
 - (UIImage *)pb_takeSnapshot;
 
 - (CALayer *)prefix_addUpperBorder:(UIRectEdge)edge color:(UIColor *)color thickness:(CGFloat)thickness;
@@ -169,6 +168,16 @@
 - (void)setHeight:(CGFloat)height animated:(BOOL)animate;
 
 - (void)bounce:(float)bounceFactor;
+
+- (UIViewController *)parentViewController;
+
+- (void)removeAllGestures;
+
+- (void)removeAllSubviews;
+
+- (void)addTapTarget:(id)target action:(SEL)selector;
+
+- (void)animation:(CGFloat)duration;
 
 @end
 
@@ -266,5 +275,7 @@
 @interface UIViewController (keyboard)
 
 - (void)registerForKeyboardNotifications:(BOOL)isRegister andSelector:(NSArray*)selectors;
+
+- (UIViewController*)storyboard:(NSString*)name andId:(NSString*)iD;
 
 @end
