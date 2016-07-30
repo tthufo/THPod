@@ -21,6 +21,7 @@
 - (void)playerWillLeaveFullscreen;
 - (void)playerDidLeaveFullscreen;
 
+- (void)playerReadyToPlay;
 - (void)playerFailedToPlayToEnd;
 - (void)playerStalled;
 - (void)playerError;
