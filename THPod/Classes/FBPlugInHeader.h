@@ -40,4 +40,7 @@
 
 #import "GUIPlayerView.h"
 
+#import "MarqueeLabel.h"
+
+
 //#endif /* FBPlugInHeader_h */

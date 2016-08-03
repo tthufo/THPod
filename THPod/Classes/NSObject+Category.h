@@ -222,6 +222,8 @@
 
 - (NSDate*)dateWithFormat:(NSString*)format;
 
+- (NSString*)numbeRize;
+
 @end
 
 @interface NSMutableDictionary (Additions)

@@ -393,7 +393,7 @@ CLLocationManager * locationManager;
     CGPoint center = view.center;
     CGPoint rootViewPoint = [view.superview convertPoint:center toView:collectionView];
     NSIndexPath *indexPath = [collectionView indexPathForItemAtPoint:rootViewPoint];
-    return (int)indexPath.row;
+    return (int)indexPath.item;
 }
 
 - (void)registerForKeyboardNotifications:(BOOL)isRegister andSelector:(NSArray*)selectors
@@ -1190,7 +1190,12 @@ CLLocationManager * locationManager;
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:format];
-    return [dateFormatter dateFromString:self];;
+    return [dateFormatter dateFromString:self];
+}
+
+- (NSString*)numbeRize
+{
+    return [NSNumberFormatter localizedStringFromNumber:@([self intValue]) numberStyle:NSNumberFormatterDecimalStyle];
 }
 
 @end

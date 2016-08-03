@@ -20,7 +20,7 @@
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
 @property (strong, nonatomic) AVPlayerItem *currentItem;
 
-@property (strong, nonatomic) UIView *controllersView;
+@property (strong, nonatomic) UIView *controllersView, *topView;;
 @property (strong, nonatomic) UILabel *airPlayLabel;
 
 @property (strong, nonatomic) UIButton *playButton;
@@ -48,7 +48,7 @@
 @synthesize controllersView, airPlayLabel;
 @synthesize playButton, fullscreenButton, volumeView, progressIndicator, currentTimeLabel, remainingTimeLabel, liveLabel, spacerView;
 @synthesize activityIndicator, progressTimer, controllersTimer, seeking, fullscreen, defaultFrame;
-@synthesize retryButton;
+@synthesize retryButton, topView, options;
 @synthesize videoURL, controllersTimeoutPeriod, delegate;
 
 #pragma mark - View Life Cycle
@@ -108,6 +108,57 @@
     [self addConstraints:horizontalConstraints];
     [self addConstraints:verticalConstraints];
     
+    if(options)
+    {
+        topView = [UIView new];
+        [topView setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
+        [topView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [self addSubview:topView];
+        
+        horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[T(40)]" options:0 metrics:nil views:@{@"T":topView}];
+        
+        verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[T(80)]" options:0 metrics:nil views:@{@"T":topView}];
+        
+        [self addConstraints:horizontalConstraints];
+        
+        [self addConstraints:verticalConstraints];
+        
+        
+        UIButton * repeat = [UIButton buttonWithType:UIButtonTypeCustom];
+        [repeat setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [repeat setImage:[UIImage imageNamed:[options[@"repeat"] isEqualToString:@"0"] ? @"none" : [options[@"repeat"] isEqualToString:@"1"] ? @"one" : @"all"] forState:UIControlStateNormal];
+        
+        [topView addSubview:repeat];
+        
+        
+        UIButton * shuffle = [UIButton buttonWithType:UIButtonTypeCustom];
+        [shuffle setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [shuffle setImage:[UIImage imageNamed:[options[@"shuffle"] isEqualToString:@"0"] ? @"shuffle_ac" : @"shuffle_in"] forState:UIControlStateNormal];
+        
+        [topView addSubview:shuffle];
+        
+        verticalConstraints = [NSLayoutConstraint
+                               constraintsWithVisualFormat:@"V:|[RP(40)][SS(40)]|"
+                               options:0
+                               metrics:nil
+                               views:@{@"RP" : repeat,@"SS": shuffle}];
+        
+        horizontalConstraints = [NSLayoutConstraint
+                                 constraintsWithVisualFormat:@"H:|[RP(40)][SS(40)]|"
+                                 options:0
+                                 metrics:nil
+                                 views:@{@"RP" : repeat,@"SS": shuffle}];
+        
+        [topView addConstraints:verticalConstraints];
+        
+        [topView addConstraints:horizontalConstraints];
+        
+        [repeat addTarget:self action:@selector(didPressRepeat:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [shuffle addTarget:self action:@selector(didPressShuffle:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
     
     /** AirPlay View ****************************************************************************************************/
     
@@ -288,6 +339,26 @@
 
 #pragma mark - Actions
 
+- (void)didPressRepeat:(UIButton*)sender
+{
+    if(options)
+    {
+        int option = [options[@"repeat"] intValue] == 0 ? 1 : [options[@"repeat"] intValue] == 1 ? 2 : 0 ;
+        options[@"repeat"] = [NSString stringWithFormat:@"%i", option];
+        [sender setImage:[UIImage imageNamed:[options[@"repeat"] isEqualToString:@"0"] ? @"none" : [options[@"repeat"] isEqualToString:@"1"] ? @"one" : @"all"] forState:UIControlStateNormal];
+    }
+}
+
+- (void)didPressShuffle:(UIButton*)sender
+{
+    if(options)
+    {
+        int option = [options[@"shuffle"] intValue] == 0 ? 1 : 0;
+        options[@"shuffle"] = [NSString stringWithFormat:@"%i", option];
+        [sender setImage:[UIImage imageNamed:[options[@"shuffle"] isEqualToString:@"0"] ? @"shuffle_ac" : @"shuffle_in"] forState:UIControlStateNormal];
+    }
+}
+
 - (void)didPressReTry
 {
     if ([delegate respondsToSelector:@selector(playerRetry)]) {
@@ -463,6 +534,7 @@
 - (void)showControllers {
     [UIView animateWithDuration:0.2f animations:^{
         [controllersView setAlpha:1.0f];
+        [topView setAlpha:1.0f];
     } completion:^(BOOL finished) {
         [controllersTimer invalidate];
         
@@ -479,6 +551,7 @@
 - (void)hideControllers {
     [UIView animateWithDuration:0.5f animations:^{
         [controllersView setAlpha:0.0f];
+        [topView setAlpha:0.0f];
     }];
 }
 
@@ -517,6 +590,7 @@
     [playerLayer setFrame:frame];
     
     [self bringSubviewToFront:controllersView];
+    [self bringSubviewToFront:topView];
     
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     

@@ -35,7 +35,9 @@
 @property (assign, nonatomic) NSInteger controllersTimeoutPeriod;
 @property (weak, nonatomic) id<GUIPlayerViewDelegate> delegate;
 @property (strong, nonatomic) UIButton * retryButton;
+@property (strong, nonatomic) NSMutableDictionary * options;
 
+- (instancetype)initWithFrame:(CGRect)frame andInfo:(NSMutableDictionary*)info;
 - (void)prepareAndPlayAutomatically:(BOOL)playAutomatically;
 - (void)clean;
 - (void)play;
