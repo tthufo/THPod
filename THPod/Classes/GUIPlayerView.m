@@ -66,6 +66,14 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame andInfo:(NSMutableDictionary*)info {
+    self = [super initWithFrame:frame];
+    defaultFrame = frame;
+    options = info;
+    [self setup];
+    return self;
+}
+
 - (void)setup {
     // Set up notification observers
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerDidFinishPlaying:)
