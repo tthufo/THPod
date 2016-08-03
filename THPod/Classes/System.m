@@ -84,6 +84,27 @@
     [db saveContext];
 }
 
++ (void)clearAll
+{
+    Storage *db = [Storage shareInstance];
+    for(System * s in [System getAll])
+    {
+        [[db managedObjectContext] deleteObject:s];
+    }
+    [db saveContext];
+}
+
++ (NSArray *)clearFormat:(NSString *)format argument:(NSArray *)argument
+{
+    Storage *db = [Storage shareInstance];
+    NSArray * s = [System getFormat:format argument:argument];
+    for(System * k in s)
+    {
+        [[db managedObjectContext] deleteObject:k];
+    }
+    [db saveContext];
+}
+
 + (NSArray *)getAll
 {
     Storage *db = [Storage shareInstance];

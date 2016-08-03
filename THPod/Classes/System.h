@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray*)getAll;
 
++ (void)clearAll;
+
++ (NSArray *)clearFormat:(NSString *)format argument:(NSArray *)argument;
+
 @end
 
 NS_ASSUME_NONNULL_END
