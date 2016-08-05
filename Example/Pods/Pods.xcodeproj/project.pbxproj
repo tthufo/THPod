@@ -595,6 +595,8 @@
 		FCE80BA51D51D0B900EC9FE2 /* shuffle_in.png in Resources */ = {isa = PBXBuildFile; fileRef = FCE80B961D51D0B900EC9FE2 /* shuffle_in.png */; };
 		FCE80BA61D51D0B900EC9FE2 /* shuffle_in@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCE80B971D51D0B900EC9FE2 /* shuffle_in@2x.png */; };
 		FCE80BA71D51D0B900EC9FE2 /* shuffle_in@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCE80B981D51D0B900EC9FE2 /* shuffle_in@3x.png */; };
+		FCF4F5691D542A5B0072D6D0 /* AutoScrollLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = FCF4F5671D542A5B0072D6D0 /* AutoScrollLabel.h */; };
+		FCF4F56A1D542A5B0072D6D0 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF4F5681D542A5B0072D6D0 /* AutoScrollLabel.m */; };
 		FD7525FCB49FB135D59559C8A7D13D65 /* FBSDKLikeButtonPopWAV.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E228E7E1AD3B8760D0B8991169B5C9 /* FBSDKLikeButtonPopWAV.m */; };
 		FE9045BA12AD90F3D0F121FFAE699AD5 /* FBSDKMutableCopying.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C3E20ACB4FB1CE9A6CCD817D6BEACB0 /* FBSDKMutableCopying.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF0354628483B192A13C84851E9D523F /* FBSDKLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D10614370E90F93C0717EFDED3C5197 /* FBSDKLogger.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1476,6 +1478,8 @@
 		FCE80B961D51D0B900EC9FE2 /* shuffle_in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shuffle_in.png; sourceTree = "<group>"; };
 		FCE80B971D51D0B900EC9FE2 /* shuffle_in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuffle_in@2x.png"; sourceTree = "<group>"; };
 		FCE80B981D51D0B900EC9FE2 /* shuffle_in@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuffle_in@3x.png"; sourceTree = "<group>"; };
+		FCF4F5671D542A5B0072D6D0 /* AutoScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoScrollLabel.h; sourceTree = "<group>"; };
+		FCF4F5681D542A5B0072D6D0 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoScrollLabel.m; sourceTree = "<group>"; };
 		FDA1581B117AD6AD769B6C0C5B4891C2 /* FBSDKError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKError.m; path = FBSDKCoreKit/FBSDKCoreKit/Internal/FBSDKError.m; sourceTree = "<group>"; };
 		FDF43F72CCD5FEEAF6B6CACD07D27893 /* FBSDKProfilePictureView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKProfilePictureView.h; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKProfilePictureView.h; sourceTree = "<group>"; };
 		FED9BFF9DB5EB46A195A53E7C2081D37 /* Pods-THPod_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-THPod_Tests-dummy.m"; sourceTree = "<group>"; };
@@ -1927,6 +1931,8 @@
 		6B87D98AC6C29AAFEFA7FCB73BD77C94 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FCF4F5671D542A5B0072D6D0 /* AutoScrollLabel.h */,
+				FCF4F5681D542A5B0072D6D0 /* AutoScrollLabel.m */,
 				77CBF2DAD1D147E14C69FB2D4C81AB3D /* CustomIOS7AlertView.h */,
 				C117CC1E6087086A5D886086681FFC26 /* CustomIOS7AlertView.m */,
 				D4C96B45047C07EDFBF6B07BDB9C0407 /* DropAlert.h */,
@@ -2951,6 +2957,7 @@
 				20EE8030FCF2402DAC7F1C9B9DDAEF79 /* AFURLRequestSerialization.h in Headers */,
 				7332F15718920917F544F35CE2C038AA /* AFURLResponseSerialization.h in Headers */,
 				560698A4D707DCBCC1C8F98BC9B89B23 /* AFURLSessionManager.h in Headers */,
+				FCF4F5691D542A5B0072D6D0 /* AutoScrollLabel.h in Headers */,
 				1E5B8F12ED7CC40ECDB9B1F755F387E5 /* UIActivityIndicatorView+AFNetworking.h in Headers */,
 				81B617F8D26BB10C5726D75E85D21EB7 /* UIButton+AFNetworking.h in Headers */,
 				9E1E90DED74B73ECE53C9AD76DE53E2D /* UIImage+AFNetworking.h in Headers */,
@@ -3566,6 +3573,7 @@
 				DFFA215EEAA8DDBD540076927535275C /* AFURLRequestSerialization.m in Sources */,
 				B5852322ADE88AAD56EE042B80BA81E4 /* AFURLResponseSerialization.m in Sources */,
 				707B1A7541C8DBDDE8C27896A61370BE /* AFURLSessionManager.m in Sources */,
+				FCF4F56A1D542A5B0072D6D0 /* AutoScrollLabel.m in Sources */,
 				6ED4ABEE8A5F51F5ECB59FA1781D29C6 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				AF03C11A1FAC8132AD3749D8F541701A /* UIButton+AFNetworking.m in Sources */,
 				2E8A32ED46194EDBE22146271F6D26DE /* UIImageView+AFNetworking.m in Sources */,
