@@ -179,6 +179,14 @@
 
 - (void)animation:(CGFloat)duration;
 
+- (void)rotate360WithDuration:(NSArray*)config repeatCount:(float)repeatCount;
+
+- (void)pauseAnimations;
+
+- (void)resumeAnimations;
+
+- (void)stopAllAnimations;
+
 @end
 
 @interface UIImage (Scale)

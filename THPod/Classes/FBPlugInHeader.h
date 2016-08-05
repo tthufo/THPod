@@ -42,5 +42,6 @@
 
 #import "MarqueeLabel.h"
 
+#import "AutoScrollLabel.h"
 
 //#endif /* FBPlugInHeader_h */
