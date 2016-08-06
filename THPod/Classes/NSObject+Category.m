@@ -946,7 +946,6 @@ CLLocationManager * locationManager;
 
 - (void)rotate360WithDuration:(NSArray*)config repeatCount:(float)repeatCount
 {
-    
     CABasicAnimation *fullRotation;
     fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
     fullRotation.fromValue = [NSNumber numberWithFloat:0];
@@ -963,25 +962,21 @@ CLLocationManager * locationManager;
 
 - (void)stopAllAnimations
 {
-    
     [self.layer removeAllAnimations];
-};
+}
 
 - (void)pauseAnimations
 {
-    
     [self pauseLayer:self.layer];
 }
 
 - (void)resumeAnimations
 {
-    
     [self resumeLayer:self.layer];
 }
 
 - (void)pauseLayer:(CALayer *)layer
 {
-    
     CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
     layer.speed = 0.0;
     layer.timeOffset = pausedTime;
@@ -989,13 +984,15 @@ CLLocationManager * locationManager;
 
 - (void)resumeLayer:(CALayer *)layer
 {
-    
-    CFTimeInterval pausedTime = [layer timeOffset];
-    layer.speed = 1.0;
-    layer.timeOffset = 0.0;
-    layer.beginTime = 0.0;
-    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-    layer.beginTime = timeSincePause;
+    if(layer.speed == 0)
+    {
+        CFTimeInterval pausedTime = [layer timeOffset];
+        layer.speed = 1.0;
+        layer.timeOffset = 0.0;
+        layer.beginTime = 0.0;
+        CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+        layer.beginTime = timeSincePause;
+    }
 }
 
 @end

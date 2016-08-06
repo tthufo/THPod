@@ -23,7 +23,6 @@
 @property (strong, nonatomic) UIView *controllersView, *topView;;
 @property (strong, nonatomic) UILabel *airPlayLabel;
 
-@property (strong, nonatomic) UIButton *playButton;
 @property (strong, nonatomic) UIButton *fullscreenButton;
 @property (strong, nonatomic) MPVolumeView *volumeView;
 @property (strong, nonatomic) GUISlider *progressIndicator;
@@ -323,6 +322,33 @@
     [self showControllers];
     
     controllersTimeoutPeriod = 3;
+    
+    ///////// new added
+    
+    if(options[@"currentTime"])
+    {
+        [(UILabel*)options[@"currentTime"] setText:@""];
+    }
+    
+    if(options[@"remainTime"])
+    {
+        [(UILabel*)options[@"remainTime"] setText:@""];
+    }
+    
+    if(options[@"thumb"])
+    {
+        [progressIndicator setThumbImage:options[@"thumb"] forState:UIControlStateNormal];
+        
+        [progressIndicator setThumbImage:options[@"thumb"] forState:UIControlStateHighlighted];
+    }
+    
+    if(options[@"slider"])
+    {
+        [options[@"slider"] addTarget:self action:@selector(seek:) forControlEvents:UIControlEventValueChanged];
+        [options[@"slider"] addTarget:self action:@selector(pauseRefreshing) forControlEvents:UIControlEventTouchDown];
+        [options[@"slider"] addTarget:self action:@selector(resumeRefreshing) forControlEvents:UIControlEventTouchUpInside|
+         UIControlEventTouchUpOutside | UIControlEventTouchDragInside | UIControlEventTouchDragOutside];
+    }
 }
 
 #pragma mark - UI Customization
@@ -524,6 +550,15 @@
         [progressIndicator setValue:(current / duration)];
         [progressIndicator setSecondaryValue:([self availableDuration] / duration)];
         
+        if(options[@"slider"])
+        {
+            CGFloat current = seeking ?
+            ((GUISlider*)options[@"slider"]).value * duration : CMTimeGetSeconds(player.currentTime);
+            
+            [((GUISlider*)options[@"slider"]) setValue:(current / duration)];
+            [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+        }
+        
         // Set time labels
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:(duration >= 3600 ? @"hh:mm:ss": @"mm:ss")];
@@ -533,6 +568,16 @@
         
         [currentTimeLabel setText:[formatter stringFromDate:currentTime]];
         [remainingTimeLabel setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+        
+        if(options[@"currentTime"])
+        {
+            [(UILabel*)options[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
+        }
+        
+        if(options[@"remainTime"])
+        {
+            [(UILabel*)options[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+        }
         
         [progressIndicator setHidden:NO];
         [liveLabel setHidden:YES];
@@ -634,6 +679,7 @@
     [self.playerLayer removeFromSuperlayer];
     [self setPlayerLayer:nil];
     [self removeFromSuperview];
+    options = nil;
 }
 
 - (void)play {
@@ -767,14 +813,16 @@
             [activityIndicator stopAnimating];
             progressIndicator.userInteractionEnabled = YES;
             if ([delegate respondsToSelector:@selector(playerReadyToPlay)]) {
-                [delegate playerReadyToPlay];
+                if(progressIndicator.value == 0)
+                {
+                    [delegate playerReadyToPlay];
+                }
             }
         }
     }
 }
 
 - (void)dealloc {
-    NSLog(@"dealloc");
 }
 
 @end

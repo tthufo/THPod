@@ -36,6 +36,7 @@
 @property (weak, nonatomic) id<GUIPlayerViewDelegate> delegate;
 @property (strong, nonatomic) UIButton * retryButton;
 @property (strong, nonatomic) NSMutableDictionary * options;
+@property (strong, nonatomic) UIButton *playButton;
 
 - (instancetype)initWithFrame:(CGRect)frame andInfo:(NSMutableDictionary*)info;
 - (void)prepareAndPlayAutomatically:(BOOL)playAutomatically;
@@ -51,5 +52,7 @@
 - (void)setLiveStreamText:(NSString *)text;
 
 - (void)setAirPlayText:(NSString *)text;
+
+- (void)togglePlay:(UIButton *)button;
 
 @end
