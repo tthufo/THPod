@@ -65,11 +65,7 @@
     NSPredicate *p1 = [NSPredicate predicateWithFormat:format argumentArray:argument];
     [fr setPredicate:p1];
     NSArray *result = [[db managedObjectContext] executeFetchRequest:fr error:nil];
-//    NSMutableArray * arr = [NSMutableArray new];
-//    for(System * s in result)
-//    {
-//        [arr addObject:[NSKeyedUnarchiver unarchiveObjectWithData:s.value]];
-//    }
+
     return result;
 }
 
@@ -94,7 +90,7 @@
     [db saveContext];
 }
 
-+ (NSArray *)clearFormat:(NSString *)format argument:(NSArray *)argument
++ (void)clearFormat:(NSString *)format argument:(NSArray *)argument
 {
     Storage *db = [Storage shareInstance];
     NSArray * s = [System getFormat:format argument:argument];
@@ -117,11 +113,7 @@
     [fr setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
     NSArray *result = [[db managedObjectContext] executeFetchRequest:fr error:nil];
-//    NSMutableArray * arr = [NSMutableArray new];
-//    for(System * s in result)
-//    {
-//        [arr addObject:[NSKeyedUnarchiver unarchiveObjectWithData:s.value]];
-//    }
+
     return result;
 }
 

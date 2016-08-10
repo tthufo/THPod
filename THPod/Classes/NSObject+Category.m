@@ -1318,6 +1318,14 @@ CLLocationManager * locationManager;
 
 @implementation NSDate (extension)
 
+- (NSDate*)nowByTime:(NSInteger)days
+{
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setDay:days];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    return [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+}
+
 - (NSDate *)addDays:(NSInteger)days toDate:(NSDate *)originalDate
 {
     NSDateComponents *components = [[NSDateComponents alloc] init];

@@ -256,6 +256,8 @@
 
 @interface NSDate (extension)
 
+- (NSDate*)nowByTime:(NSInteger)days;
+
 - (NSDate *)addDays:(NSInteger)days toDate:(NSDate *)originalDate;
 
 - (NSString *)stringWithFormat:(NSString *)format;

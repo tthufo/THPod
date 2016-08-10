@@ -14,7 +14,7 @@
 
 static DropAlert * __shareInstance = nil;
 
-@interface DropAlert () <UIAlertViewDelegate, UIActionSheetDelegate>
+@interface DropAlert () <UIAlertViewDelegate, UIActionSheetDelegate, UITextFieldDelegate>
 {
     DropAlertCompletion completionBlock;
 }
@@ -77,6 +77,14 @@ static DropAlert * __shareInstance = nil;
         if(alertView.alertViewStyle == UIAlertViewStylePlainTextInput)
         {
             ((UITextField*)[alertView textFieldAtIndex:0]).text = dict[@"text"];
+            
+            ((UITextField*)[alertView textFieldAtIndex:0]).delegate = self;
+        }
+        else
+        {
+            ((UITextField*)[alertView textFieldAtIndex:0]).delegate = self;
+            
+            ((UITextField*)[alertView textFieldAtIndex:1]).delegate = self;
         }
     }
     
@@ -98,8 +106,15 @@ static DropAlert * __shareInstance = nil;
             completionBlock(buttonIndex, @{@"uName":[alertView textFieldAtIndex:0].text});
         }
     }
-    
-    completionBlock(buttonIndex, nil);
+    else
+    {
+        completionBlock(buttonIndex, nil);
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    return NO;
 }
 
 @end

@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)clearAll;
 
-+ (NSArray *)clearFormat:(NSString *)format argument:(NSArray *)argument;
++ (void)clearFormat:(NSString *)format argument:(NSArray *)argument;
 
 @end
 
