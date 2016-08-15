@@ -703,6 +703,11 @@ CLLocationManager * locationManager;
     return arr;
 }
 
+- (NSArray*)order
+{
+    return [self sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+}
+
 @end
 
 

@@ -143,6 +143,8 @@
 
 - (NSArray*)arrayWithMutable;
 
+- (NSArray*)order;
+
 @end
 
 @interface UIView (Border)
