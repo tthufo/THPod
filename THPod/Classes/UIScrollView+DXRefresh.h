@@ -81,6 +81,9 @@
 
 - (void)removeFooter;
 
+- (BOOL)isHasHeader;
+
+- (BOOL)isHasFooter;
 
 
 @end

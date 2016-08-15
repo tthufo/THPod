@@ -279,6 +279,16 @@ static char DXFooterBlockKey;
     }
 }
 
+- (BOOL)isHasHeader
+{
+    return self.header == nil ? NO : YES;
+}
+
+- (BOOL)isHasFooter
+{
+    return self.footer == nil ? NO : YES;
+}
+
 - (void)removeHeader
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
