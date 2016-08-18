@@ -151,7 +151,10 @@ static LTRequest *__sharedLTRequest = nil;
         [self addValue:[NSString stringWithUTF8String:[htmlData bytes]] andKey:dict[@"absoluteLink"]];
     }
     
-    [self hideSVHUD];
+    if([dict responseForKey:@"host"])
+    {
+        [self hideSVHUD];
+    }
 }
 
 - (void)didRequestInfo:(NSDictionary*)dict withCache:(RequestCache)cacheData andCompletion:(RequestCompletion)completion

@@ -86,6 +86,8 @@
 
 - (NSDictionary*)dictWithPlist:(NSString*)pList;
 
+- (NSString*)nonce;
+
 @end
 
 @interface NSDictionary (name)

@@ -21,6 +21,7 @@
 @property (strong, nonatomic) AVPlayerItem *currentItem;
 
 @property (strong, nonatomic) UIView *controllersView, *topView;;
+@property (strong, nonatomic) UIImageView* coverView;
 @property (strong, nonatomic) UILabel *airPlayLabel;
 
 @property (strong, nonatomic) UIButton *fullscreenButton;
@@ -47,7 +48,7 @@
 @synthesize controllersView, airPlayLabel;
 @synthesize playButton, fullscreenButton, volumeView, progressIndicator, currentTimeLabel, remainingTimeLabel, liveLabel, spacerView;
 @synthesize activityIndicator, progressTimer, controllersTimer, seeking, fullscreen, defaultFrame;
-@synthesize retryButton, topView, options;
+@synthesize retryButton, topView, options, coverView;
 @synthesize videoURL, controllersTimeoutPeriod, delegate;
 
 #pragma mark - View Life Cycle
@@ -97,26 +98,32 @@
     
     
     /** Container View **************************************************************************************************/
-    controllersView = [UIView new];
-    [controllersView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [controllersView setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
-    
-    [self addSubview:controllersView];
-    
-    horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[CV]|"
-                                                                    options:0
-                                                                    metrics:nil
-                                                                      views:@{@"CV" : controllersView}];
-    
-    verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[CV(40)]|"
-                                                                  options:0
-                                                                  metrics:nil
-                                                                    views:@{@"CV" : controllersView}];
-    [self addConstraints:horizontalConstraints];
-    [self addConstraints:verticalConstraints];
     
     if(options)
     {
+        coverView = [UIImageView new];
+        coverView.clipsToBounds = YES;
+        coverView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        [coverView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [self addSubview:coverView];
+        
+        horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[CC]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:@{@"CC" : coverView}];
+        
+        verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[CC]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:@{@"CC" : coverView}];
+        [self addConstraints:horizontalConstraints];
+        [self addConstraints:verticalConstraints];
+        
+        coverView.image = options[@"cover"] ? options[@"cover"] : [UIImage imageNamed:@""];
+
+        
         topView = [UIView new];
         [topView setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
         [topView setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -165,7 +172,24 @@
         
         [shuffle addTarget:self action:@selector(didPressShuffle:) forControlEvents:UIControlEventTouchUpInside];
     }
-
+    
+    controllersView = [UIView new];
+    [controllersView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [controllersView setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
+    
+    [self addSubview:controllersView];
+    
+    horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[CV]|"
+                                                                    options:0
+                                                                    metrics:nil
+                                                                      views:@{@"CV" : controllersView}];
+    
+    verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[CV(40)]|"
+                                                                  options:0
+                                                                  metrics:nil
+                                                                    views:@{@"CV" : controllersView}];
+    [self addConstraints:horizontalConstraints];
+    [self addConstraints:verticalConstraints];
     
     /** AirPlay View ****************************************************************************************************/
     

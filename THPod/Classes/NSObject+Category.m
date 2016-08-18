@@ -410,10 +410,24 @@ CLLocationManager * locationManager;
     }
 }
 
--(NSDictionary*)dictWithPlist:(NSString*)pList
+- (NSDictionary*)dictWithPlist:(NSString*)pList
 {
     NSString* plistPath = [[NSBundle mainBundle] pathForResource:pList ofType:@"plist"];
     return [[NSDictionary alloc] initWithContentsOfFile:plistPath];
+}
+
+NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+- (NSString*)nonce
+{
+    NSMutableString *randomString = [NSMutableString stringWithCapacity:10];
+    
+    for (int i=0; i<10; i++)
+    {
+        [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform([letters length])]];
+    }
+    
+    return randomString;
 }
 
 @end

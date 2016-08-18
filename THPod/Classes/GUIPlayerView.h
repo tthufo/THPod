@@ -55,4 +55,8 @@
 
 - (void)togglePlay:(UIButton *)button;
 
+- (void)hideControllers;
+
+- (void)showControllers;
+
 @end
