@@ -94,6 +94,8 @@
 
 - (NSString*)nonce;
 
+- (UIImage*)animate:(NSArray*)names andDuration:(float)duration_;
+
 @end
 
 @interface NSDictionary (name)
@@ -215,8 +217,6 @@
 - (UIImage*)imageWithBrightness:(CGFloat)brightnessFactor;
 
 - (UIImage*)imageWithImage:(CGSize)newSize;
-
-- (UIImage*)animate:(NSArray*)names andDuration:(float)duration_;
 
 @end
 

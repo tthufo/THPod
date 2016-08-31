@@ -446,6 +446,19 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     return randomString;
 }
 
+
+- (UIImage*)animate:(NSArray*)names andDuration:(float)duration_
+{
+    NSMutableArray * arr = [NSMutableArray new];
+    
+    for(NSString * name in names)
+    {
+        [arr addObject:[UIImage imageNamed:name]];
+    }
+    
+    return [UIImage animatedImageWithImages:arr duration:duration_];
+}
+
 @end
 
 @implementation NSDictionary (name)
@@ -1145,18 +1158,6 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     UIGraphicsEndImageContext();
     
     return newImage;
-}
-
-- (UIImage*)animate:(NSArray*)names andDuration:(float)duration_
-{
-    NSMutableArray * arr = [NSMutableArray new];
-    
-    for(NSString * name in names)
-    {
-        [arr addObject:[UIImage imageNamed:name]];
-    }
-    
-    return [UIImage animatedImageWithImages:arr duration:duration_];
 }
 
 @end
