@@ -712,6 +712,10 @@
     [player setAllowsExternalPlayback:NO];
     [self stop];
     [player removeObserver:self forKeyPath:@"rate"];
+    @try{
+        [currentItem removeObserver:self forKeyPath:@"status"];
+    }@catch(id anException){
+    }
     [self setPlayer:nil];
     [self.playerLayer removeFromSuperlayer];
     [self setPlayerLayer:nil];
