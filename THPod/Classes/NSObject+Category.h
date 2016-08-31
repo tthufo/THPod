@@ -86,6 +86,12 @@
 
 - (NSDictionary*)dictWithPlist:(NSString*)pList;
 
+- (NSArray*)arrayWithPlist:(NSString*)pList;
+
+- (NSMutableDictionary*)dictWithFile:(NSString*)path;
+
+- (NSArray*)arryWithFile:(NSString*)path;
+
 - (NSString*)nonce;
 
 @end
@@ -209,6 +215,8 @@
 - (UIImage*)imageWithBrightness:(CGFloat)brightnessFactor;
 
 - (UIImage*)imageWithImage:(CGSize)newSize;
+
+- (UIImage*)animate:(NSArray*)names andDuration:(float)duration_;
 
 @end
 

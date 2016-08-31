@@ -416,6 +416,22 @@ CLLocationManager * locationManager;
     return [[NSDictionary alloc] initWithContentsOfFile:plistPath];
 }
 
+- (NSArray*)arrayWithPlist:(NSString*)pList
+{
+    NSString* plistPath = [[NSBundle mainBundle] pathForResource:pList ofType:@"plist"];
+    return [[NSArray alloc] initWithContentsOfFile:plistPath];
+}
+
+- (NSMutableDictionary*)dictWithFile:(NSString*)path
+{
+    return [[NSMutableDictionary alloc] initWithContentsOfFile:path];
+}
+
+- (NSArray*)arryWithFile:(NSString*)path
+{
+    return [[NSArray alloc] initWithContentsOfFile:path];
+}
+
 NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 - (NSString*)nonce
@@ -1064,7 +1080,7 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     return newImage;
 }
 
-- (UIImage*) imageWithBrightness:(CGFloat)brightnessFactor {
+- (UIImage*)timageWithBrightness:(CGFloat)brightnessFactor {
     
     if ( brightnessFactor == 0 ) {
         return self;
@@ -1129,6 +1145,18 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     UIGraphicsEndImageContext();
     
     return newImage;
+}
+
+- (UIImage*)animate:(NSArray*)names andDuration:(float)duration_
+{
+    NSMutableArray * arr = [NSMutableArray new];
+    
+    for(NSString * name in names)
+    {
+        [arr addObject:[UIImage imageNamed:name]];
+    }
+    
+    return [UIImage animatedImageWithImages:arr duration:duration_];
 }
 
 @end

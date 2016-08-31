@@ -521,10 +521,22 @@
 
 - (void)pauseRefreshing {
     seeking = YES;
+    
+    [progressTimer invalidate];
 }
 
 - (void)resumeRefreshing {
     seeking = NO;
+    
+    [progressTimer invalidate];
+    
+    progressTimer = nil;
+    
+    progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                                     target:self
+                                                   selector:@selector(refreshProgressIndicator)
+                                                   userInfo:nil
+                                                    repeats:YES];
 }
 
 - (NSTimeInterval)availableDuration {
@@ -605,6 +617,7 @@
         
         [progressIndicator setHidden:NO];
         [liveLabel setHidden:YES];
+        retryButton.hidden = YES;
     }
 }
 
