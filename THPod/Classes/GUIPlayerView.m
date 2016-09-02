@@ -24,7 +24,6 @@
 @property (strong, nonatomic) UIImageView* coverView;
 @property (strong, nonatomic) UILabel *airPlayLabel;
 
-@property (strong, nonatomic) UIButton *fullscreenButton;
 @property (strong, nonatomic) MPVolumeView *volumeView;
 @property (strong, nonatomic) GUISlider *progressIndicator;
 @property (strong, nonatomic) UILabel *currentTimeLabel;
@@ -37,7 +36,6 @@
 @property (strong, nonatomic) NSTimer *progressTimer;
 @property (strong, nonatomic) NSTimer *controllersTimer;
 @property (assign, nonatomic) BOOL seeking;
-@property (assign, nonatomic) BOOL fullscreen;
 @property (assign, nonatomic) CGRect defaultFrame;
 
 @end
@@ -49,7 +47,7 @@
 @synthesize playButton, fullscreenButton, volumeView, progressIndicator, currentTimeLabel, remainingTimeLabel, liveLabel, spacerView;
 @synthesize activityIndicator, progressTimer, controllersTimer, seeking, fullscreen, defaultFrame;
 @synthesize retryButton, topView, options, coverView;
-@synthesize videoURL, controllersTimeoutPeriod, delegate;
+@synthesize videoURL, controllersTimeoutPeriod, delegate, isRight;
 
 #pragma mark - View Life Cycle
 
@@ -479,7 +477,9 @@
             width = height;
             height = aux;
             frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);
-        } else {
+        }
+        else
+        {
             frame = CGRectMake(0, 0, width, height);
         }
         
@@ -493,10 +493,10 @@
             
             [activityIndicator setFrame:CGRectMake(0, 0, width, height)];
             if (UIInterfaceOrientationIsPortrait(orientation)) {
-                [self setTransform:CGAffineTransformMakeRotation(M_PI_2)];
-                [activityIndicator setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+                [self setTransform:CGAffineTransformMakeRotation(M_PI_2 * (isRight ? -1 : 1))];
+                [activityIndicator setTransform:CGAffineTransformMakeRotation(-M_PI_2 * (isRight ? -1 : 1))];
             }
-            
+    
         } completion:^(BOOL finished) {
             fullscreen = YES;
             
@@ -857,6 +857,8 @@
                 if(progressIndicator.value == 0)
                 {
                     [delegate playerReadyToPlay];
+                    
+                    coverView.image = [UIImage imageNamed:@""];
                 }
             }
         }

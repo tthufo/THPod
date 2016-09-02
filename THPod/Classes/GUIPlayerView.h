@@ -37,6 +37,8 @@
 @property (strong, nonatomic) UIButton * retryButton;
 @property (strong, nonatomic) NSMutableDictionary * options;
 @property (strong, nonatomic) UIButton *playButton;
+@property (assign, nonatomic) BOOL fullscreen, isRight;
+@property (strong, nonatomic) UIButton *fullscreenButton;
 
 - (instancetype)initWithFrame:(CGRect)frame andInfo:(NSMutableDictionary*)info;
 - (void)prepareAndPlayAutomatically:(BOOL)playAutomatically;
@@ -54,6 +56,8 @@
 - (void)setAirPlayText:(NSString *)text;
 
 - (void)togglePlay:(UIButton *)button;
+
+- (void)toggleFullscreen:(UIButton *)button;
 
 - (void)hideControllers;
 
