@@ -96,6 +96,8 @@
 
 - (UIImage*)animate:(NSArray*)names andDuration:(float)duration_;
 
+- (NSString *)duration:(int)seconds_;
+
 @end
 
 @interface NSDictionary (name)
@@ -217,6 +219,8 @@
 - (UIImage*)imageWithBrightness:(CGFloat)brightnessFactor;
 
 - (UIImage*)imageWithImage:(CGSize)newSize;
+
+- (UIImage *)boxblurImageWithBlur:(CGFloat)blur;
 
 @end
 
