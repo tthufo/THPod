@@ -98,6 +98,8 @@
 
 - (NSString *)duration:(int)seconds_;
 
+- (CGAffineTransform)translatedAndScaledTransformUsingViewRect:(CGRect)viewRect fromRect:(CGRect)fromRect;
+
 @end
 
 @interface NSDictionary (name)

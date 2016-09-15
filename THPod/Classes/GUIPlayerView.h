@@ -63,4 +63,10 @@
 
 - (void)showControllers;
 
+- (void)seekTo:(float)value;
+
+- (void)setVolume:(float)value;
+
+- (float)getVolume;
+
 @end

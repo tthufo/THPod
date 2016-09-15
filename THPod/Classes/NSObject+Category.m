@@ -466,7 +466,14 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     int minutes = (seconds_ / 60) % 60;
     int hours = seconds_ / 3600;
     
-    return [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
+    return hours == 0 ? [NSString stringWithFormat:@"%02d:%02d", minutes, seconds] : [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
+}
+
+- (CGAffineTransform)translatedAndScaledTransformUsingViewRect:(CGRect)viewRect fromRect:(CGRect)fromRect
+{
+    CGSize scales = CGSizeMake(viewRect.size.width/fromRect.size.width, viewRect.size.height/fromRect.size.height);
+    CGPoint offset = CGPointMake(CGRectGetMidX(viewRect) - CGRectGetMidX(fromRect), CGRectGetMidY(viewRect) - CGRectGetMidY(fromRect));
+    return CGAffineTransformMake(scales.width, 0, 0, scales.height, offset.x, offset.y);
 }
 
 @end
@@ -874,7 +881,7 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 -(UIView*)withShadow
 {
     self.layer.masksToBounds = NO;
-    self.layer.shadowOffset = CGSizeMake(10.0f,3.0f);
+    self.layer.shadowOffset = CGSizeMake(01.0f,3.0f);
     self.layer.shadowRadius = 2;
     self.layer.shadowOpacity = .8f;
     self.layer.shadowColor = [AVHexColor colorWithHexString:@"#2B292A"].CGColor;
@@ -1139,7 +1146,9 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return coloredImage;
+    return [UIImage imageWithCGImage:coloredImage.CGImage
+                               scale:coloredImage.scale
+                         orientation:UIImageOrientationDownMirrored];
 }
 
 - (UIImage *)imageScaledToQuarter

@@ -1,4 +1,4 @@
- //
+//
 //  GUIPlayerView.m
 //  GUIPlayerView
 //
@@ -120,7 +120,7 @@
         [self addConstraints:verticalConstraints];
         
         coverView.image = options[@"cover"] ? options[@"cover"] : [UIImage imageNamed:@""];
-
+        
         
         topView = [UIView new];
         [topView setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
@@ -371,6 +371,27 @@
         [options[@"slider"] addTarget:self action:@selector(resumeRefreshing) forControlEvents:UIControlEventTouchUpInside|
          UIControlEventTouchUpOutside | UIControlEventTouchDragInside | UIControlEventTouchDragOutside];
     }
+    
+    if(options[@"multi"])
+    {
+        for(NSDictionary * dict in options[@"multi"])
+        {
+            [dict[@"slider"] addTarget:self action:@selector(seek:) forControlEvents:UIControlEventValueChanged];
+            [dict[@"slider"] addTarget:self action:@selector(pauseRefreshing) forControlEvents:UIControlEventTouchDown];
+            [dict[@"slider"] addTarget:self action:@selector(resumeRefreshing) forControlEvents:UIControlEventTouchUpInside|
+             UIControlEventTouchUpOutside | UIControlEventTouchDragInside | UIControlEventTouchDragOutside];
+            
+            if(dict[@"currentTime"])
+            {
+                [(UILabel*)dict[@"currentTime"] setText:@""];
+            }
+            
+            if(dict[@"remainTime"])
+            {
+                [(UILabel*)dict[@"remainTime"] setText:@""];
+            }
+        }
+    }
 }
 
 #pragma mark - UI Customization
@@ -496,7 +517,7 @@
                 [self setTransform:CGAffineTransformMakeRotation(M_PI_2 * (isRight ? -1 : 1))];
                 [activityIndicator setTransform:CGAffineTransformMakeRotation(-M_PI_2 * (isRight ? -1 : 1))];
             }
-    
+            
         } completion:^(BOOL finished) {
             fullscreen = YES;
             
@@ -511,9 +532,17 @@
     [self showControllers];
 }
 
+- (void)seekTo:(float)value
+{
+    int timescale = currentItem.asset.duration.timescale;
+    float time = value * (currentItem.asset.duration.value / timescale);
+    [player seekToTime:CMTimeMakeWithSeconds(time, timescale)];
+}
+
 - (void)seek:(UISlider *)slider {
     int timescale = currentItem.asset.duration.timescale;
     float time = slider.value * (currentItem.asset.duration.value / timescale);
+    
     [player seekToTime:CMTimeMakeWithSeconds(time, timescale)];
     
     [self showControllers];
@@ -589,11 +618,14 @@
         if(options[@"slider"])
         {
             CGFloat current = seeking ?
+            
             ((GUISlider*)options[@"slider"]).value * duration : CMTimeGetSeconds(player.currentTime);
             
             [((GUISlider*)options[@"slider"]) setValue:(current / duration)];
+            
             [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
         }
+        
         
         // Set time labels
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -613,6 +645,30 @@
         if(options[@"remainTime"])
         {
             [(UILabel*)options[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+        }
+        
+        if(options[@"multi"])
+        {
+            for(NSDictionary * dict in options[@"multi"])
+            {
+                CGFloat current = seeking ?
+                
+                ((GUISlider*)dict[@"slider"]).value * duration : CMTimeGetSeconds(player.currentTime);
+                
+                [((GUISlider*)dict[@"slider"]) setValue:(current / duration)];
+                
+                [((GUISlider*)dict[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+                
+                if(dict[@"currentTime"])
+                {
+                    [(UILabel*)dict[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
+                }
+                
+                if(dict[@"remainTime"])
+                {
+                    [(UILabel*)dict[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+                }
+            }
         }
         
         [progressIndicator setHidden:NO];
@@ -757,6 +813,16 @@
 
 - (BOOL)isPlaying {
     return [player rate] > 0.0f;
+}
+
+- (void)setVolume:(float)value
+{
+    [player setVolume:value];
+}
+
+- (float)getVolume
+{
+    return player.volume;
 }
 
 #pragma mark - AV Player Notifications and Observers
