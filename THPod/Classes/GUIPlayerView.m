@@ -9,16 +9,11 @@
 #import "GUIPlayerView.h"
 #import "GUISlider.h"
 
-#import <AVFoundation/AVFoundation.h>
-#import <MediaPlayer/MediaPlayer.h>
-
 #import "UIView+UpdateAutoLayoutConstraints.h"
 
 @interface GUIPlayerView () <AVAssetResourceLoaderDelegate, NSURLConnectionDataDelegate>
 
-@property (strong, nonatomic) AVPlayer *player;
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
-@property (strong, nonatomic) AVPlayerItem *currentItem;
 
 @property (strong, nonatomic) UIView *controllersView, *topView;;
 @property (strong, nonatomic) UIImageView* coverView;
@@ -568,7 +563,8 @@
                                                     repeats:YES];
 }
 
-- (NSTimeInterval)availableDuration {
+- (NSTimeInterval)availableDuration
+{
     NSTimeInterval result = 0;
     NSArray *loadedTimeRanges = player.currentItem.loadedTimeRanges;
     
@@ -614,7 +610,7 @@
         
         [progressIndicator setValue:(current / duration)];
         [progressIndicator setSecondaryValue:([self availableDuration] / duration)];
-        
+                
         if(options[@"slider"])
         {
             CGFloat current = seeking ?
@@ -626,8 +622,6 @@
             [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
         }
         
-        
-        // Set time labels
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:(duration >= 3600 ? @"hh:mm:ss": @"mm:ss")];
         
@@ -800,6 +794,10 @@
     if ([delegate respondsToSelector:@selector(playerDidPause)]) {
         [delegate playerDidPause];
     }
+    
+    [progressTimer invalidate];
+    
+    progressTimer = nil;
 }
 
 - (void)stop {
@@ -809,6 +807,9 @@
         
         [playButton setSelected:NO];
     }
+    [progressTimer invalidate];
+    
+    progressTimer = nil;
 }
 
 - (BOOL)isPlaying {

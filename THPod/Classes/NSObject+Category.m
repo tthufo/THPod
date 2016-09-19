@@ -476,6 +476,20 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     return CGAffineTransformMake(scales.width, 0, 0, scales.height, offset.x, offset.y);
 }
 
+- (NSString*)autoIncrement:(NSString*)uniqueName
+{
+    if(![self getValue:uniqueName])
+    {
+        [self addValue:@"1" andKey:uniqueName];
+    }
+    else
+    {
+        [self addValue:[NSString stringWithFormat:@"%i",[[self getValue:uniqueName] intValue] + 1] andKey:uniqueName];
+    }
+    
+    return [self getValue:uniqueName];
+}
+
 @end
 
 @implementation NSDictionary (name)

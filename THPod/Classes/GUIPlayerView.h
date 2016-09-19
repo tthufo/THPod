@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @class GUIPlayerView;
 
@@ -39,6 +41,8 @@
 @property (strong, nonatomic) UIButton *playButton;
 @property (assign, nonatomic) BOOL fullscreen, isRight;
 @property (strong, nonatomic) UIButton *fullscreenButton;
+@property (strong, nonatomic) AVPlayer *player;
+@property (strong, nonatomic) AVPlayerItem *currentItem;
 
 - (instancetype)initWithFrame:(CGRect)frame andInfo:(NSMutableDictionary*)info;
 - (void)prepareAndPlayAutomatically:(BOOL)playAutomatically;
@@ -46,6 +50,8 @@
 - (void)play;
 - (void)pause;
 - (void)stop;
+
+- (NSTimeInterval)availableDuration;
 
 - (BOOL)isPlaying;
 

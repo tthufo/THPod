@@ -100,6 +100,8 @@
 
 - (CGAffineTransform)translatedAndScaledTransformUsingViewRect:(CGRect)viewRect fromRect:(CGRect)fromRect;
 
+- (NSString*)autoIncrement:(NSString*)uniqueName;
+
 @end
 
 @interface NSDictionary (name)
