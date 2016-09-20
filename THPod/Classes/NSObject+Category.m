@@ -18,8 +18,6 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#import <AssetsLibrary/AssetsLibrary.h>
-
 #import <Accelerate/Accelerate.h>
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
@@ -35,8 +33,6 @@
 #define iOS7_0 @"7.0"
 
 @implementation NSObject (Extension_Category)
-
-CLLocationManager * locationManager;
 
 - (float)screenWidth
 {
@@ -59,16 +55,6 @@ CLLocationManager * locationManager;
         return NO;
         
     #endif
-}
-
-- (BOOL)isGallery
-{
-    ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
-
-    if (status != ALAuthorizationStatusAuthorized) {
-        return NO;
-    }
-    return YES;
 }
 
 - (BOOL)checkForNotification
@@ -227,58 +213,6 @@ CLLocationManager * locationManager;
     }
     
     return NO;
-}
-
-- (void)initLocation
-{
-    if(!locationManager)
-    {
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
-        {
-            [locationManager requestWhenInUseAuthorization];
-        }
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = kCLDistanceFilterNone;
-        
-        [locationManager startUpdatingLocation];
-        [locationManager stopUpdatingLocation];
-    }
-}
-
-- (NSDictionary *)currentLocation
-{
-    if(!locationManager) return nil;
-    
-    if(![CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
-    {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
-        {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-        }
-        else
-        {
-            [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
-        }
-        return nil;
-    }
-    
-    NSLog(@"_%@",@{@"lat":@(locationManager.location.coordinate.longitude),@"lng":@(locationManager.location.coordinate.latitude)});
-    
-    return @{@"lat":@(locationManager.location.coordinate.longitude),@"lng":@(locationManager.location.coordinate.latitude)};
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation
-{
-    NSLog(@"Moved to location : %@",[newLocation description]);
-}
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
 }
 
 - (void)addValue:(NSString*)value andKey:(NSString*)key

@@ -45,9 +45,75 @@
 //    
 //    [self.view addSubview:v];
     
-    [System addValue:@"1" andKey:@"key"];
+//    [System addValue:@"1" andKey:@"key"];
     
-    NSLog(@"%@", ((System*)[[System getAll] lastObject]).key);
+//    NSLog(@"%@", ((System*)[[System getAll] lastObject]).key);
+    
+//    [[LTRequest sharedInstance] askGallery:^(CamPermisionType type){
+//        switch (type) {
+//            case authorized:
+//                NSLog(@"%@", @"granted");
+//                break;
+//            case denied:
+//                NSLog(@"%@", @"denied");
+//                break;
+//            case per_granted:
+//                NSLog(@"%@", @"Just granted");
+//                break;
+//            case per_denied:
+//                NSLog(@"%@", @"Just denied");
+//                break;
+//            case restricted:
+//                NSLog(@"%@", @"restricted setting");
+//                break;
+//            default:
+//                break;
+//        }
+//    }];
+//    
+//    
+//    [[LTRequest sharedInstance] askMicrophone:^(MicPermisionType type){
+//        
+//        switch (type) {
+//            case mGranted:
+//                NSLog(@"%@", @"granted");
+//                break;
+//            case mDined:
+//                NSLog(@"%@", @"denied");
+//                break;
+//            case mPer_granted:
+//                NSLog(@"%@", @"Just granted");
+//                break;
+//            case mPer_denied:
+//                NSLog(@"%@", @"Just denied");
+//                break;
+//            default:
+//                break;
+//        }
+//        
+//    }];
+    
+    [[LTRequest sharedInstance] initLocation:NO andCompletion:^(LocationPermisionType type) {
+        switch (type) {
+            case lAlways:
+                NSLog(@"%@", @"granted always");
+                break;
+            case lDenied:
+                NSLog(@"%@", @"denied");
+                break;
+            case lRestricted:
+                NSLog(@"%@", @"restricted");
+                break;
+            case lWhenUse:
+                NSLog(@"%@", @"when in use");
+                break;
+            case lNotSure:
+                NSLog(@"%@", @"not determined");
+                break;
+            default:
+                break;
+        }
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

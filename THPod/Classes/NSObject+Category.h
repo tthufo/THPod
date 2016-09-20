@@ -7,18 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
 
-@interface NSObject (Extension_Category) <CLLocationManagerDelegate>
+@interface NSObject (Extension_Category)
 
 - (float)screenWidth;
 
 - (float)screenHeight;
 
 - (BOOL)isSimulator;
-
-- (BOOL)isGallery;
 
 - (BOOL)checkForNotification;
 
