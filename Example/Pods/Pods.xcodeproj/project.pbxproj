@@ -351,6 +351,8 @@
 		950FA01F00702DEA369B96AE4679C921 /* UIView+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B481913A711B9FD33CC9DE5EDF13283 /* UIView+Toast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		97CD6CF37BB5BE78C2A234AC897802B7 /* FBSDKLikeBoxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CF536FCF687DC9E478AF376A7364E474 /* FBSDKLikeBoxView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		98AF6E202E68E9B4F22202842DC0D619 /* FBSDKSharePhotoContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B290451F04313D6CC2EF98CF6873D /* FBSDKSharePhotoContent.m */; };
+		998D87961D9287960050B241 /* Permission.h in Headers */ = {isa = PBXBuildFile; fileRef = 998D87941D9287960050B241 /* Permission.h */; };
+		998D87971D9287960050B241 /* Permission.m in Sources */ = {isa = PBXBuildFile; fileRef = 998D87951D9287960050B241 /* Permission.m */; };
 		9991B7ED54593BD5F26EF68DC59E1D4B /* FBSDKLikeActionControllerCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2680F852BD030D95BEB191E4ACEF48AB /* FBSDKLikeActionControllerCache.m */; };
 		99BCC2F48031C4DF19C25EC274DB057F /* FBSDKSharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 73F8E25160ED9A92980A85E1E50F304F /* FBSDKSharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99FA28E0A77EBF35E1C94E6C5851DB44 /* BFCancellationTokenSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFA13A2F09F532A28BED817E3262DA6 /* BFCancellationTokenSource.m */; };
@@ -1215,6 +1217,8 @@
 		984105F2EB1AFA831A185B5893F85011 /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImagePrefetcher.h; path = SDWebImage/SDWebImagePrefetcher.h; sourceTree = "<group>"; };
 		989C2C62BED272D68501988BAC9D6299 /* MarqueeLabel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
 		98A6559AC625643C9A5FCD98BE2AF740 /* FBSDKSendButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKSendButton.h; path = FBSDKShareKit/FBSDKShareKit/FBSDKSendButton.h; sourceTree = "<group>"; };
+		998D87941D9287960050B241 /* Permission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Permission.h; sourceTree = "<group>"; };
+		998D87951D9287960050B241 /* Permission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Permission.m; sourceTree = "<group>"; };
 		9A49FB9FE72046C91C2AF0CFC975E38E /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		9A86B1CA7F332788C8F72D93D4E1775E /* FBSDKSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKSettings.h; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKSettings.h; sourceTree = "<group>"; };
 		9ACCE84E76DB83D3E0CBFDCB82F2F0C5 /* FBSDKSettings+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBSDKSettings+Internal.h"; path = "FBSDKCoreKit/FBSDKCoreKit/Internal/FBSDKSettings+Internal.h"; sourceTree = "<group>"; };
@@ -1982,6 +1986,8 @@
 				2560F7F774A7CF58F45BB79EBA8F7C63 /* ViewPagerController.m */,
 				356CC4192BCF1D981101E33F2ACE8C1B /* XMLReader.h */,
 				454400B8427AF3032763288A70B09B52 /* XMLReader.m */,
+				998D87941D9287960050B241 /* Permission.h */,
+				998D87951D9287960050B241 /* Permission.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -3023,6 +3029,7 @@
 				EDBB90871F1194FDAF40A0092B20858C /* UIBarButtonItem+Badge.h in Headers */,
 				F55D37DA5B122F4F2D438B8786590203 /* UIButton+Badge.h in Headers */,
 				879AD6D65917F6322FC7893560F11134 /* UIImageView+MHFacebookImageViewer.h in Headers */,
+				998D87961D9287960050B241 /* Permission.h in Headers */,
 				DC92C60A06E6BA77D6457B2CCEAD76B2 /* UIScrollView+DXRefresh.h in Headers */,
 				D29D827E4305DC56746477E12B80BFC2 /* UIView+UpdateAutoLayoutConstraints.h in Headers */,
 				8359CAAC97292AAE71E315B657C27392 /* ViewPagerController.h in Headers */,
@@ -3666,6 +3673,7 @@
 				8624E950575153A839F9022DC2E25A9D /* FB.m in Sources */,
 				75FD69678062F1AF7902BB95D002E525 /* GUIPlayerView.m in Sources */,
 				CB6D2196A360890A925FDB43FE770D18 /* GUISlider.m in Sources */,
+				998D87971D9287960050B241 /* Permission.m in Sources */,
 				6355CE5C309D3F0E5303D27D8392F2A8 /* HPGrowingTextView.m in Sources */,
 				FB86C6369DBCF660828D8F3C01723B03 /* HPTextViewInternal.m in Sources */,
 				1D588483B7CF2187A84D55B47398C2BF /* KeyBoard.m in Sources */,

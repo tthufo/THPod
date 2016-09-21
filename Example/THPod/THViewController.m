@@ -93,7 +93,7 @@
 //        
 //    }];
     
-    [[LTRequest sharedInstance] initLocation:NO andCompletion:^(LocationPermisionType type) {
+    [[Pemission sharedInstance] initLocation:NO andCompletion:^(LocationPermisionType type) {
         switch (type) {
             case lAlways:
                 NSLog(@"%@", @"granted always");

@@ -44,4 +44,6 @@
 
 #import "AutoScrollLabel.h"
 
+#import "Permission.h"
+
 //#endif /* FBPlugInHeader_h */
