@@ -14,6 +14,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "NSObject+Category.h"
 
 typedef NS_ENUM(NSInteger, CamPermisionType) {
@@ -39,11 +41,21 @@ typedef NS_ENUM(NSInteger, LocationPermisionType) {
     lNotSure
 };
 
+typedef NS_ENUM(NSInteger, MusicPermisionType) {
+    mAllow = 0,
+    mDenied,
+    mRestricted,
+    mNotSure
+};
+
 typedef void (^Camera)(CamPermisionType type);
 
 typedef void (^Micro)(MicPermisionType type);
 
 typedef void (^Location)(LocationPermisionType type);
+
+typedef void (^Music)(MusicPermisionType type);
+
 
 @interface Permission : NSObject <CLLocationManagerDelegate>
 {
@@ -52,6 +64,8 @@ typedef void (^Location)(LocationPermisionType type);
     MicPermisionType micType;
     
     LocationPermisionType locationType;
+    
+    MusicPermisionType musicType;
 }
 
 @property(nonatomic,copy) Camera CameraCompletion;
@@ -60,10 +74,14 @@ typedef void (^Location)(LocationPermisionType type);
 
 @property(nonatomic,copy) Location LocationCompletion;
 
+@property(nonatomic,copy) Music MusicCompletion;
+
 @property (nonatomic, retain) CLLocationManager * locationManager;
 
 
 + (Permission*)shareInstance;
+
+- (void)askMusic:(Music)musicPermission;
 
 - (void)askCamera:(Camera)cameraPermission;
 

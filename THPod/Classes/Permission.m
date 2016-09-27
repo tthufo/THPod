@@ -24,6 +24,30 @@ static Permission * shareInstan = nil;
     return shareInstan;
 }
 
+- (void)askMusic:(Music)musicPermission
+{
+    self.MusicCompletion = musicPermission;
+    
+    [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
+        switch (status) {
+            case MPMediaLibraryAuthorizationStatusNotDetermined:
+                self.MusicCompletion(3);
+                break;
+            case MPMediaLibraryAuthorizationStatusAuthorized:
+                self.MusicCompletion(0);
+                break;
+            case MPMediaLibraryAuthorizationStatusDenied:
+                self.MusicCompletion(1);
+                break;
+            case MPMediaLibraryAuthorizationStatusRestricted:
+                self.MusicCompletion(2);
+                break;
+            default:
+                break;
+        }
+    }];
+}
+
 - (void)askCamera:(Camera)cameraPermission
 {
     self.CameraCompletion = cameraPermission;
@@ -160,7 +184,7 @@ static Permission * shareInstan = nil;
 {
     if(!locationManager) return nil;
     
-    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied | kCLAuthorizationStatusRestricted)
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted)
     {
         return nil;
     }
