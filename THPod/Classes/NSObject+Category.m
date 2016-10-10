@@ -316,6 +316,22 @@
     return [superView viewWithTag:tag];
 }
 
+- (NSDictionary*)inForOf:(UIView*)view andTable:(UITableView*)tableView
+{
+    CGPoint center = view.center;
+    CGPoint rootViewPoint = [view.superview convertPoint:center toView:tableView];
+    NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:rootViewPoint];
+    return @{@"index":@(indexPath.row),@"section":@(indexPath.section)};
+}
+
+- (NSDictionary*)inForOf:(UIView*)view andCollection:(UICollectionView*)collectionView
+{
+    CGPoint center = view.center;
+    CGPoint rootViewPoint = [view.superview convertPoint:center toView:collectionView];
+    NSIndexPath *indexPath = [collectionView indexPathForItemAtPoint:rootViewPoint];
+    return @{@"index":@(indexPath.item),@"section":@(indexPath.section)};
+}
+
 - (int)inDexOf:(UIView*)view andTable:(UITableView*)tableView
 {
     CGPoint center = view.center;
@@ -1376,7 +1392,7 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     [self scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
--(void)reloadDataWithAnimation:(BOOL)animate
+- (void)reloadDataWithAnimation:(BOOL)animate
 {
     if(animate)
     {
@@ -1394,7 +1410,34 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
         [self reloadData];
     }
 }
+
+- (void)withCell:(NSString*)nibAndIdent
+{
+    [self registerNib:[UINib nibWithNibName:nibAndIdent bundle:nil] forCellReuseIdentifier:nibAndIdent];
+}
+
+- (void)withHeaderOrFooter:(NSString*)nibAndIdent
+{
+    [self registerNib:[UINib nibWithNibName:nibAndIdent bundle:nil] forHeaderFooterViewReuseIdentifier:nibAndIdent];
+}
+
 @end
+
+
+@implementation UICollectionView (collect)
+
+- (void)withCell:(NSString*)nibAndIdent
+{
+    [self registerNib:[UINib nibWithNibName:nibAndIdent bundle:nil] forCellWithReuseIdentifier:nibAndIdent];
+}
+
+- (void)withHeaderOrFooter:(NSString*)nibAndIdent andKind:(NSString*)kind
+{
+    [self registerNib:[UINib nibWithNibName:nibAndIdent bundle:nil] forSupplementaryViewOfKind:kind withReuseIdentifier:nibAndIdent];
+}
+
+@end
+
 
 @implementation NSDate (extension)
 

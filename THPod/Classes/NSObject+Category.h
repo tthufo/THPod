@@ -75,6 +75,10 @@
 
 - (id)withView:(id)superView tag:(int)tag;
 
+- (NSDictionary*)inForOf:(UIView*)view andTable:(UITableView*)tableView;
+
+- (NSDictionary*)inForOf:(UIView*)view andCollection:(UICollectionView*)collectionView;
+
 - (int)inDexOf:(UIView*)view andTable:(UITableView*)tableView;
 
 - (int)inDexOf:(UIView*)view andCollection:(UICollectionView*)collectionView;
@@ -268,6 +272,19 @@
 - (void)didScrolltoBottom:(BOOL)animate;
 
 - (void)reloadDataWithAnimation:(BOOL)animate;
+
+- (void)withCell:(NSString*)nibAndIdent;
+
+- (void)withHeaderOrFooter:(NSString*)nibAndIdent;
+
+@end
+
+
+@interface UICollectionView (collect)
+
+- (void)withCell:(NSString*)nibAndIdent;
+
+- (void)withHeaderOrFooter:(NSString*)nibAndIdent andKind:(NSString*)kind;
 
 @end
 
