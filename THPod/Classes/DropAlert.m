@@ -12,11 +12,15 @@
 
 #import "NSObject+Category.h"
 
+#import "AVHexColor.h"
+
 static DropAlert * __shareInstance = nil;
 
 @interface DropAlert () <UIAlertViewDelegate, UIActionSheetDelegate, UITextFieldDelegate>
 {
     DropAlertCompletion completionBlock;
+    
+    NSDictionary * tempColor;
 }
 
 @end
@@ -116,5 +120,65 @@ static DropAlert * __shareInstance = nil;
 {
     return NO;
 }
+
+- (void)didOpenLink:(NSDictionary*)dict
+{
+    if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:dict[@"link"]]])
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dict[@"link"]]];
+    }
+    else
+    {
+        [self showToast:dict[@"error"] andPos:0];
+    }
+}
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+- (void)didShowStoreWithInfo:(NSDictionary*)dict andCompletion:(DropAlertCompletion)completion
+{
+    completionBlock = completion;
+    
+    tempColor = dict;
+    
+    [self openStoreProductViewControllerWithITunesItemIdentifier:dict[@"identify"]];
+}
+
+- (void)openStoreProductViewControllerWithITunesItemIdentifier:(NSInteger)iTunesItemIdentifier
+{
+    [self showSVHUD:@"Loading" andOption:0];
+
+    [UINavigationBar appearance].tintColor = [AVHexColor colorWithHexString:tempColor[@"inColor"]];
+
+    SKStoreProductViewController *storeViewController = [[SKStoreProductViewController alloc] init];
+    
+    storeViewController.delegate = self;
+    
+    NSNumber *identifier = [NSNumber numberWithInteger:iTunesItemIdentifier];
+    
+    NSDictionary *parameters = @{ SKStoreProductParameterITunesItemIdentifier:identifier };
+    UIViewController *viewController = self;
+    
+    [storeViewController loadProductWithParameters:parameters
+                                   completionBlock:^(BOOL result, NSError *error)
+     {
+         [self hideSVHUD];
+         if (result)
+             [viewController presentViewController:storeViewController
+                                          animated:YES
+                                        completion:nil];
+     }];
+    
+}
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    [UINavigationBar appearance].tintColor = [AVHexColor colorWithHexString:tempColor[@"outColor"]];
+    
+    completionBlock(-1, nil);
+}
+
 
 @end
