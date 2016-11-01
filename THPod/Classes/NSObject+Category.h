@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#import <CommonCrypto/CommonDigest.h>
+
 #import <UIKit/UIKit.h>
 
 @interface NSObject (Extension_Category)
@@ -252,6 +255,8 @@
 - (NSDate*)dateWithFormat:(NSString*)format;
 
 - (NSString*)numbeRize;
+
+- (NSString*)MD5;
 
 @end
 
