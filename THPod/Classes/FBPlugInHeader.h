@@ -46,4 +46,6 @@
 
 #import "Permission.h"
 
+#import "InfinitePagingView.h"
+
 //#endif /* FBPlugInHeader_h */
