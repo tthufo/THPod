@@ -86,6 +86,9 @@ typedef enum {
  @method addPageView:
  @param UIView *pageView
  */
+
+- (void)removePageView;
+
 - (void)addPageView:(UIView *)pageView;
 
 /*!

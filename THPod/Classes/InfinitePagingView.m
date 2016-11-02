@@ -89,6 +89,16 @@
 
 #pragma mark - Public methods
 
+- (void)removePageView
+{
+    [_pageViews removeAllObjects];
+    
+    for(UIView * v in _innerScrollView.subviews)
+    {
+        [v removeFromSuperview];
+    }
+}
+
 - (void)addPageView:(UIView *)pageView
 {
     if (nil == _pageViews) {
