@@ -94,13 +94,17 @@ static DropButton * shareButton = nil;
         {
             return;
         }
-        
+
         CGFloat f = [template[@"height"] floatValue];
         
-        CGRect windowRect = [self convertRect:self.bounds toView:nil];
+        CGFloat startRect = [self convertRect:self.bounds toView:nil].origin.x;
+        
+        CGFloat start = (startRect + [template[@"width"] floatValue]) > screenWidth ? self.bounds.origin.x - ([template[@"width"] floatValue] - (self.bounds.origin.x + self.bounds.size.width)) : self.bounds.origin.x;
+        
+        CGRect windowRect = [self convertRect:[template responseForKey:@"width"] ? CGRectMake(start, self.bounds.origin.y, [template[@"width"] floatValue], self.bounds.size.height) : self.bounds toView:nil];
         
         dropDown = [NIDropDown new];
-        
+
         dropDown._template = template;
         
         dropDown.delegate = self;
@@ -203,9 +207,15 @@ static DropButton * shareButton = nil;
             tableView.backgroundColor = [UIColor clearColor];
         }
         
+        if([_template responseForKey:@"round"])
+        {
+            [tableView withBorder:@{@"Bcorner":_template[@"round"]}];
+        }
+        
+        
         float heightTemp = data.count < 5 ? data.count * cellHeight : *height;
         
-        direction = (heightTemp + _rect.origin.y) > screenHeight ? @"up" : @"down";
+        direction = (heightTemp + _rect.origin.y + _rect.size.height) > screenHeight ? @"up" : @"down";
         
         if ([direction isEqualToString:@"up"])
         {
@@ -238,7 +248,7 @@ static DropButton * shareButton = nil;
         
         cover.backgroundColor = [UIColor blackColor];
         
-        cover.alpha = 0.1;
+        cover.alpha = 0.4;
         
         cover.frame = CGRectMake(0, 0, screenWidth, screenHeight);
         
