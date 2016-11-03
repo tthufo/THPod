@@ -603,6 +603,8 @@
 		FCF6A2491DC98BEE007FBCCD /* FMMosaicLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF6A2471DC98BEE007FBCCD /* FMMosaicLayout.m */; };
 		FCF6A24C1DC98C32007FBCCD /* InfinitePagingView.h in Headers */ = {isa = PBXBuildFile; fileRef = FCF6A24A1DC98C32007FBCCD /* InfinitePagingView.h */; };
 		FCF6A24D1DC98C32007FBCCD /* InfinitePagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF6A24B1DC98C32007FBCCD /* InfinitePagingView.m */; };
+		FCF6A27C1DCB4896007FBCCD /* PagedFlowView.h in Headers */ = {isa = PBXBuildFile; fileRef = FCF6A27A1DCB4896007FBCCD /* PagedFlowView.h */; };
+		FCF6A27D1DCB4896007FBCCD /* PagedFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF6A27B1DCB4896007FBCCD /* PagedFlowView.m */; };
 		FD7525FCB49FB135D59559C8A7D13D65 /* FBSDKLikeButtonPopWAV.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E228E7E1AD3B8760D0B8991169B5C9 /* FBSDKLikeButtonPopWAV.m */; };
 		FE9045BA12AD90F3D0F121FFAE699AD5 /* FBSDKMutableCopying.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C3E20ACB4FB1CE9A6CCD817D6BEACB0 /* FBSDKMutableCopying.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF0354628483B192A13C84851E9D523F /* FBSDKLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D10614370E90F93C0717EFDED3C5197 /* FBSDKLogger.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1492,6 +1494,8 @@
 		FCF6A2471DC98BEE007FBCCD /* FMMosaicLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMosaicLayout.m; sourceTree = "<group>"; };
 		FCF6A24A1DC98C32007FBCCD /* InfinitePagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfinitePagingView.h; sourceTree = "<group>"; };
 		FCF6A24B1DC98C32007FBCCD /* InfinitePagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfinitePagingView.m; sourceTree = "<group>"; };
+		FCF6A27A1DCB4896007FBCCD /* PagedFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagedFlowView.h; sourceTree = "<group>"; };
+		FCF6A27B1DCB4896007FBCCD /* PagedFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagedFlowView.m; sourceTree = "<group>"; };
 		FDA1581B117AD6AD769B6C0C5B4891C2 /* FBSDKError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKError.m; path = FBSDKCoreKit/FBSDKCoreKit/Internal/FBSDKError.m; sourceTree = "<group>"; };
 		FDF43F72CCD5FEEAF6B6CACD07D27893 /* FBSDKProfilePictureView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKProfilePictureView.h; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKProfilePictureView.h; sourceTree = "<group>"; };
 		FED9BFF9DB5EB46A195A53E7C2081D37 /* Pods-THPod_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-THPod_Tests-dummy.m"; sourceTree = "<group>"; };
@@ -1946,6 +1950,8 @@
 				7D8EC93660ED78F69D6C1F04070732E5 /* FBPlugInHeader.h */,
 				FCF6A24A1DC98C32007FBCCD /* InfinitePagingView.h */,
 				FCF6A24B1DC98C32007FBCCD /* InfinitePagingView.m */,
+				FCF6A27A1DCB4896007FBCCD /* PagedFlowView.h */,
+				FCF6A27B1DCB4896007FBCCD /* PagedFlowView.m */,
 				FCF6A2461DC98BEE007FBCCD /* FMMosaicLayout.h */,
 				FCF6A2471DC98BEE007FBCCD /* FMMosaicLayout.m */,
 				FCF4F5671D542A5B0072D6D0 /* AutoScrollLabel.h */,
@@ -2973,6 +2979,7 @@
 				68152D921ABF6A423C192C04FDF94F0F /* AFNetworkReachabilityManager.h in Headers */,
 				FCF6A24C1DC98C32007FBCCD /* InfinitePagingView.h in Headers */,
 				C2DD28375E1F0B1D0D1D2E4E607C499F /* AFSecurityPolicy.h in Headers */,
+				FCF6A27C1DCB4896007FBCCD /* PagedFlowView.h in Headers */,
 				20EE8030FCF2402DAC7F1C9B9DDAEF79 /* AFURLRequestSerialization.h in Headers */,
 				7332F15718920917F544F35CE2C038AA /* AFURLResponseSerialization.h in Headers */,
 				560698A4D707DCBCC1C8F98BC9B89B23 /* AFURLSessionManager.h in Headers */,
@@ -3592,6 +3599,7 @@
 				68A38977EBAE334DC3C22386D00D2622 /* AFNetworkReachabilityManager.m in Sources */,
 				20607BE2B1E5F31765026E5AC64DB27D /* AFSecurityPolicy.m in Sources */,
 				DFFA215EEAA8DDBD540076927535275C /* AFURLRequestSerialization.m in Sources */,
+				FCF6A27D1DCB4896007FBCCD /* PagedFlowView.m in Sources */,
 				FCF6A24D1DC98C32007FBCCD /* InfinitePagingView.m in Sources */,
 				FCF6A2491DC98BEE007FBCCD /* FMMosaicLayout.m in Sources */,
 				B5852322ADE88AAD56EE042B80BA81E4 /* AFURLResponseSerialization.m in Sources */,
