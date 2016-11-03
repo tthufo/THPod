@@ -87,6 +87,11 @@
     return nil;
 }
 
+- (void)pageSize:(CGSize)pageSize_
+{
+    self.pageSize = pageSize_;
+}
+
 #pragma mark - Public methods
 
 - (void)removePageView

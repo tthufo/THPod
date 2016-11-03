@@ -87,6 +87,8 @@ typedef enum {
  @param UIView *pageView
  */
 
+- (void)pageSize:(CGSize)pageSize_;
+
 - (void)removePageView;
 
 - (void)addPageView:(UIView *)pageView;
