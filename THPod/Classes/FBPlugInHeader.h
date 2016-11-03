@@ -48,4 +48,7 @@
 
 #import "InfinitePagingView.h"
 
+#import "PagedFlowView.h"
+
+
 //#endif /* FBPlugInHeader_h */
