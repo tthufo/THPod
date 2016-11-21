@@ -21,6 +21,15 @@
 
 @implementation THViewController
 
+- (IBAction)didPressT:(id)sender
+{
+    [[FB shareInstance] startLoginTwitterWithCompletion:^(NSString * responseString, id object, int errorCode, NSString *description, NSError * error){
+        
+        NSLog(@"%@", object);
+        
+    }];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -93,27 +102,27 @@
 //        
 //    }];
     
-    [[Pemission sharedInstance] initLocation:NO andCompletion:^(LocationPermisionType type) {
-        switch (type) {
-            case lAlways:
-                NSLog(@"%@", @"granted always");
-                break;
-            case lDenied:
-                NSLog(@"%@", @"denied");
-                break;
-            case lRestricted:
-                NSLog(@"%@", @"restricted");
-                break;
-            case lWhenUse:
-                NSLog(@"%@", @"when in use");
-                break;
-            case lNotSure:
-                NSLog(@"%@", @"not determined");
-                break;
-            default:
-                break;
-        }
-    }];
+//    [[Pemission sharedInstance] initLocation:NO andCompletion:^(LocationPermisionType type) {
+//        switch (type) {
+//            case lAlways:
+//                NSLog(@"%@", @"granted always");
+//                break;
+//            case lDenied:
+//                NSLog(@"%@", @"denied");
+//                break;
+//            case lRestricted:
+//                NSLog(@"%@", @"restricted");
+//                break;
+//            case lWhenUse:
+//                NSLog(@"%@", @"when in use");
+//                break;
+//            case lNotSure:
+//                NSLog(@"%@", @"not determined");
+//                break;
+//            default:
+//                break;
+//        }
+//    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

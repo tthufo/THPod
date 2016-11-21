@@ -16,9 +16,20 @@
 {
     [[LTRequest sharedInstance] initRequest];
     
+    [[FB shareInstance] application_Twitter:application didFinishLaunchingWithOptions:launchOptions];
+    
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[THViewController new]];
     
     return YES;
+}
+
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    return [[FB shareInstance] application_Twitter:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

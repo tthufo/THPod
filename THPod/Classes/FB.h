@@ -24,9 +24,20 @@ typedef void (^FBCompletion)(NSString * responseString, id object, int errorCode
 - (void)startShareWithInfo:(NSArray*)items andBase:(UIView*)baseView andRoot:(UIViewController*)base andCompletion:(FBCompletion)completion;
 - (void)startPickImageWithOption:(BOOL)isCamera andBase:(UIView*)baseView andRoot:(UIViewController*)base andCompletion:(FBCompletion)completion;
 
-//- (void)didShareFacebook:(NSDictionary*)dict andCompletion:(FBCompletion)completion;
+- (void)didShareFacebook:(NSDictionary*)dict andCompletion:(FBCompletion)completion;
+
+- (void)startLoginTwitterWithCompletion:(FBCompletion)completion;
+
+- (void)application_Twitter:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
+- (BOOL)application_Twitter:(NSURL *)url;
 
 @property (nonatomic, retain) NSString * facebookAppID;
+
+@property (nonatomic, retain) NSString * twitterConsumerSecret;
+
+@property (nonatomic, retain) NSString * twitterConsumerKey;
+
+@property (nonatomic, retain) NSString * twitterUrlScheme;
 
 
 @end

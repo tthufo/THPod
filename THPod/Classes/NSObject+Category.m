@@ -1359,6 +1359,16 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     return string;
 }
 
+- (NSString *)convertPercentage
+{
+    NSString *convert = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                                              (CFStringRef)self,
+                                                                                              NULL,
+                                                                                              (CFStringRef)@"!*'();:@&+$,/?%#[]",
+                                                                                              kCFStringEncodingUTF8 ));
+    return convert;
+}
+
 @end
 
 @implementation NSMutableDictionary (Additions)

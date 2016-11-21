@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>twitterUrlScheme</key>
+	<string>myiosapp.com://</string>
+	<key>twitterConsumerSecret</key>
+	<string>YfxqZuAEQtkBdU3GA1topdT8Gz8HlhY6QsFrwDxWlOI</string>
+	<key>twitterConsumerKey</key>
+	<string>mihFc1KUDeiUR2LmyOSJ2Q</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need access</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -58,5 +64,14 @@
 	</array>
 	<key>host</key>
 	<string>http://app.vaytieudung.net.vn:9088/api.php</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>myiosapp.com</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

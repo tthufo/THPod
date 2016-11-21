@@ -258,6 +258,8 @@
 
 - (NSString*)MD5;
 
+- (NSString *)convertPercentage;
+
 @end
 
 @interface NSMutableDictionary (Additions)
