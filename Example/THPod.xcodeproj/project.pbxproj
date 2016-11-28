@@ -26,6 +26,7 @@
 		FC1E57771D41DDC600AF39FD /* TH1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC1E57751D41DDC600AF39FD /* TH1ViewController.m */; };
 		FC1E57781D41DDC600AF39FD /* TH1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC1E57761D41DDC600AF39FD /* TH1ViewController.xib */; };
 		FCD7B3371D40D7E7001C5B5C /* THViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCD7B3361D40D7E7001C5B5C /* THViewController.xib */; };
+		FCF48C181DEAC45F00E4FED2 /* EQ.plist in Resources */ = {isa = PBXBuildFile; fileRef = FCF48C171DEAC45F00E4FED2 /* EQ.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		FC1E57751D41DDC600AF39FD /* TH1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TH1ViewController.m; sourceTree = "<group>"; };
 		FC1E57761D41DDC600AF39FD /* TH1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TH1ViewController.xib; sourceTree = "<group>"; };
 		FCD7B3361D40D7E7001C5B5C /* THViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THViewController.xib; sourceTree = "<group>"; };
+		FCF48C171DEAC45F00E4FED2 /* EQ.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EQ.plist; sourceTree = "<group>"; };
 		FD6B2D67A538E198A4D0F818 /* Pods-THPod_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THPod_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-THPod_Tests/Pods-THPod_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -148,6 +150,7 @@
 				FC1E57741D41DDC600AF39FD /* TH1ViewController.h */,
 				FC1E57751D41DDC600AF39FD /* TH1ViewController.m */,
 				FC1E57761D41DDC600AF39FD /* TH1ViewController.xib */,
+				FCF48C171DEAC45F00E4FED2 /* EQ.plist */,
 			);
 			name = "Example for THPod";
 			path = THPod;
@@ -291,6 +294,7 @@
 				FCD7B3371D40D7E7001C5B5C /* THViewController.xib in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				FCF48C181DEAC45F00E4FED2 /* EQ.plist in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

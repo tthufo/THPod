@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import <AVFoundation/AVFoundation.h>
+
 #import <MediaPlayer/MediaPlayer.h>
+
+#import "GUISlider.h"
+
+#import "UIView+UpdateAutoLayoutConstraints.h"
 
 @class GUIPlayerView;
 
@@ -74,5 +80,9 @@
 - (void)setVolume:(float)value;
 
 - (float)getVolume;
+
+- (void)configureEQ:(BOOL)isOn;
+
+- (void)adjustEQ:(float)value andPosition:(int)position;
 
 @end

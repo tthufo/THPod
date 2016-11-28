@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'THPod'
-  s.version          = '0.6.6'
+  s.version          = '0.6.8'
   s.summary          = 'A short description of THPod.'
 
 # This description is used to generate tags and improve search results.
@@ -33,6 +33,13 @@ Pod::Spec.new do |s|
   s.source_files = 'THPod/Classes'
 
   s.requires_arc = true
+
+#    s.subspec 'no-arc' do |sp|
+#    sp.source_files = 'THPod/IFTweetLabel.{h,m}','THPod/RegexKitLite.{h,m}','THPod/RKLMatchEnumerator.{h,m}'
+#    sp.requires_arc = false
+#,'libicucore'
+
+#end
 
   s.resource_bundles = {
     'THPod' => ['THPod/Assets/*']

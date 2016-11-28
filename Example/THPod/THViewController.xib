@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="THViewController">
             <connections>
+                <outlet property="name" destination="3OB-fY-oug" id="N47-qs-s2p"/>
                 <outlet property="v" destination="42B-BQ-uYA" id="AQd-gc-fpD"/>
                 <outlet property="view" destination="iN0-l3-epB" id="pSc-YZ-NX8"/>
             </connections>
@@ -17,14 +18,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XRH-UV-Sui">
-                    <rect key="frame" x="132" y="193" width="46" height="30"/>
+                    <rect key="frame" x="231" y="68" width="46" height="30"/>
                     <state key="normal" title="Button"/>
                     <connections>
                         <action selector="didPress:" destination="-1" eventType="touchUpInside" id="EGA-yG-aEE"/>
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="N5b-JE-YDt">
-                    <rect key="frame" x="107" y="144" width="97" height="30"/>
+                    <rect key="frame" x="112" y="69" width="97" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                     <connections>
@@ -32,12 +33,96 @@
                     </connections>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4r7-RK-9W3">
-                    <rect key="frame" x="132" y="325" width="46" height="30"/>
+                    <rect key="frame" x="231" y="106" width="46" height="30"/>
                     <state key="normal" title="Button"/>
                     <connections>
                         <action selector="didPressT:" destination="-1" eventType="touchUpInside" id="xi1-59-SKl"/>
                     </connections>
                 </button>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lZB-Kz-aK4">
+                    <rect key="frame" x="9" y="96" width="51" height="31"/>
+                    <connections>
+                        <action selector="switches:" destination="-1" eventType="valueChanged" id="kzi-KS-7zQ"/>
+                    </connections>
+                </switch>
+                <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="q6i-rb-gtq">
+                    <rect key="frame" x="6" y="135" width="283" height="31"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.transform.rotation.z">
+                            <real key="value" value="-1.571"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="8p5-3d-fGQ"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="oYA-HD-4br">
+                    <rect key="frame" x="7" y="167" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="eic-aB-fb1"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="kcG-8g-Kd5">
+                    <rect key="frame" x="6" y="198" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="gCV-yW-aJo"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="Rt5-nP-Srp">
+                    <rect key="frame" x="7" y="236" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="NxU-zS-0Ld"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="PjW-Hr-yq1">
+                    <rect key="frame" x="7" y="266" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="bUe-nA-5XP"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="Q9q-Mw-3ra">
+                    <rect key="frame" x="7" y="298" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="Uvm-QW-hQT"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="c41-2T-8DQ">
+                    <rect key="frame" x="7" y="331" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="vTa-im-73N"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="Bif-Xv-kyK">
+                    <rect key="frame" x="7" y="369" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="nCv-y2-KLf"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="fhT-kA-UAz">
+                    <rect key="frame" x="7" y="407" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="4dv-Y9-0GW"/>
+                    </connections>
+                </slider>
+                <slider opaque="NO" tag="9" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="64m-lz-V5r">
+                    <rect key="frame" x="7" y="445" width="283" height="31"/>
+                    <connections>
+                        <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="0c5-eF-QRa"/>
+                    </connections>
+                </slider>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgo-NZ-eYm">
+                    <rect key="frame" x="12" y="68" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="play:" destination="-1" eventType="touchUpInside" id="dFl-3o-xY4"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3OB-fY-oug">
+                    <rect key="frame" x="120" y="106" width="89" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

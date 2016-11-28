@@ -7,11 +7,10 @@
 //
 
 #import "GUIPlayerView.h"
-#import "GUISlider.h"
 
-#import "UIView+UpdateAutoLayoutConstraints.h"
+#import "MYAudioTapProcessor.h"
 
-@interface GUIPlayerView () <AVAssetResourceLoaderDelegate, NSURLConnectionDataDelegate>
+@interface GUIPlayerView () <MYAudioTabProcessorDelegate, AVAssetResourceLoaderDelegate, NSURLConnectionDataDelegate>
 
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
 
@@ -32,6 +31,7 @@
 @property (strong, nonatomic) NSTimer *controllersTimer;
 @property (assign, nonatomic) BOOL seeking;
 @property (assign, nonatomic) CGRect defaultFrame;
+@property (readonly, strong, nonatomic) MYAudioTapProcessor *audioTapProcessor;
 
 @end
 
@@ -43,6 +43,7 @@
 @synthesize activityIndicator, progressTimer, controllersTimer, seeking, fullscreen, defaultFrame;
 @synthesize retryButton, topView, options, coverView;
 @synthesize videoURL, controllersTimeoutPeriod, delegate, isRight;
+@synthesize audioTapProcessor = _audioTapProcessor;
 
 #pragma mark - View Life Cycle
 
@@ -66,6 +67,47 @@
     [self setup];
     return self;
 }
+
+#pragma mark EQ
+
+- (MYAudioTapProcessor *)audioTapProcessor
+{
+    if (!_audioTapProcessor)
+    {
+        AVAssetTrack *firstAudioAssetTrack;
+        for (AVAssetTrack *assetTrack in self.player.currentItem.asset.tracks)
+        {
+            if ([assetTrack.mediaType isEqualToString:AVMediaTypeAudio])
+            {
+                firstAudioAssetTrack = assetTrack;
+                break;
+            }
+        }
+        if (firstAudioAssetTrack)
+        {
+            _audioTapProcessor = [[MYAudioTapProcessor alloc] initWithAudioAssetTrack:firstAudioAssetTrack];
+            _audioTapProcessor.delegate = self;
+        }
+    }
+    return _audioTapProcessor;
+}
+
+- (void)audioTabProcessor:(MYAudioTapProcessor *)audioTabProcessor hasNewLeftChannelValue:(float)leftChannelValue rightChannelValue:(float)rightChannelValue
+{
+    
+}
+
+- (void)configureEQ:(BOOL)isOn
+{
+    self.audioTapProcessor.enableBandpassFilter = isOn;
+}
+
+- (void)adjustEQ:(float)value andPosition:(int)position;
+{
+    [[self audioTapProcessor] setGain:value forBandAtPosition:position];
+}
+
+#pragma End
 
 - (void)setup {
     // Set up notification observers
@@ -929,6 +971,13 @@
                 }
             }
         }
+    }
+    
+    AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
+    
+    if (audioMix)
+    {
+        self.player.currentItem.audioMix = audioMix;
     }
 }
 

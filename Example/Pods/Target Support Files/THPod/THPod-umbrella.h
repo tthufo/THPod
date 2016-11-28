@@ -16,6 +16,7 @@
 #import "LTRequest.h"
 #import "MarqueeLabel.h"
 #import "MHFacebookImageViewer.h"
+#import "NSData+Base64.h"
 #import "NSObject+Category.h"
 #import "ODRefreshControl.h"
 #import "PagedFlowView.h"

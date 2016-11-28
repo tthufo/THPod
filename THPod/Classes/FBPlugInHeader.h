@@ -50,5 +50,7 @@
 
 #import "PagedFlowView.h"
 
+#import "VerticalSlider.h"
+
 
 //#endif /* FBPlugInHeader_h */
