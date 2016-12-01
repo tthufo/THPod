@@ -10,6 +10,8 @@
 
 #import "THViewController.h"
 
+#import "THNewViewController.h"
+
 @implementation THAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -18,7 +20,7 @@
     
     [[FB shareInstance] application_Twitter:application didFinishLaunchingWithOptions:launchOptions];
     
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[THViewController new]];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[THNewViewController new]];
     
     return YES;
 }

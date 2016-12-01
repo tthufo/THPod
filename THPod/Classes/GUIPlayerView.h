@@ -35,6 +35,10 @@
 - (void)playerError;
 - (void)playerRetry;
 
+- (void)didPressSelector:(NSDictionary*)dict;
+
+- (void)playerTicking:(NSDictionary*)dict;
+
 @end
 
 @interface GUIPlayerView : UIView
@@ -61,6 +65,8 @@
 
 - (BOOL)isPlaying;
 
+- (void)setTintColor:(UIColor *)tintColor;
+
 - (void)setBufferTintColor:(UIColor *)tintColor;
 
 - (void)setLiveStreamText:(NSString *)text;
@@ -76,6 +82,10 @@
 - (void)showControllers;
 
 - (void)seekTo:(float)value;
+
+- (void)pauseRefreshing;
+
+- (void)resumeRefreshing;
 
 - (void)setVolume:(float)value;
 

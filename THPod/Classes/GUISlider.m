@@ -24,13 +24,22 @@
   return self;
 }
 
+- (CGRect)trackRectForBounds:(CGRect)bounds
+{
+    return CGRectMake(0, (self.frame.size.height - [self.thick floatValue]) / 2, self.frame.size.width, [self.thick floatValue]);
+}
+
 - (void)setup {
   [self setMaximumTrackTintColor:[UIColor clearColor]];
   
   progressView = [UIProgressView new];
+    
+  CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 2.0f);
+  progressView.transform = transform;
+    
   [progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
   [progressView setClipsToBounds:YES];
-  [[progressView layer] setCornerRadius:1.0f];
+  [[progressView layer] setCornerRadius:2.0f];
   
   CGFloat hue, sat, bri;
   [[self tintColor] getHue:&hue saturation:&sat brightness:&bri alpha:nil];
@@ -67,6 +76,20 @@
 
 - (void)setSecondaryTintColor:(UIColor *)tintColor {
   [progressView setTintColor:tintColor];
+}
+
+@end
+
+@implementation GUISlider (extra)
+
+- (void)setThickNess:(NSNumber *)thickNess
+{
+    self.thick = thickNess;
+}
+
+- (NSNumber*)thickNess
+{
+    return self.thick;
 }
 
 @end

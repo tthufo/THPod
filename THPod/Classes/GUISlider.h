@@ -11,6 +11,15 @@
 @interface GUISlider : UISlider
 
 - (void)setSecondaryValue:(float)value;
+
 - (void)setSecondaryTintColor:(UIColor *)tintColor;
+
+@property (nonatomic, retain) NSNumber * thick;
+
+@end
+
+@interface GUISlider (extra)
+
+@property(nonatomic, assign) NSNumber* thickNess;
 
 @end

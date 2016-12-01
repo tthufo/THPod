@@ -52,5 +52,6 @@
 
 #import "VerticalSlider.h"
 
+#import "CircularSliderView.h"
 
 //#endif /* FBPlugInHeader_h */

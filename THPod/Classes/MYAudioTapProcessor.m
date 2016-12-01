@@ -259,7 +259,7 @@ static void tap_PrepareCallback(MTAudioProcessingTapRef tap, CMItemCount maxFram
     
     
     audioComponentDescription.componentType = kAudioUnitType_Effect ;
-    audioComponentDescription.componentSubType = kAudioUnitSubType_NBandEQ;
+    audioComponentDescription.componentSubType = kAudioUnitSubType_NBandEQ ;//| kAudioUnitSubType_Reverb2;
     audioComponentDescription.componentManufacturer=kAudioUnitManufacturer_Apple;
 	
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &audioComponentDescription);

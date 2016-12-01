@@ -47,11 +47,6 @@
                 </switch>
                 <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-12" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="q6i-rb-gtq">
                     <rect key="frame" x="6" y="135" width="283" height="31"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.transform.rotation.z">
-                            <real key="value" value="-1.571"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="sliderChange:" destination="-1" eventType="valueChanged" id="8p5-3d-fGQ"/>
                     </connections>

@@ -27,6 +27,8 @@
 		FC1E57781D41DDC600AF39FD /* TH1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC1E57761D41DDC600AF39FD /* TH1ViewController.xib */; };
 		FCD7B3371D40D7E7001C5B5C /* THViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCD7B3361D40D7E7001C5B5C /* THViewController.xib */; };
 		FCF48C181DEAC45F00E4FED2 /* EQ.plist in Resources */ = {isa = PBXBuildFile; fileRef = FCF48C171DEAC45F00E4FED2 /* EQ.plist */; };
+		FCF48C551DEDBEF800E4FED2 /* THNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF48C531DEDBEF800E4FED2 /* THNewViewController.m */; };
+		FCF48C561DEDBEF800E4FED2 /* THNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCF48C541DEDBEF800E4FED2 /* THNewViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,9 @@
 		FC1E57761D41DDC600AF39FD /* TH1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TH1ViewController.xib; sourceTree = "<group>"; };
 		FCD7B3361D40D7E7001C5B5C /* THViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THViewController.xib; sourceTree = "<group>"; };
 		FCF48C171DEAC45F00E4FED2 /* EQ.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EQ.plist; sourceTree = "<group>"; };
+		FCF48C521DEDBEF800E4FED2 /* THNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THNewViewController.h; sourceTree = "<group>"; };
+		FCF48C531DEDBEF800E4FED2 /* THNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THNewViewController.m; sourceTree = "<group>"; };
+		FCF48C541DEDBEF800E4FED2 /* THNewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THNewViewController.xib; sourceTree = "<group>"; };
 		FD6B2D67A538E198A4D0F818 /* Pods-THPod_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THPod_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-THPod_Tests/Pods-THPod_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,6 +156,9 @@
 				FC1E57751D41DDC600AF39FD /* TH1ViewController.m */,
 				FC1E57761D41DDC600AF39FD /* TH1ViewController.xib */,
 				FCF48C171DEAC45F00E4FED2 /* EQ.plist */,
+				FCF48C521DEDBEF800E4FED2 /* THNewViewController.h */,
+				FCF48C531DEDBEF800E4FED2 /* THNewViewController.m */,
+				FCF48C541DEDBEF800E4FED2 /* THNewViewController.xib */,
 			);
 			name = "Example for THPod";
 			path = THPod;
@@ -292,6 +300,7 @@
 			files = (
 				FC1E57781D41DDC600AF39FD /* TH1ViewController.xib in Resources */,
 				FCD7B3371D40D7E7001C5B5C /* THViewController.xib in Resources */,
+				FCF48C561DEDBEF800E4FED2 /* THNewViewController.xib in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				FCF48C181DEAC45F00E4FED2 /* EQ.plist in Resources */,
@@ -411,6 +420,7 @@
 				6003F5A7195388D20070C39A /* THViewController.m in Sources */,
 				FC1E57771D41DDC600AF39FD /* TH1ViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				FCF48C551DEDBEF800E4FED2 /* THNewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,10 +547,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Thanh Hai Tran (N3994DUH8M)";
+				ENABLE_BITCODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "THPod/THPod-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/THPod/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vmgmedia.lll;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -558,10 +569,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Thanh Hai Tran (N3994DUH8M)";
+				ENABLE_BITCODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "THPod/THPod-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/THPod/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vmgmedia.lll;
 				PRODUCT_NAME = "$(TARGET_NAME)";
