@@ -210,6 +210,25 @@
         [shuffle addTarget:self action:@selector(didPressShuffle:) forControlEvents:UIControlEventTouchUpInside];
     }
     
+    if([options responseForKey:@"xib"])
+    {
+        controlView = [[NSBundle mainBundle] loadNibNamed:options[@"xib"] owner:self options:nil][0];
+        
+        controlView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        
+        [self addSubview:controlView];
+        
+        [[self elementWithTag:11] setImage:[UIImage imageNamed:options[@"playpause"][0]] forState:UIControlStateNormal];
+        
+        [[self elementWithTag:11] setImage:[UIImage imageNamed:options[@"playpause"][1]] forState:UIControlStateSelected];
+        
+        [[self elementWithTag:11] addTarget:self action:@selector(togglePlay:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [[self elementWithTag:1] setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
+        
+        [self setSelector];
+    }
+    
     controllersView = [UIView new];
     [controllersView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [controllersView setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
@@ -437,25 +456,6 @@
         }
     }
     
-    if([options responseForKey:@"xib"])
-    {
-        controlView = [[NSBundle mainBundle] loadNibNamed:options[@"xib"] owner:self options:nil][0];
-        
-        controlView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        
-        [self addSubview:controlView];
-        
-        [[self elementWithTag:11] setImage:[UIImage imageNamed:options[@"playpause"][0]] forState:UIControlStateNormal];
-        
-        [[self elementWithTag:11] setImage:[UIImage imageNamed:options[@"playpause"][1]] forState:UIControlStateSelected];
-        
-        [[self elementWithTag:11] addTarget:self action:@selector(togglePlay:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [[self elementWithTag:1] setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.45f]];
-        
-        [self setSelector];
-    }
-    
     [UIView animateWithDuration:0.2f animations:^{
         [controlView setAlpha:1.0f];
         [controllersView setAlpha:1.0f];
@@ -664,7 +664,21 @@
     
     [player seekToTime:CMTimeMakeWithSeconds(time, timescale)];
     
-    [self showControllers];
+    [UIView animateWithDuration:0.2f animations:^{
+        [controlView setAlpha:1.0f];
+        [controllersView setAlpha:1.0f];
+        [topView setAlpha:[options[@"default"] boolValue]];
+    } completion:^(BOOL finished) {
+        [controllersTimer invalidate];
+        
+        if (controllersTimeoutPeriod > 0) {
+            controllersTimer = [NSTimer scheduledTimerWithTimeInterval:controllersTimeoutPeriod
+                                                                target:self
+                                                              selector:@selector(hideControllers)
+                                                              userInfo:nil
+                                                               repeats:NO];
+        }
+    }];
 }
 
 - (void)pauseRefreshing

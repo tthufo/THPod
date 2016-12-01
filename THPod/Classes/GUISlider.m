@@ -34,7 +34,7 @@
   
   progressView = [UIProgressView new];
     
-  CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 2.0f);
+  CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 1.0f);
   progressView.transform = transform;
     
   [progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
