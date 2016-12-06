@@ -118,7 +118,6 @@
 @interface ViewPagerController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate>
 
 // Tab and content stuff
-@property UIScrollView *tabsView;
 @property UIView *contentView;
 
 @property UIPageViewController *pageViewController;
@@ -1043,11 +1042,17 @@ BOOL isRemove;
     }
     
     if ([[self.tabs objectAtIndex:index] isEqual:[NSNull null]]) {
-
-        // Get view from dataSource
+        
+        UIImageView * bg = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, self.arr.count == 0 ? [self.tabWidth floatValue] - 8 : [self.arr[index] floatValue] + 15 - 8, [self.tabHeight floatValue] - 8)];
+        bg.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        bg.tag = 20169;
+        
         UIView *tabViewContent = [self.dataSource viewPager:self viewForTabAtIndex:index];
         tabViewContent.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         TabView *tabView = [[TabView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.arr.count == 0 ? [self.tabWidth floatValue] : [self.arr[index] floatValue] + 15, [self.tabHeight floatValue])];
+        
+        [tabView addSubview:bg];
+        
         [tabView addSubview:tabViewContent];
         [tabView setClipsToBounds:YES];
         [tabView setIndicatorColor:self.indicatorColor];

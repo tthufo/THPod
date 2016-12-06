@@ -762,24 +762,61 @@
             [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
         }
         
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:(duration >= 3600 ? @"hh:mm:ss": @"mm:ss")];
-        
-        NSDate *currentTime = [NSDate dateWithTimeIntervalSince1970:current];
-        NSDate *remainingTime = [NSDate dateWithTimeIntervalSince1970:(duration - current)];
-        
-        [currentTimeLabel setText:[formatter stringFromDate:currentTime]];
-        [remainingTimeLabel setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setDateFormat:(duration >= 3600 ? @"hh:mm:ss": @"mm:ss")];
+//        
+//        NSDate *currentTime = [NSDate dateWithTimeIntervalSince1970:current];
+//        NSDate *remainingTime = [NSDate dateWithTimeIntervalSince1970:(duration - current)];
+//        
+//        [currentTimeLabel setText:[formatter stringFromDate:currentTime]];
+//        [remainingTimeLabel setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+//        
+//        if(options[@"currentTime"])
+//        {
+//            [(UILabel*)options[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
+//        }
+//        
+//        if(options[@"remainTime"])
+//        {
+//            [(UILabel*)options[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+//        }
+//        
+//        if(options[@"multi"])
+//        {
+//            for(NSDictionary * dict in options[@"multi"])
+//            {
+//                CGFloat current = seeking ?
+//                
+//                ((GUISlider*)dict[@"slider"]).value * duration : CMTimeGetSeconds(player.currentTime);
+//                
+//                [((GUISlider*)dict[@"slider"]) setValue:(current / duration)];
+//                
+//                [((GUISlider*)dict[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+//                
+//                if(dict[@"currentTime"])
+//                {
+//                    [(UILabel*)dict[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
+//                }
+//                
+//                if(dict[@"remainTime"])
+//                {
+//                    [(UILabel*)dict[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+//                }
+//            }
+//        }
         
         if(options[@"currentTime"])
         {
-            [(UILabel*)options[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
+            [(UILabel*)options[@"currentTime"] setText:[self duration:current]];
         }
         
         if(options[@"remainTime"])
         {
-            [(UILabel*)options[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+            [(UILabel*)options[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [self duration:duration - current]]];
         }
+        
+        [currentTimeLabel setText:[self duration:current]];
+        [remainingTimeLabel setText:[NSString stringWithFormat:@"-%@", [self duration:duration - current]]];
         
         if(options[@"multi"])
         {
@@ -795,16 +832,16 @@
                 
                 if(dict[@"currentTime"])
                 {
-                    [(UILabel*)dict[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
+                    [(UILabel*)dict[@"currentTime"] setText:[self duration:current]];
                 }
                 
                 if(dict[@"remainTime"])
                 {
-                    [(UILabel*)dict[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
+                    [(UILabel*)dict[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [self duration:duration - current]]];
                 }
             }
         }
-        
+
         if ([delegate respondsToSelector:@selector(playerTicking:)] && !seeking)
         {
             [delegate playerTicking:@{@"value":@(progressIndicator.value)}];
@@ -907,7 +944,7 @@
     progressTimer = nil;
     [controllersTimer invalidate];
     controllersTimer = nil;
-    
+    _audioTapProcessor = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:nil];
@@ -1094,11 +1131,14 @@
         }
     }
     
-    AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
-    
-    if (audioMix)
+    if([options responseForKey:@"EQ"])
     {
-        self.player.currentItem.audioMix = audioMix;
+        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
+        
+        if (audioMix)
+        {
+            self.player.currentItem.audioMix = audioMix;
+        }
     }
 }
 
