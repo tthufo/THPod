@@ -35,7 +35,7 @@ PODS:
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
   - SVProgressHUD (2.0.3)
-  - THPod (0.6.7):
+  - THPod (0.7.1):
     - AFNetworking (~> 3.1)
     - AVHexColor (~> 2.0)
     - FBSDKCoreKit (~> 4.4)
@@ -70,7 +70,7 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
-  THPod: 3dfe9cf53995822eb868b8b6a082543024f0b671
+  THPod: a5afbc69ba34e9dbb04b44d7ec7f11f6ebc01588
   Toast: 0773b8fc0e97352ca6054517bec7ebdd4110029d
 
 PODFILE CHECKSUM: 4c281f33f09637d85d959810baed77d2e827be31

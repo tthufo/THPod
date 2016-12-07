@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AutoScrollLabel.h"
+#import "CircularSliderView.h"
 #import "CustomIOS7AlertView.h"
 #import "DropAlert.h"
 #import "DropButton.h"
@@ -16,6 +17,7 @@
 #import "LTRequest.h"
 #import "MarqueeLabel.h"
 #import "MHFacebookImageViewer.h"
+#import "MYAudioTapProcessor.h"
 #import "NSData+Base64.h"
 #import "NSObject+Category.h"
 #import "ODRefreshControl.h"
@@ -29,6 +31,7 @@
 #import "UIImageView+MHFacebookImageViewer.h"
 #import "UIScrollView+DXRefresh.h"
 #import "UIView+UpdateAutoLayoutConstraints.h"
+#import "VerticalSlider.h"
 #import "ViewPagerController.h"
 #import "XMLReader.h"
 
