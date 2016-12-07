@@ -21,21 +21,21 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - FBSDKCoreKit (4.14.0):
+  - FBSDKCoreKit (4.18.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.14.0):
+  - FBSDKLoginKit (4.18.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.14.0):
+  - FBSDKShareKit (4.18.0):
     - FBSDKCoreKit
   - hpple (0.2.0)
   - JCNotificationBannerPresenter (1.1.2)
   - JSONKit-NoWarning (1.2)
   - Reachability (3.2)
-  - SDWebImage (3.8.1):
-    - SDWebImage/Core (= 3.8.1)
-  - SDWebImage/Core (3.8.1)
-  - SVProgressHUD (2.0.3)
-  - THPod (0.6.7):
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - SVProgressHUD (2.1.1)
+  - THPod (0.7.4):
     - AFNetworking (~> 3.1)
     - AVHexColor (~> 2.0)
     - FBSDKCoreKit (~> 4.4)
@@ -55,24 +55,24 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   THPod:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AVHexColor: 33e5e102f3b6f3acd002779183ee226e21870c28
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
-  FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
-  FBSDKShareKit: e8e5d4ccef69b41132fe33acda26db1e33143e33
+  FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
+  FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
+  FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   JCNotificationBannerPresenter: f40150961943048ed3b1d2628d29dbf66a959e21
   JSONKit-NoWarning: 3d27e6f9e6846ecf741e8c64dcadd7d5aa7193cb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
-  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
-  THPod: 3dfe9cf53995822eb868b8b6a082543024f0b671
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SVProgressHUD: 1127180503b9a308ddf7006f3cc58fc05cc1092d
+  THPod: 78af67b5dacb50d43f6db51c887067b24975bb9c
   Toast: 0773b8fc0e97352ca6054517bec7ebdd4110029d
 
 PODFILE CHECKSUM: 4c281f33f09637d85d959810baed77d2e827be31
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
