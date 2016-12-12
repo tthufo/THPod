@@ -762,49 +762,6 @@
             [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
         }
         
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//        [formatter setDateFormat:(duration >= 3600 ? @"hh:mm:ss": @"mm:ss")];
-//        
-//        NSDate *currentTime = [NSDate dateWithTimeIntervalSince1970:current];
-//        NSDate *remainingTime = [NSDate dateWithTimeIntervalSince1970:(duration - current)];
-//        
-//        [currentTimeLabel setText:[formatter stringFromDate:currentTime]];
-//        [remainingTimeLabel setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
-//        
-//        if(options[@"currentTime"])
-//        {
-//            [(UILabel*)options[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
-//        }
-//        
-//        if(options[@"remainTime"])
-//        {
-//            [(UILabel*)options[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
-//        }
-//        
-//        if(options[@"multi"])
-//        {
-//            for(NSDictionary * dict in options[@"multi"])
-//            {
-//                CGFloat current = seeking ?
-//                
-//                ((GUISlider*)dict[@"slider"]).value * duration : CMTimeGetSeconds(player.currentTime);
-//                
-//                [((GUISlider*)dict[@"slider"]) setValue:(current / duration)];
-//                
-//                [((GUISlider*)dict[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
-//                
-//                if(dict[@"currentTime"])
-//                {
-//                    [(UILabel*)dict[@"currentTime"] setText:[formatter stringFromDate:currentTime]];
-//                }
-//                
-//                if(dict[@"remainTime"])
-//                {
-//                    [(UILabel*)dict[@"remainTime"] setText:[NSString stringWithFormat:@"-%@", [formatter stringFromDate:remainingTime]]];
-//                }
-//            }
-//        }
-        
         if(options[@"currentTime"])
         {
             [(UILabel*)options[@"currentTime"] setText:[self duration:current]];
@@ -1056,7 +1013,6 @@
     }
 }
 
-
 //- (void)airPlayAvailabilityChanged:(NSNotification *)notification {
 //    [UIView animateWithDuration:0.4f
 //                     animations:^{
@@ -1126,18 +1082,18 @@
                     [delegate playerReadyToPlay];
                     
                     coverView.image = [UIImage imageNamed:@""];
+                    
+                    if([options responseForKey:@"EQ"])
+                    {
+                        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
+                        
+                        if (audioMix)
+                        {
+                            self.player.currentItem.audioMix = audioMix;
+                        }
+                    }
                 }
             }
-        }
-    }
-    
-    if([options responseForKey:@"EQ"])
-    {
-        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
-        
-        if (audioMix)
-        {
-            self.player.currentItem.audioMix = audioMix;
         }
     }
 }
