@@ -16,7 +16,33 @@
 
 #import "UIView+UpdateAutoLayoutConstraints.h"
 
+typedef enum __actionState
+{
+    didPause,//
+    didResume,//
+    didEndPlaying,//
+    willEnterFullscreen,//
+    willLeaveFullscreen,//
+    didEnterFullscreen,//
+    didLeaveFullscreen,//
+    didStop,//
+}ActionState;
+
+typedef enum __eventState
+{
+    readyToPlay,//
+    failedToPlayToEnd,//
+    stalled,//
+    error,//
+    customAction,//
+    ticking,//
+}EventState;
+
 @class GUIPlayerView;
+
+typedef void (^PlayerAction)(ActionState actionState, NSDictionary * actionInfo);
+
+typedef void (^PlayerEvent)(EventState eventState,NSDictionary * eventInfo);
 
 @protocol GUIPlayerViewDelegate <NSObject>
 
@@ -33,10 +59,7 @@
 - (void)playerFailedToPlayToEnd;
 - (void)playerStalled;
 - (void)playerError;
-- (void)playerRetry;
-
-- (void)didPressSelector:(NSDictionary*)dict;
-
+- (void)playerDidPressSelector:(NSDictionary*)dict;
 - (void)playerTicking:(NSDictionary*)dict;
 
 @end
@@ -53,12 +76,23 @@
 @property (strong, nonatomic) UIButton *fullscreenButton;
 @property (strong, nonatomic) AVPlayer *player;
 @property (strong, nonatomic) AVPlayerItem *currentItem;
+@property (nonatomic, copy) PlayerAction onAction;
+@property (nonatomic, copy) PlayerEvent onEvent;
+
+- (instancetype)initWithInfo:(NSDictionary*)info;
+
+- (GUIPlayerView*)andEventCompletion:(PlayerEvent)eventCompletion andActionCompletion:(PlayerAction)actionCompletion;
 
 - (instancetype)initWithFrame:(CGRect)frame andInfo:(NSMutableDictionary*)info;
+
 - (void)prepareAndPlayAutomatically:(BOOL)playAutomatically;
+
 - (void)clean;
+
 - (void)play;
+
 - (void)pause;
+
 - (void)stop;
 
 - (NSTimeInterval)availableDuration;
@@ -91,8 +125,14 @@
 
 - (float)getVolume;
 
-- (void)configureEQ:(BOOL)isOn;
+- (void)turnOnEQ:(BOOL)isOn;
+
+- (void)turnOnReverb:(BOOL)isOn;
+
+- (void)turnOffAll;
 
 - (void)adjustEQ:(float)value andPosition:(int)position;
+
+- (void)adjustReverb:(float)value;
 
 @end

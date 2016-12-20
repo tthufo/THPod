@@ -31,7 +31,7 @@
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) NSTimer *progressTimer;
 @property (strong, nonatomic) NSTimer *controllersTimer;
-@property (assign, nonatomic) BOOL seeking;
+@property (assign, nonatomic) BOOL seeking, isInit;
 @property (assign, nonatomic) CGRect defaultFrame;
 @property (readonly, strong, nonatomic) MYAudioTapProcessor *audioTapProcessor;
 
@@ -46,6 +46,7 @@
 @synthesize retryButton, topView, options, coverView;
 @synthesize videoURL, controllersTimeoutPeriod, delegate, isRight;
 @synthesize audioTapProcessor = _audioTapProcessor;
+@synthesize onEvent, onAction;
 
 #pragma mark - View Life Cycle
 
@@ -67,6 +68,23 @@
     defaultFrame = frame;
     options = info;
     [self setup];
+    return self;
+}
+
+- (instancetype)initWithInfo:(NSDictionary*)info
+{
+    self = [super init];
+    options = info;
+    [self setup];
+    return self;
+}
+
+- (GUIPlayerView*)andEventCompletion:(PlayerEvent)eventCompletion andActionCompletion:(PlayerAction)actionCompletion
+{
+    self.onAction = actionCompletion;
+    
+    self.onEvent = eventCompletion;
+    
     return self;
 }
 
@@ -99,12 +117,33 @@
     
 }
 
-- (void)configureEQ:(BOOL)isOn
+- (void)turnOnEQ:(BOOL)isOn
 {
     self.audioTapProcessor.enableBandpassFilter = isOn;
+    
+    self.audioTapProcessor.enableReverbFilter = !isOn;
 }
 
-- (void)adjustEQ:(float)value andPosition:(int)position;
+- (void)turnOnReverb:(BOOL)isOn
+{
+    self.audioTapProcessor.enableReverbFilter = isOn;
+    
+    self.audioTapProcessor.enableBandpassFilter = !isOn;
+}
+
+- (void)turnOffAll
+{
+    self.audioTapProcessor.enableBandpassFilter = NO;
+    
+    self.audioTapProcessor.enableReverbFilter = NO;
+}
+
+- (void)adjustReverb:(float)value
+{
+    [[self audioTapProcessor] setReverb:value];
+}
+
+- (void)adjustEQ:(float)value andPosition:(int)position
 {
     [[self audioTapProcessor] setGain:value forBandAtPosition:position];
 }
@@ -128,7 +167,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(airPlayActivityChanged:)
                                                  name:MPVolumeViewWirelessRouteActiveDidChangeNotification object:nil];
     
-    //[self setBackgroundColor:[UIColor blackColor]];
+    [self setBackgroundColor:[UIColor blackColor]];
     
     NSArray *horizontalConstraints;
     NSArray *verticalConstraints;
@@ -501,9 +540,16 @@
 
 - (void)didPressObject:(UIButton*)object
 {
-    if ([delegate respondsToSelector:@selector(didPressSelector:)])
+    if ([delegate respondsToSelector:@selector(playerDidPressSelector:)])
     {
-        [delegate didPressSelector:@{@"object":object}];
+        [delegate playerDidPressSelector:@{@"object":object}];
+    }
+    else
+    {
+        if(self.onEvent)
+        {
+            self.onEvent(4, @{@"object":object});
+        }
     }
 }
 
@@ -554,27 +600,37 @@
     }
 }
 
-- (void)didPressReTry
-{
-    if ([delegate respondsToSelector:@selector(playerRetry)]) {
-        [delegate playerRetry];
-    }
-}
-
 - (void)togglePlay:(UIButton *)button {
     if ([button isSelected]) {
         [button setSelected:NO];
         [player pause];
         
-        if ([delegate respondsToSelector:@selector(playerDidPause)]) {
+        if ([delegate respondsToSelector:@selector(playerDidPause)])
+        {
             [delegate playerDidPause];
+        }
+        else
+        {
+            if(self.onAction)
+            {
+                self.onAction(0, @{});
+            }
         }
     } else {
         [button setSelected:YES];
+        
         [self play];
         
-        if ([delegate respondsToSelector:@selector(playerDidResume)]) {
+        if ([delegate respondsToSelector:@selector(playerDidResume)])
+        {
             [delegate playerDidResume];
+        }
+        else
+        {
+            if(self.onAction)
+            {
+                self.onAction(1, @{});
+            }
         }
     }
     
@@ -583,8 +639,16 @@
 
 - (void)toggleFullscreen:(UIButton *)button {
     if (fullscreen) {
-        if ([delegate respondsToSelector:@selector(playerWillLeaveFullscreen)]) {
+        if ([delegate respondsToSelector:@selector(playerWillLeaveFullscreen)])
+        {
             [delegate playerWillLeaveFullscreen];
+        }
+        else
+        {
+            if(self.onAction)
+            {
+                self.onAction(4, @{});
+            }
         }
         
         [UIView animateWithDuration:0.2f animations:^{
@@ -598,8 +662,16 @@
         } completion:^(BOOL finished) {
             fullscreen = NO;
             
-            if ([delegate respondsToSelector:@selector(playerDidLeaveFullscreen)]) {
+            if ([delegate respondsToSelector:@selector(playerDidLeaveFullscreen)])
+            {
                 [delegate playerDidLeaveFullscreen];
+            }
+            else
+            {
+                if(self.onAction)
+                {
+                    self.onAction(6, @{});
+                }
             }
         }];
         
@@ -622,10 +694,17 @@
             frame = CGRectMake(0, 0, width, height);
         }
         
-        if ([delegate respondsToSelector:@selector(playerWillEnterFullscreen)]) {
+        if ([delegate respondsToSelector:@selector(playerWillEnterFullscreen)])
+        {
             [delegate playerWillEnterFullscreen];
         }
-        
+        else
+        {
+            if(self.onAction)
+            {
+                self.onAction(3, @{});
+            }
+        }
         [UIView animateWithDuration:0.2f animations:^{
             [self setFrame:frame];
             [playerLayer setFrame:CGRectMake(0, 0, width, height)];
@@ -639,8 +718,16 @@
         } completion:^(BOOL finished) {
             fullscreen = YES;
             
-            if ([delegate respondsToSelector:@selector(playerDidEnterFullscreen)]) {
+            if ([delegate respondsToSelector:@selector(playerDidEnterFullscreen)])
+            {
                 [delegate playerDidEnterFullscreen];
+            }
+            else
+            {
+                if(self.onAction)
+                {
+                    self.onAction(5, @{});
+                }
             }
         }];
         
@@ -736,8 +823,16 @@
         
         [self hideControllers];
         
-        if ([delegate respondsToSelector:@selector(playerError)]) {
+        if ([delegate respondsToSelector:@selector(playerError)])
+        {
             [delegate playerError];
+        }
+        else
+        {
+            if(self.onEvent)
+            {
+                self.onEvent(3, @{});
+            }
         }
         [progressTimer invalidate];
         progressTimer = nil;
@@ -803,7 +898,13 @@
         {
             [delegate playerTicking:@{@"value":@(progressIndicator.value)}];
         }
-        
+        else
+        {
+            if(self.onEvent)
+            {
+                self.onEvent(5, @{@"value":@(progressIndicator.value)});
+            }
+        }
         [progressIndicator setHidden:NO];
     }
 }
@@ -880,7 +981,7 @@
     [self bringSubviewToFront:controllersView];
     [self bringSubviewToFront:topView];
     
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     
     [player addObserver:self forKeyPath:@"rate" options:0 context:nil];
     [currentItem addObserver:self forKeyPath:@"status" options:0 context:nil];
@@ -944,8 +1045,16 @@
     
     [[self elementWithTag:11] setSelected:NO];
     
-    if ([delegate respondsToSelector:@selector(playerDidPause)]) {
+    if ([delegate respondsToSelector:@selector(playerDidPause)])
+    {
         [delegate playerDidPause];
+    }
+    else
+    {
+        if(self.onAction)
+        {
+            self.onAction(0, @{});
+        }
     }
     
     [progressTimer invalidate];
@@ -961,6 +1070,11 @@
         [playButton setSelected:NO];
         
         [[self elementWithTag:11] setSelected:NO];
+        
+        if(self.onAction)
+        {
+            self.onAction(7, @{});
+        }
     }
     [progressTimer invalidate];
     
@@ -990,16 +1104,32 @@
         [self toggleFullscreen:fullscreenButton];
     }
     
-    if ([delegate respondsToSelector:@selector(playerDidEndPlaying)]) {
+    if ([delegate respondsToSelector:@selector(playerDidEndPlaying)])
+    {
         [delegate playerDidEndPlaying];
+    }
+    else
+    {
+        if(self.onAction)
+        {
+            self.onAction(2, @{});
+        }
     }
 }
 
 - (void)playerFailedToPlayToEnd:(NSNotification *)notification {
     [self stop];
     
-    if ([delegate respondsToSelector:@selector(playerFailedToPlayToEnd)]) {
+    if ([delegate respondsToSelector:@selector(playerFailedToPlayToEnd)])
+    {
         [delegate playerFailedToPlayToEnd];
+    }
+    else
+    {
+        if(self.onEvent)
+        {
+            self.onEvent(1, @{});
+        }
     }
 }
 
@@ -1008,92 +1138,93 @@
     
     [self togglePlay:[self elementWithTag:11]];
     
-    if ([delegate respondsToSelector:@selector(playerStalled)]) {
+    if ([delegate respondsToSelector:@selector(playerStalled)])
+    {
         [delegate playerStalled];
     }
+    else
+    {
+        if(self.onEvent)
+        {
+            self.onEvent(2, @{});
+        }
+    }
 }
-
-//- (void)airPlayAvailabilityChanged:(NSNotification *)notification {
-//    [UIView animateWithDuration:0.4f
-//                     animations:^{
-//                         if ([volumeView areWirelessRoutesAvailable]) {
-//                             [volumeView hideByWidth:NO];
-//                         } else if (! [volumeView isWirelessRouteActive]) {
-//                             [volumeView hideByWidth:YES];
-//                         }
-//                         [self layoutIfNeeded];
-//                     }];
-//}
-
-
-//- (void)airPlayActivityChanged:(NSNotification *)notification {
-//    [UIView animateWithDuration:0.4f
-//                     animations:^{
-//                         if ([volumeView isWirelessRouteActive]) {
-//                             if (fullscreen)
-//                                 [self toggleFullscreen:fullscreenButton];
-//                             
-//                             [playButton hideByWidth:YES];
-//                             [fullscreenButton hideByWidth:YES];
-//                             [spacerView hideByWidth:NO];
-//                             
-//                             [airPlayLabel setHidden:NO];
-//                             
-//                             controllersTimeoutPeriod = 0;
-//                             [self showControllers];
-//                         } else {
-//                             [playButton hideByWidth:NO];
-//                             [fullscreenButton hideByWidth:NO];
-//                             [spacerView hideByWidth:YES];
-//                             
-//                             [airPlayLabel setHidden:YES];
-//                             
-//                             controllersTimeoutPeriod = 3;
-//                             [self showControllers];
-//                         }
-//                         [self layoutIfNeeded];
-//                     }];
-//}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"status"]) {
         if (currentItem.status == AVPlayerItemStatusFailed) {
-            if ([delegate respondsToSelector:@selector(playerFailedToPlayToEnd)]) {
+            if ([delegate respondsToSelector:@selector(playerFailedToPlayToEnd)])
+            {
                 [delegate playerFailedToPlayToEnd];
+            }
+            else
+            {
+                if(self.onEvent)
+                {
+                    self.onEvent(1, @{});
+                }
             }
         }
         
         if (currentItem.status == AVPlayerItemStatusReadyToPlay) {
-            if ([delegate respondsToSelector:@selector(playerReadyToPlay)]) {
+            if ([delegate respondsToSelector:@selector(playerReadyToPlay)])
+            {
                 [delegate playerReadyToPlay];
             }
+            else
+            {
+                if(self.onEvent)
+                {
+                    self.onEvent(0, @{});
+                }
+            }
         }
-        
     }
     
     if ([keyPath isEqualToString:@"rate"]) {
         CGFloat rate = [player rate];
         if (rate > 0) {
             [activityIndicator stopAnimating];
+            
             progressIndicator.userInteractionEnabled = YES;
-            if ([delegate respondsToSelector:@selector(playerReadyToPlay)]) {
+            
+            if ([delegate respondsToSelector:@selector(playerReadyToPlay)])
+            {
                 if(progressIndicator.value == 0)
                 {
                     [delegate playerReadyToPlay];
                     
                     coverView.image = [UIImage imageNamed:@""];
-                    
-                    if([options responseForKey:@"EQ"])
-                    {
-                        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
-                        
-                        if (audioMix)
-                        {
-                            self.player.currentItem.audioMix = audioMix;
-                        }
-                    }
                 }
             }
+            else
+            {
+                if(self.onEvent && progressIndicator.value == 0)
+                {
+                    AVPlayerItem *item = self.player.currentItem;
+                    
+                    AVURLAsset *asset = (AVURLAsset *)item.asset;
+                    
+                    AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio][0];
+                    
+                    self.onEvent(0, @{@"track":audioTrack, @"item":self.player.currentItem});
+                    
+                    coverView.image = [UIImage imageNamed:@""];
+                }
+            }
+        }
+    }
+
+    if([options responseForKey:@"EQ"] && !_isInit)
+    {
+        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
+        
+        if (audioMix)
+        {
+            self.player.currentItem.audioMix = audioMix;
+            
+            _isInit = YES;
         }
     }
 }
