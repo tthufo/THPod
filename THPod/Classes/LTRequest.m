@@ -250,7 +250,9 @@ static LTRequest *__sharedLTRequest = nil;
     
     if([dict responseForKey:@"method"])
     {
-        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@?%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [self returnGetUrl:dict]];
+        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@/%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [self returnGetUrl:dict]];
+        
+        NSLog(@"%@",url);
         
         if([self getValue: url])
         {
@@ -283,7 +285,7 @@ static LTRequest *__sharedLTRequest = nil;
     }
     else
     {
-        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : self.address;
+        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [dict responseForKey:@"postFix"] ? [NSString stringWithFormat:@"%@/%@",self.address,dict[@"postFix"]] : self.address;
         
         post = [[NSMutableDictionary alloc] initWithDictionary:dict];
         
@@ -317,7 +319,7 @@ static LTRequest *__sharedLTRequest = nil;
         [manager POST:url parameters:post success:^(NSURLSessionTask *task, id responseObject) {
             
             [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post];
-            
+                        
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
             [self didFailedResult:dict andError:error];
@@ -361,7 +363,7 @@ static LTRequest *__sharedLTRequest = nil;
 {
     NSDictionary * info = [self dictWithPlist:@"Info"];
     
-    NSMutableDictionary * result = [NSMutableDictionary new];//[NSMutableDictionary dictionaryWithDictionary:response];
+    NSMutableDictionary * result = [response isKindOfClass:[NSDictionary class]] ? [NSMutableDictionary dictionaryWithDictionary:response] : [response isKindOfClass:[NSArray class]] ? [NSMutableDictionary dictionaryWithDictionary:@{@"array":response}] : [NSMutableDictionary new];
     
     if([dict responseForKey:@"method"])
     {
@@ -397,7 +399,7 @@ static LTRequest *__sharedLTRequest = nil;
     {
         [self showToast:@"Check for Plist/eCode" andPos:0];
     }
-    
+        
     ((RequestCompletion)dict[@"completion"])([response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : [response isKindOfClass:[NSArray class]] ? [@{@"array":response} bv_jsonStringWithPrettyPrint:NO] : response, [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
 }
 
@@ -405,15 +407,16 @@ static LTRequest *__sharedLTRequest = nil;
 {
     NSDictionary * info = [self dictWithPlist:@"Info"][@"eCode"];
     
-    NSString * getUrl = @"";
+    NSMutableString * getUrl = [NSMutableString new];
     
     for(NSString * key in dict.allKeys)
     {
-        if([key isEqualToString:@"host"] || [key isEqualToString:[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"] || [key isEqualToString:@"overrideError"])
+        if([key isEqualToString:@"host"] || [key isEqualToString:[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"] || [key isEqualToString:@"overrideError"] || [key isEqualToString:@"checkMark"] || [key isEqualToString:@"cache"] || [key isEqualToString:@"host"])
         {
             continue;
         }
-        getUrl = [NSString stringWithFormat:@"%@%@=%@&",getUrl,key,dict[key]];
+        
+        [getUrl appendString:[NSString stringWithFormat:@"%@/",dict[key]]];
     }
     
     return [getUrl substringToIndex:getUrl.length-(getUrl.length>0)];

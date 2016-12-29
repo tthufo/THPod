@@ -291,8 +291,11 @@
     {
         case 0:
         {
-            [SVProgressHUD showWithStatus:string]; //maskType:SVProgressHUDMaskTypeGradient];
+            [SVProgressHUD showWithStatus:string];
             [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
+            [SVProgressHUD setBackgroundColor:[UIColor orangeColor]];
+            
+            [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
         }
             break;
         case 1:
@@ -1388,7 +1391,6 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 - (void)cellVisible
 {
-    [self reloadData];
     for(UITableViewCell * cell in self.visibleCells)
     {
         for(UIView * view in cell.contentView.subviews)
@@ -1396,6 +1398,7 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
             view.hidden = NO;
         }
     }
+    [self reloadData];
 }
 
 - (void)didScrolltoBottom:(BOOL)animate
@@ -1449,6 +1452,19 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 
 @implementation UICollectionView (collect)
+
+- (void)cellVisible
+{
+    for(UICollectionViewCell * cell in self.visibleCells)
+    {
+        for(UIView * view in cell.contentView.subviews)
+        {
+            view.hidden = NO;
+        }
+    }
+    
+    [self reloadData];
+}
 
 - (void)withCell:(NSString*)nibAndIdent
 {

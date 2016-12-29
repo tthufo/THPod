@@ -91,4 +91,6 @@ typedef void (^Location)(LocationPermisionType type);
 
 - (void)initLocation:(BOOL)isAlways andCompletion:(Location)locationCompletion;
 
+- (BOOL)isLocationEnable;
+
 @end

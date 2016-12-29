@@ -289,6 +289,8 @@
 
 @interface UICollectionView (collect)
 
+- (void)cellVisible;
+
 - (void)withCell:(NSString*)nibAndIdent;
 
 - (void)withHeaderOrFooter:(NSString*)nibAndIdent andKind:(NSString*)kind;

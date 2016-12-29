@@ -75,32 +75,38 @@ static KeyBoard * instance = nil;
 
 - (void)keyboardWasShown:(NSNotification *)notification
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-    CGRect rect = ((UIView*)keboardElement[@"bar"]).frame;
-    
-    rect.origin.y -= keyboardSize.height + rect.size.height;
-    
-    ((UIView*)keboardElement[@"bar"]).frame = rect;
-    
     if(!isOn)
+    {
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+        CGRect rect = ((UIView*)keboardElement[@"bar"]).frame;
+        
+        rect.origin.y -= keyboardSize.height + rect.size.height;
+        
+        ((UIView*)keboardElement[@"bar"]).frame = rect;
+        
         event(keyboardSize.height, YES);
-    isOn = YES;
+            
+        isOn = YES;
+    }
 }
 
 - (void)keyboardWillBeHidden:(NSNotification *)notification
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-    CGRect rect = ((UIView*)keboardElement[@"bar"]).frame;
-    
-    rect.origin.y = [self screenHeight];
-    
-    ((UIView*)keboardElement[@"bar"]).frame = rect;
-    
     if(isOn)
+    {
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+        CGRect rect = ((UIView*)keboardElement[@"bar"]).frame;
+        
+        rect.origin.y = [self screenHeight];
+        
+        ((UIView*)keboardElement[@"bar"]).frame = rect;
+        
         event(keyboardSize.height, NO);
-    isOn = NO;
+            
+        isOn = NO;
+    }
 }
 
 @end

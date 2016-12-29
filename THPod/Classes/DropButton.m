@@ -268,7 +268,7 @@ static DropButton * shareButton = nil;
     
     [cover removeFromSuperview];
     
-    [self.delegate niDropDownDelegateMethod:nil];
+    [self.delegate niDropDownDelegateMethod:self];
 }
 
 - (void)hideDropDown

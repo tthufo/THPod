@@ -180,6 +180,11 @@ static Permission * shareInstan = nil;
     }
 }
 
+- (BOOL)isLocationEnable
+{
+    return [locationManager locationServicesEnabled];
+}
+
 - (NSDictionary *)currentLocation
 {
     if(!locationManager) return nil;

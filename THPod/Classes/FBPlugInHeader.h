@@ -54,4 +54,6 @@
 
 #import "CircularSliderView.h"
 
+#import "SwipeableCell.h"
+
 //#endif /* FBPlugInHeader_h */
