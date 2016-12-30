@@ -163,6 +163,7 @@
 @synthesize fixFormerTabsPositions = _fixFormerTabsPositions;
 @synthesize fixLatterTabsPositions = _fixLatterTabsPositions;
 @synthesize indexSelected,  isMultiColor, isFitScreen;
+@synthesize offSetLeft, offSetRight;
 
 #pragma mark - Init
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -244,6 +245,12 @@ BOOL isRemove;
     
     self.tabsView.frame = frame;
     
+    if(offSetLeft.length != 0 || offSetRight.length != 0)
+    {
+        frame.origin.x = [offSetLeft floatValue];
+        frame.size.width = CGRectGetWidth(self.view.frame) - ([offSetLeft floatValue] + [offSetRight floatValue]);
+        self.tabsView.frame = frame;
+    }
     
     frame = self.contentView.frame;
     frame.origin.x = 0.0;

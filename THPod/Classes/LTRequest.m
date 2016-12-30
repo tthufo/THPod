@@ -250,7 +250,7 @@ static LTRequest *__sharedLTRequest = nil;
     
     if([dict responseForKey:@"method"])
     {
-        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@/%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [self returnGetUrl:dict]];
+        url = [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@%@%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [dict responseForKey:@"overrideOrder"] ? @"/" : @"?" ,[self returnGetUrl:dict]];
         
         NSLog(@"%@",url);
         
@@ -291,7 +291,7 @@ static LTRequest *__sharedLTRequest = nil;
         
         for(NSString * key in post.allKeys)
         {
-            if([key isEqualToString:@"host"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"checkmark"] || [key isEqualToString:@"cache"] || [key isEqualToString:@"absoluteLink"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"])
+            if([key isEqualToString:@"host"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"checkmark"] || [key isEqualToString:@"cache"] || [key isEqualToString:@"absoluteLink"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"] || [key isEqualToString:@"overrideOrder"])
             {
                 [post removeObjectForKey:key];
             }
@@ -409,14 +409,26 @@ static LTRequest *__sharedLTRequest = nil;
     
     NSMutableString * getUrl = [NSMutableString new];
     
-    for(NSString * key in dict.allKeys)
+    NSMutableArray *sortedArray = [NSMutableArray arrayWithArray:[dict allKeys]];
+    
+    [sortedArray sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    for(NSString * key in sortedArray)
     {
-        if([key isEqualToString:@"host"] || [key isEqualToString:[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"] || [key isEqualToString:@"overrideError"] || [key isEqualToString:@"checkMark"] || [key isEqualToString:@"cache"] || [key isEqualToString:@"host"])
+        if([key isEqualToString:@"host"] || [key isEqualToString:[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"] || [key isEqualToString:@"completion"] || [key isEqualToString:@"method"] || [key isEqualToString:@"overrideLoading"] || [key isEqualToString:@"overrideAlert"] || [key isEqualToString:@"overrideError"] || [key isEqualToString:@"checkMark"] || [key isEqualToString:@"cache"] || [key isEqualToString:@"host"] || [key isEqualToString:@"overrideOrder"])
         {
             continue;
         }
         
-        [getUrl appendString:[NSString stringWithFormat:@"%@/",dict[key]]];
+        
+        if([dict responseForKey:@"overrideOrder"])
+        {
+            [getUrl appendString:[NSString stringWithFormat:@"%@/",dict[key]]];
+        }
+        else
+        {
+            [getUrl appendString:[NSString stringWithFormat:@"%@=%@&",key,dict[key]]];
+        }
     }
     
     return [getUrl substringToIndex:getUrl.length-(getUrl.length>0)];

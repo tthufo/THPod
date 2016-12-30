@@ -20,6 +20,8 @@
 
 #import <Accelerate/Accelerate.h>
 
+#import "objc/runtime.h"
+
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -1627,3 +1629,53 @@ static NSCharacterSet* VariationSelectors = nil;
 }
 
 @end
+
+
+@implementation UIView (custom)
+
+@dynamic onTouchEvent, object;
+
+- (void)setObject:(id)object
+{
+    id obj = object;
+    
+    objc_setAssociatedObject(self, @selector(object), obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id)object
+{
+    id obj = objc_getAssociatedObject(self, @selector(object));
+    
+    return obj;
+}
+
+- (void)setOnTouchEvent:(TouchAction)onTouchEvent_
+{
+    TouchAction onTouch = onTouchEvent_;
+    
+    objc_setAssociatedObject(self, @selector(onTouchEvent), onTouch, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (TouchAction)onTouchEvent
+{
+    TouchAction onTouch = objc_getAssociatedObject(self, @selector(onTouchEvent));
+    
+    return onTouch;
+}
+
+- (void)actionForTouch:(id)object and:(TouchAction)touchEvent
+{
+    self.onTouchEvent = touchEvent;
+    
+    self.object = object;
+    
+    [self addTapTarget:self action:@selector(didPressButton:)];
+}
+
+- (void)didPressButton:(UIButton*)sender
+{
+    self.onTouchEvent(self.object);
+}
+
+@end
+

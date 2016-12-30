@@ -334,3 +334,15 @@
 - (UIViewController*)storyboard:(NSString*)name andId:(NSString*)iD;
 
 @end
+
+typedef void (^TouchAction)(NSDictionary * touchInfo);
+
+@interface UIView (custom)
+
+@property(nonatomic, copy) TouchAction onTouchEvent;
+
+@property(nonatomic, copy) id object;
+
+- (void)actionForTouch:(id)object and:(TouchAction)touchEvent;
+
+@end
