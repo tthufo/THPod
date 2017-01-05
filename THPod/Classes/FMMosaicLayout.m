@@ -75,12 +75,17 @@ static const BOOL kFMDefaultFooterShouldOverlayContent = NO;
             [self growColumnHeightsBy:headerLayoutAttribute.frame.size.height + interitemSpacing section:sectionIndex];
         }
         
+        FMMosaicCellSize cellType;
+        
         // Calculate cell attributes in each section
         NSMutableArray *smallMosaicCellIndexPathsBuffer = [[NSMutableArray alloc] initWithCapacity:2];
         for (NSInteger cellIndex = 0; cellIndex < [self.collectionView numberOfItemsInSection:sectionIndex]; cellIndex++) {
             
             NSIndexPath *cellIndexPath = [NSIndexPath indexPathForItem:cellIndex inSection:sectionIndex];
             FMMosaicCellSize mosaicCellSize = [self mosaicCellSizeForItemAtIndexPath:cellIndexPath];
+            
+            cellType = mosaicCellSize;
+            
             NSInteger indexOfShortestColumn = [self indexOfShortestColumnInSection:sectionIndex]; // must be recalculated every time a new cell is added
 
             if (mosaicCellSize == FMMosaicCellSizeBig) {
@@ -109,12 +114,31 @@ static const BOOL kFMDefaultFooterShouldOverlayContent = NO;
                 CGFloat columnHeight = [self.columnHeightsPerSection[sectionIndex][indexOfShortestColumn] floatValue];
                 self.columnHeightsPerSection[sectionIndex][indexOfShortestColumn] = @(columnHeight + layoutAttributes.frame.size.height + interitemSpacing);
             }
+            else if(mosaicCellSize == FMMosaicCellSizeCustom) {
+                [smallMosaicCellIndexPathsBuffer addObject:cellIndexPath];
+                
+                // Wait until small cell buffer is full (widths add up to one big cell), then add small cells to column heights array and layout attributes
+                if(smallMosaicCellIndexPathsBuffer.count >= 2)
+                {
+                    UICollectionViewLayoutAttributes *layoutAttributes = [self addSmallCustomMosaicLayoutAttributesForIndexPath:smallMosaicCellIndexPathsBuffer[0]
+                                                                                                                 inColumn:indexOfShortestColumn bufferIndex:0];
+                    [self addSmallCustomMosaicLayoutAttributesForIndexPath:smallMosaicCellIndexPathsBuffer[1] inColumn:indexOfShortestColumn bufferIndex:1];
+                    
+                    // Add to small cells to shortest column, and recalculate column height now that they've been added
+                    CGFloat columnHeight = [self.columnHeightsPerSection[sectionIndex][indexOfShortestColumn] floatValue];
+                    
+                    self.columnHeightsPerSection[sectionIndex][indexOfShortestColumn] = @(columnHeight + layoutAttributes.frame.size.height + interitemSpacing);
+                    
+                    [smallMosaicCellIndexPathsBuffer removeAllObjects];
+                }
+            }
         }
         
         // Handle remaining cells that didn't fill the buffer
         if (smallMosaicCellIndexPathsBuffer.count > 0) {
             NSInteger indexOfShortestColumn = [self indexOfShortestColumnInSection:sectionIndex];
-            UICollectionViewLayoutAttributes *layoutAttributes = [self addSmallMosaicLayoutAttributesForIndexPath:smallMosaicCellIndexPathsBuffer[0]
+            UICollectionViewLayoutAttributes *layoutAttributes = cellType == FMMosaicCellSizeCustom ? [self addSmallCustomMosaicLayoutAttributesForIndexPath:smallMosaicCellIndexPathsBuffer[0]
+                                                                                                                                              inColumn:indexOfShortestColumn bufferIndex:0] :  [self addSmallMosaicLayoutAttributesForIndexPath:smallMosaicCellIndexPathsBuffer[0]
                                                                                                          inColumn:indexOfShortestColumn bufferIndex:0];
             
             // Add to small cells to shortest column, and recalculate column height now that they've been added
@@ -285,11 +309,30 @@ static const BOOL kFMDefaultFooterShouldOverlayContent = NO;
     return layoutAttributes;
 }
 
+- (UICollectionViewLayoutAttributes *)addSmallCustomMosaicLayoutAttributesForIndexPath:(NSIndexPath *)cellIndexPath
+                                                                        inColumn:(NSInteger)column bufferIndex:(NSInteger)bufferIndex {
+    UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:cellIndexPath];
+    CGRect frame = [self mosaicCellRectWithSize:FMMosaicCellSizeCustom atIndexPath:cellIndexPath inColumn:column];
+    
+    // Account for first or second small mosaic cell
+    CGFloat interitemSpacing = [self interitemSpacingAtSection:cellIndexPath.section];
+    CGFloat cellWidth = [self columnWidthCustomInSection:cellIndexPath.section];
+    //[self cellHeightForMosaicSize:FMMosaicCellSizeCustom section:cellIndexPath.section];
+    frame.origin.x += (cellWidth + interitemSpacing) * bufferIndex;
+    layoutAttributes.frame = frame;
+    
+    [self.cellLayoutAttributes setObject:layoutAttributes forKey:cellIndexPath];
+    
+    return layoutAttributes;
+}
+
 - (CGRect)mosaicCellRectWithSize:(FMMosaicCellSize)mosaicCellSize atIndexPath:(NSIndexPath *)cellIndexPath inColumn:(NSInteger)column {
     NSInteger sectionIndex = cellIndexPath.section;
     
     CGFloat cellHeight = [self cellHeightForMosaicSize:mosaicCellSize section:sectionIndex];
-    CGFloat cellWidth = mosaicCellSize == FMMosaicCellSizeFull ? [self columnWidthFullInSection:sectionIndex] : cellHeight;
+    
+    
+    CGFloat cellWidth = mosaicCellSize == FMMosaicCellSizeFull ? [self columnWidthFullInSection:sectionIndex] : mosaicCellSize == FMMosaicCellSizeCustom ? [self columnWidthCustomInSection:sectionIndex] : cellHeight;
     CGFloat columnHeight = [self.columnHeightsPerSection[sectionIndex][column] floatValue];
     
     CGFloat originX = column * [self columnWidthInSection:sectionIndex];
@@ -344,16 +387,30 @@ static const BOOL kFMDefaultFooterShouldOverlayContent = NO;
     return height;
 }
 
+- (CGFloat)heightForSmallCellAtSection:(NSInteger)section {
+    CGFloat height = kFMDefaultCellHeight;
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:heightSmallCellInSection:)]) {
+        height = [self.delegate collectionView:self.collectionView layout:self heightSmallCellInSection:section];
+    }
+    return height;
+}
+
 - (CGFloat)columnWidthFullInSection:(NSInteger)section {
     UIEdgeInsets sectionInset = [self insetForSectionAtIndex:section];
     return [self collectionViewContentWidth] - sectionInset.left - sectionInset.right;
+}
+
+- (CGFloat)columnWidthCustomInSection:(NSInteger)section {
+    UIEdgeInsets sectionInset = [self insetForSectionAtIndex:section];
+    return ([self collectionViewContentWidth] / 2 - sectionInset.left / 1 - sectionInset.right / 2);
 }
 
 - (CGFloat)cellHeightForMosaicSize:(FMMosaicCellSize)mosaicCellSize section:(NSInteger)section {
     CGFloat bigCellSize = [self columnWidthInSection:section];
     CGFloat fullCellSize = [self columnWidthFullInSection:section];
     CGFloat interitemSpacing = [self interitemSpacingAtSection:section];
-    return mosaicCellSize == FMMosaicCellSizeFull ? [self heightForFullCellAtSection:section] : mosaicCellSize == FMMosaicCellSizeBig ? bigCellSize : (bigCellSize - interitemSpacing) / 2.0;
+    
+    return mosaicCellSize == FMMosaicCellSizeFull ? [self heightForFullCellAtSection:section] : mosaicCellSize == FMMosaicCellSizeBig ? bigCellSize : mosaicCellSize == FMMosaicCellSizeCustom ? [self heightForSmallCellAtSection:section] : (bigCellSize - interitemSpacing) / 2.0;
 }
 
 // The width of a column refers to the width of one FMMosaicCellSizeBig cell w/o interitem spacing

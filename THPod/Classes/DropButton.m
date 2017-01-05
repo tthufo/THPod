@@ -62,7 +62,18 @@ static DropButton * shareButton = nil;
         
         CGFloat f = [template[@"height"] floatValue];
         
-        CGRect windowRect = [dict[@"rect"] CGRectValue];
+        CGFloat startRect = [self convertRect:self.bounds toView:nil].origin.x;
+        
+        CGFloat start = (startRect + [template[@"width"] floatValue]) > screenWidth ? self.bounds.origin.x - ([template[@"width"] floatValue] - (self.bounds.origin.x + self.bounds.size.width)) : self.bounds.origin.x;
+        
+        if([dict responseForKey:@"center"])
+        {
+            start = self.bounds.origin.x;
+            
+            start -= ([template[@"width"] floatValue] - self.bounds.size.width) / 2;
+        }
+        
+        CGRect windowRect = [dict responseForKey:@"rect"] ? [dict[@"rect"] CGRectValue] : [self convertRect:[template responseForKey:@"width"] ? CGRectMake(start, self.bounds.origin.y + ([dict responseForKey:@"center"] ? [dict[@"offSetY"] floatValue] : 0), [template[@"width"] floatValue], self.bounds.size.height) : self.bounds toView:nil];
         
         dropDown = [NIDropDown new];
         
