@@ -12,7 +12,8 @@ typedef enum __swipeState
 {
     didOpen,//
     didClose,//
-    didClick
+    didClick,
+    didForceClose
 }SwipeState;
 
 typedef void (^SwipeAction)(SwipeState swipeState, NSDictionary * actionInfo);

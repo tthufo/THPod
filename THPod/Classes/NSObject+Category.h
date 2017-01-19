@@ -66,6 +66,8 @@
 
 - (void)alert:(NSString *)title message:(NSString *)message;
 
+- (void)showSVHUD:(NSString *)string andProgress:(float)progress;
+
 - (void)showSVHUD:(NSString*)string andOption:(int)index;
 
 - (void)hideSVHUD;
@@ -188,6 +190,8 @@
 - (UIView*)withShadow:(UIColor*)hext;
 
 - (void)setHeight:(CGFloat)height animated:(BOOL)animate;
+
+- (void)setWidth:(CGFloat)width animated:(BOOL)animated;
 
 - (void)bounce:(float)bounceFactor;
 

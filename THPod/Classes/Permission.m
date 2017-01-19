@@ -8,6 +8,8 @@
 
 #import "Permission.h"
 
+#define VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 static Permission * shareInstan = nil;
 
 @implementation Permission
@@ -78,32 +80,47 @@ static Permission * shareInstan = nil;
     
     AVAudioSession *session = [AVAudioSession sharedInstance];
     
-    AVAudioSessionRecordPermission sessionRecordPermission = [session recordPermission];
-    switch (sessionRecordPermission) {
-        case AVAudioSessionRecordPermissionUndetermined:
-        {
-            [session requestRecordPermission:^(BOOL granted) {
-                if (granted) {
-                    self.MicroCompletion(2);
-                }
-                else {
-                    self.MicroCompletion(3);
-                }
-            }];
+    if(VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
+    {
+        AVAudioSessionRecordPermission sessionRecordPermission = [session recordPermission];
+        
+        switch (sessionRecordPermission) {
+            case AVAudioSessionRecordPermissionUndetermined:
+            {
+                [session requestRecordPermission:^(BOOL granted) {
+                    if (granted) {
+                        self.MicroCompletion(2);
+                    }
+                    else {
+                        self.MicroCompletion(3);
+                    }
+                }];
+            }
+                break;
+            case AVAudioSessionRecordPermissionDenied:
+            {
+                self.MicroCompletion(1);
+            }
+                break;
+            case AVAudioSessionRecordPermissionGranted:
+            {
+                self.MicroCompletion(0);
+            }
+                break;
+            default:
+                break;
         }
-            break;
-        case AVAudioSessionRecordPermissionDenied:
-        {
-            self.MicroCompletion(1);
-        }
-            break;
-        case AVAudioSessionRecordPermissionGranted:
-        {
-            self.MicroCompletion(0);
-        }
-            break;
-        default:
-            break;
+    }
+    else
+    {
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            if (granted) {
+                self.MicroCompletion(2);
+            }
+            else {
+                self.MicroCompletion(3);
+            }
+        }];
     }
 }
 
@@ -182,7 +199,17 @@ static Permission * shareInstan = nil;
 
 - (BOOL)isLocationEnable
 {
-    return [locationManager locationServicesEnabled];
+    if([CLLocationManager locationServicesEnabled])
+    {
+        if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
+    }
 }
 
 - (NSDictionary *)currentLocation
@@ -231,7 +258,9 @@ static Permission * shareInstan = nil;
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
+//    [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
+    
+    NSLog(@"Location Disabled");
 }
 
 

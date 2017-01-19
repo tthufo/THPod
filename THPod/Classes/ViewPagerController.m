@@ -812,6 +812,7 @@ BOOL isRemove;
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
                                                               navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                                                                             options:nil];
+    
     [self addChildViewController:self.pageViewController];
 
     // Setup some forwarding events to hijack the scrollView
@@ -950,13 +951,6 @@ BOOL isRemove;
         self.tabsView.tag = kTabViewTag;
         [self.view insertSubview:self.tabsView atIndex:0];
     }
-    
-//    CGRect frame = self.tabsView.frame;
-//    
-//    frame.origin.x += 10;
-//    
-//    self.tabsView.frame = frame;
-    
     
     if(_isCustomBackGround)
     {

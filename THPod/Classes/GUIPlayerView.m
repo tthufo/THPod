@@ -73,7 +73,7 @@
 
 - (instancetype)initWithInfo:(NSDictionary*)info
 {
-    self = [super init];
+    self = [super initWithFrame:[info[@"rect"] CGRectValue]];
     options = info;
     [self setup];
     return self;
@@ -772,16 +772,22 @@
 {
     seeking = YES;
     
-    [progressTimer invalidate];
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+    }
 }
 
 - (void)resumeRefreshing
 {
     seeking = NO;
     
-    [progressTimer invalidate];
-    
-    progressTimer = nil;
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
     
     progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                      target:self
@@ -834,8 +840,12 @@
                 self.onEvent(3, @{});
             }
         }
-        [progressTimer invalidate];
-        progressTimer = nil;
+        if(progressTimer)
+        {
+            [progressTimer invalidate];
+            
+            progressTimer = nil;
+        }
     }
     
     else {
@@ -945,9 +955,11 @@
 
 #pragma mark - Public Methods
 
-- (void)prepareAndPlayAutomatically:(BOOL)playAutomatically {
-    if (player) {
-        [self stop];
+- (void)prepareAndPlayAutomatically:(BOOL)playAutomatically
+{
+    if (player)
+    {
+        [self end];
     }
     
     player = [[AVPlayer alloc] initWithPlayerItem:nil];
@@ -969,8 +981,8 @@
     
     [player setAllowsExternalPlayback:YES];
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+    [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     [self.layer addSublayer:playerLayer];
-    
     defaultFrame = self.frame;
     
     CGRect frame = self.frame;
@@ -981,8 +993,26 @@
     [self bringSubviewToFront:controllersView];
     [self bringSubviewToFront:topView];
     
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     
+    @try {
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    @try {
+        
+        [audioSession setMode:AVAudioSessionModeVideoRecording error:nil];
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+
     [player addObserver:self forKeyPath:@"rate" options:0 context:nil];
     [currentItem addObserver:self forKeyPath:@"status" options:0 context:nil];
     
@@ -996,12 +1026,14 @@
     }
 }
 
-- (void)clean {
-    
-    [progressTimer invalidate];
-    progressTimer = nil;
-    [controllersTimer invalidate];
-    controllersTimer = nil;
+- (void)clean
+{
+    if(controllersTimer)
+    {
+        [controllersTimer invalidate];
+            
+        controllersTimer = nil;
+    }
     _audioTapProcessor = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
@@ -1010,7 +1042,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPVolumeViewWirelessRouteActiveDidChangeNotification object:nil];
     
     [player setAllowsExternalPlayback:NO];
-    [self stop];
+    [self end];
     [player removeObserver:self forKeyPath:@"rate"];
     @try{
         [currentItem removeObserver:self forKeyPath:@"status"];
@@ -1023,7 +1055,15 @@
     options = nil;
 }
 
-- (void)play {
+- (void)resume
+{
+    if(!self.isPlaying)
+    {
+        if(self.onAction)
+        {
+            self.onAction(1, @{});
+        }
+    }
     
     [player play];
     
@@ -1038,7 +1078,26 @@
                                                     repeats:YES];
 }
 
-- (void)pause {
+- (void)play
+{
+    if (player)
+    {        
+        [player play];
+    }
+    
+    [playButton setSelected:YES];
+    
+    [[self elementWithTag:11] setSelected:YES];
+    
+    progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                                     target:self
+                                                   selector:@selector(refreshProgressIndicator)
+                                                   userInfo:nil
+                                                    repeats:YES];
+}
+
+- (void)pause
+{
     [player pause];
     
     [playButton setSelected:NO];
@@ -1057,14 +1116,41 @@
         }
     }
     
-    [progressTimer invalidate];
-    
-    progressTimer = nil;
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
 }
 
-- (void)stop {
-    if (player) {
+- (void)end
+{
+    if (player)
+    {
         [player pause];
+        
+        [player seekToTime:kCMTimeZero];
+        
+        [playButton setSelected:NO];
+        
+        [[self elementWithTag:11] setSelected:NO];
+    }
+    
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
+}
+
+- (void)stop
+{
+    if (player)
+    {
+        [player pause];
+        
         [player seekToTime:kCMTimeZero];
         
         [playButton setSelected:NO];
@@ -1076,12 +1162,17 @@
             self.onAction(7, @{});
         }
     }
-    [progressTimer invalidate];
     
-    progressTimer = nil;
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
 }
 
-- (BOOL)isPlaying {
+- (BOOL)isPlaying
+{
     return [player rate] > 0.0f;
 }
 
@@ -1097,10 +1188,12 @@
 
 #pragma mark - AV Player Notifications and Observers
 
-- (void)playerDidFinishPlaying:(NSNotification *)notification {
-    [self stop];
-    
-    if (fullscreen) {
+- (void)playerDidFinishPlaying:(NSNotification *)notification
+{
+    [self end];
+
+    if (fullscreen)
+    {
         [self toggleFullscreen:fullscreenButton];
     }
     
@@ -1117,8 +1210,9 @@
     }
 }
 
-- (void)playerFailedToPlayToEnd:(NSNotification *)notification {
-    [self stop];
+- (void)playerFailedToPlayToEnd:(NSNotification *)notification
+{
+    [self end];
     
     if ([delegate respondsToSelector:@selector(playerFailedToPlayToEnd)])
     {
@@ -1133,7 +1227,8 @@
     }
 }
 
-- (void)playerStalled:(NSNotification *)notification {
+- (void)playerStalled:(NSNotification *)notification
+{
     [self togglePlay:playButton];
     
     [self togglePlay:[self elementWithTag:11]];
@@ -1174,17 +1269,19 @@
             }
             else
             {
-                if(self.onEvent)
-                {
-                    self.onEvent(0, @{});
-                }
+//                if(self.onEvent)
+//                {
+//                    self.onEvent(0, @{});
+//                }
             }
         }
     }
     
-    if ([keyPath isEqualToString:@"rate"]) {
+    if ([keyPath isEqualToString:@"rate"])
+    {
         CGFloat rate = [player rate];
-        if (rate > 0) {
+        if (rate > 0)
+        {
             [activityIndicator stopAnimating];
             
             progressIndicator.userInteractionEnabled = YES;
@@ -1206,9 +1303,22 @@
                     
                     AVURLAsset *asset = (AVURLAsset *)item.asset;
                     
-                    AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio][0];
+                    AVAssetTrack *audioTrack = [[asset tracksWithMediaType:AVMediaTypeAudio] firstObject];
                     
-                    self.onEvent(0, @{@"track":audioTrack, @"item":self.player.currentItem});
+                    if(audioTrack)
+                    {
+                        if(self.onEvent)
+                        {
+                            self.onEvent(0, @{@"track":audioTrack, @"item":self.player.currentItem});
+                        }
+                    }
+                    else
+                    {
+//                        if(self.onEvent)
+//                        {
+//                            self.onEvent(3, @{});
+//                        }
+                    }
                     
                     coverView.image = [UIImage imageNamed:@""];
                 }

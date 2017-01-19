@@ -130,7 +130,7 @@ static CGFloat const kBounceValue = 0.0f;
                 if (!panningLeft) {
                     CGFloat constant = MAX(-deltaX, 0); //3
                     if (constant == 0) { //4
-                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:NO]; //5
+                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //5
                     } else {
                         self.contentViewRightConstraint.constant = constant; //6
                     }
@@ -145,10 +145,11 @@ static CGFloat const kBounceValue = 0.0f;
             }else {
                 //The cell was at least partially open.
                 CGFloat adjustment = self.startingRightLayoutConstraintConstant - deltaX; //11
+                
                 if (!panningLeft) {
                     CGFloat constant = MAX(adjustment, 0); //12
                     if (constant == 0) { //13
-                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:NO]; //14
+                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //14
                     } else {
                         self.contentViewRightConstraint.constant = constant; //15
                     }
@@ -170,7 +171,7 @@ static CGFloat const kBounceValue = 0.0f;
             if (self.startingRightLayoutConstraintConstant == 0) { //1
                 //We were opening
                 CGFloat halfOfButtonOne = [widthRange floatValue] / 2; //2
-                if (self.contentViewRightConstraint.constant >= halfOfButtonOne) { //3
+                if (self.contentViewRightConstraint.constant == halfOfButtonOne) { //3
                     //Open all the way
                     [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
                 } else {
@@ -180,7 +181,7 @@ static CGFloat const kBounceValue = 0.0f;
                 
             } else {
                 //We were closing
-                CGFloat buttonOnePlusHalfOfButton2 =  ([widthRange floatValue] / 2); //4
+                CGFloat buttonOnePlusHalfOfButton2 = ([widthRange floatValue] / 2); //4
                 if (self.contentViewRightConstraint.constant >= buttonOnePlusHalfOfButton2) { //5
                     //Re-open all the way
                     [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
@@ -252,7 +253,6 @@ static CGFloat const kBounceValue = 0.0f;
     if (notifyDelegate) {
         self.onSwipeEvent(0, @{@"index":@(indexing),@"section":@(section),@"host":self});
     }
-    
     //1
     if (self.startingRightLayoutConstraintConstant == [self buttonTotalWidth] &&
         self.contentViewRightConstraint.constant == [self buttonTotalWidth]) {

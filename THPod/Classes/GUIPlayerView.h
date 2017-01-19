@@ -91,6 +91,8 @@ typedef void (^PlayerEvent)(EventState eventState,NSDictionary * eventInfo);
 
 - (void)play;
 
+- (void)resume;
+
 - (void)pause;
 
 - (void)stop;

@@ -287,6 +287,11 @@
     [window makeToast:toast duration:2 position:pos == 0 ? CSToastPositionBottom : pos == 1 ? CSToastPositionCenter : CSToastPositionTop];
 }
 
+- (void)showSVHUD:(NSString *)string andProgress:(float)progress
+{
+    [SVProgressHUD showProgress:progress status:string];
+}
+
 - (void)showSVHUD:(NSString*)string andOption:(int)index
 {
     switch (index)
@@ -294,9 +299,8 @@
         case 0:
         {
             [SVProgressHUD showWithStatus:string];
-            [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
+            [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeCustom];
             [SVProgressHUD setBackgroundColor:[UIColor orangeColor]];
-            
             [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
         }
             break;
@@ -876,6 +880,22 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     }
     CGRect f = self.frame;
     f.size.height = height;
+    self.frame = f;
+    if (animated)
+    {
+        [UIView commitAnimations];
+    }
+}
+
+- (void)setWidth:(CGFloat)width animated:(BOOL)animated
+{
+    if (animated)
+    {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+    }
+    CGRect f = self.frame;
+    f.size.width = width;
     self.frame = f;
     if (animated)
     {
