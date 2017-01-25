@@ -775,6 +775,8 @@
     if(progressTimer)
     {
         [progressTimer invalidate];
+        
+        progressTimer = nil;
     }
 }
 
@@ -981,7 +983,7 @@
     
     [player setAllowsExternalPlayback:YES];
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-    [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
     [self.layer addSublayer:playerLayer];
     defaultFrame = self.frame;
     
@@ -1034,7 +1036,7 @@
             
         controllersTimer = nil;
     }
-    _audioTapProcessor = nil;
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:nil];
@@ -1044,9 +1046,24 @@
     [player setAllowsExternalPlayback:NO];
     [self end];
     [player removeObserver:self forKeyPath:@"rate"];
-    @try{
+    @try
+    {
+        AVMutableAudioMixInputParameters *params = ((AVMutableAudioMixInputParameters*)((AVPlayerItem*)self.player.currentItem).audioMix.inputParameters[0]);
+        
+        MTAudioProcessingTapRef tap = params.audioTapProcessor;
+        
+        ((AVPlayerItem*)self.player.currentItem).audioMix = nil;
+        
+        if(tap)
+        {
+            CFRelease(tap);
+        }
+
         [currentItem removeObserver:self forKeyPath:@"status"];
-    }@catch(id anException){
+    }
+    @catch(id anException)
+    {
+        
     }
     [self setPlayer:nil];
     [self.playerLayer removeFromSuperlayer];

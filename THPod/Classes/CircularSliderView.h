@@ -33,6 +33,8 @@ typedef void (^CSCompletion)(SliderState type, float sliderValue, CircularSlider
 
 - (void)setTintColor:(UIColor*)minColor andMax:(UIColor*)maxColor;
 
+- (void)cleanUpSlider;
+
 - (float)value;
 
 @end

@@ -93,7 +93,7 @@ static bool isKnobBeingTouched = false;
     knobAngle = MIN_ANGLE+(percentDone*(MAX_ANGLE-MIN_ANGLE));
 }
 
--(id)initWithMinValue:(float)minimumValue maxValue:(float)maximumValue initialValue:(float)initialValue
+- (id)initWithMinValue:(float)minimumValue maxValue:(float)maximumValue initialValue:(float)initialValue
 {
     self = [super init];
     if (self)
@@ -183,6 +183,16 @@ static bool isKnobBeingTouched = false;
     isKnobBeingTouched = false;
 }
 
+- (void)cleanUpSlider
+{
+    for(UIView * v in self.subviews)
+    {
+        [v removeFromSuperview];
+    }
+    
+    [self setup];
+}
+
 - (void)setSliderValue:(float)value
 {
     float percentDone = 1-(value/(maxValue - minValue));
@@ -203,7 +213,7 @@ static bool isKnobBeingTouched = false;
     [self setNeedsDisplay];
 }
 
--(float)value
+- (float)value
 {
     float percentDone = 1.0 - ((knobAngle-MIN_ANGLE)/(MAX_ANGLE-MIN_ANGLE));
     
