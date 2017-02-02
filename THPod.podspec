@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'THPod'
-  s.version          = '0.8.9'
+  s.version          = '0.9.0'
   s.summary          = 'A short description of THPod.'
 
 # This description is used to generate tags and improve search results.

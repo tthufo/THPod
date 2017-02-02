@@ -866,7 +866,10 @@
             
             [((GUISlider*)options[@"slider"]) setValue:(current / duration)];
             
-            [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+            if([options[@"slider"] isKindOfClass:[GUISlider class]])
+            {
+                [((GUISlider*)options[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+            }
         }
         
         if(options[@"currentTime"])
@@ -892,7 +895,10 @@
                 
                 [((GUISlider*)dict[@"slider"]) setValue:(current / duration)];
                 
-                [((GUISlider*)dict[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+                if([options[@"slider"] isKindOfClass:[GUISlider class]])
+                {
+                    [((GUISlider*)dict[@"slider"]) setSecondaryValue:([self availableDuration] / duration)];
+                }
                 
                 if(dict[@"currentTime"])
                 {

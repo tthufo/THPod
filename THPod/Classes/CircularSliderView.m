@@ -65,6 +65,8 @@ static bool isKnobBeingTouched = false;
 {
     [self setBackgroundColor:[UIColor clearColor]];
 
+    knobAngle = 0;
+    
     maxValue = 1;
     
     minValue = 0;
@@ -189,8 +191,6 @@ static bool isKnobBeingTouched = false;
     {
         [v removeFromSuperview];
     }
-    
-    [self setup];
 }
 
 - (void)setSliderValue:(float)value
@@ -202,14 +202,14 @@ static bool isKnobBeingTouched = false;
         knobAngle = MAX_ANGLE;
     if (knobAngle < MIN_ANGLE)
         knobAngle = MIN_ANGLE;
-    
+
     knobAngle = fmodf(knobAngle, 2*M_PI);
     
     if([self value] <= 0 )
     {
         return;
     }
-    
+
     [self setNeedsDisplay];
 }
 
