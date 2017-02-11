@@ -1053,6 +1053,11 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 @implementation UIImage (Scale)
 
+- (NSString *)encodeToBase64String
+{
+    return [UIImagePNGRepresentation(self) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+}
+
 - (UIImage *)boxblurImageWithBlur:(CGFloat)blur
 {
     if (blur < 0.f || blur > 1.f) {

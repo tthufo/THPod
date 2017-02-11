@@ -176,7 +176,7 @@ static LTRequest *__sharedLTRequest = nil;
 
 - (BOOL)didRespond:(NSMutableDictionary*)dict andHost:(UIViewController*)host
 {
-    NSLog(@"+___+%@",dict);
+//    NSLog(@"+___+%@",dict);
     
     NSDictionary * info = [self dictWithPlist:@"Info"];
     
@@ -323,6 +323,8 @@ static LTRequest *__sharedLTRequest = nil;
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
             [self didFailedResult:dict andError:error];
+            
+            NSLog(@"%@", [error description]);
             
         }];
     }

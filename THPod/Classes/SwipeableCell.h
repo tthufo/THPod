@@ -10,10 +10,12 @@
 
 typedef enum __swipeState
 {
-    didOpen,//
-    didClose,//
-    didClick,
-    didForceClose
+    didOpen,//0
+    didClose,//1
+    didClick,//2
+    didForceClose,//3
+    didTouchDown,//4
+    didTouchUp//5
 }SwipeState;
 
 typedef void (^SwipeAction)(SwipeState swipeState, NSDictionary * actionInfo);
@@ -25,6 +27,8 @@ typedef void (^SwipeAction)(SwipeState swipeState, NSDictionary * actionInfo);
 - (void)didConfigureCell:(NSDictionary*)dict andCompletion:(SwipeAction)swipeEvent;
 
 - (UIView*)cellContentView;
+
+- (BOOL)isOpen;
 
 - (void)setEnableTouch:(BOOL)isEnable_;
 

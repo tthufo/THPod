@@ -820,7 +820,8 @@
         // Video is a live stream
         [currentTimeLabel setText:nil];
         [remainingTimeLabel setText:nil];
-        [progressIndicator setHidden:YES];
+        [progressIndicator setHidden:NO];
+        [progressIndicator setEnabled:NO];
         [playButton setSelected:NO];
         [[self elementWithTag:11] setSelected:NO];
         
@@ -1054,16 +1055,16 @@
     [player removeObserver:self forKeyPath:@"rate"];
     @try
     {
-        AVMutableAudioMixInputParameters *params = ((AVMutableAudioMixInputParameters*)((AVPlayerItem*)self.player.currentItem).audioMix.inputParameters[0]);
-        
-        MTAudioProcessingTapRef tap = params.audioTapProcessor;
-        
-        ((AVPlayerItem*)self.player.currentItem).audioMix = nil;
-        
-        if(tap)
-        {
-            CFRelease(tap);
-        }
+//        AVMutableAudioMixInputParameters *params = ((AVMutableAudioMixInputParameters*)((AVPlayerItem*)self.player.currentItem).audioMix.inputParameters[0]);
+//        
+//        MTAudioProcessingTapRef tap = params.audioTapProcessor;
+//        
+//        ((AVPlayerItem*)self.player.currentItem).audioMix = nil;
+//        
+//        if(tap)
+//        {
+//            CFRelease(tap);
+//        }
 
         [currentItem removeObserver:self forKeyPath:@"status"];
     }

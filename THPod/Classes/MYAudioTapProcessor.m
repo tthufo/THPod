@@ -107,13 +107,6 @@ static OSStatus AU_RenderCallback(void *inRefCon, AudioUnitRenderActionFlags *io
 				}
 			}
 		}
-        
-        
-//        BOOL audioSessionActivated = [self setupAudioSession];
-//        NSAssert (audioSessionActivated == YES, @"Unable to set up audio session.");
-        
-//        [self createAUGraph];
-//        [self configureAndStartAudioProcessingGraph: self.processingGraph];
 	}
 	
 	return _audioMix;
@@ -707,6 +700,7 @@ static void tap_UnprepareCallback(MTAudioProcessingTapRef tap)
 		AudioUnitUninitialize(context->audioUnit);
 		AudioComponentInstanceDispose(context->audioUnit);
 		context->audioUnit = NULL;
+        context->self = NULL;
 	}
 }
 
@@ -722,10 +716,17 @@ static void tap_ProcessCallback(MTAudioProcessingTapRef tap, CMItemCount numberF
 		NSLog(@"Unsupported tap processing format.");
 		return;
 	}
+    
+    if(!context)
+    {
+        NSLog(@"%@", context->self);
+        
+        return;
+    }
 	
-	MYAudioTapProcessor *self = ((__bridge MYAudioTapProcessor *)context->self);
-	
-	if (self.isBandpassFilterEnabled)
+	MYAudioTapProcessor * yo = ((__bridge MYAudioTapProcessor *)context->self);
+    
+	if (yo.isBandpassFilterEnabled)
 	{
 		// Apply bandpass filter Audio Unit.
 		AudioUnit audioUnit = context->audioUnit;
@@ -758,7 +759,7 @@ static void tap_ProcessCallback(MTAudioProcessingTapRef tap, CMItemCount numberF
 			*numberFramesOut = numberFrames;
 		}
     }
-	else if(self.isReverbFilterEnabled)
+	else if(yo.isReverbFilterEnabled)
 	{
         AudioUnit audioVerb = context->audioVerb;
         if (audioVerb)

@@ -16,6 +16,8 @@ typedef void (^DropButtonCompletion)(id object);
 
 + (DropButton*)shareInstance;
 
+- (void)didDropDownWithData:(NSArray*)dataList andCustom:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion;
+
 - (void)didDropDownWithData:(NSArray*)dataList andCompletion:(DropButtonCompletion)completion;
 
 - (void)didDropDownWithData:(NSArray*)dataList andInfo:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion;

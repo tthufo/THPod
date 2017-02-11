@@ -217,6 +217,8 @@
 
 @interface UIImage (Scale)
 
+- (NSString *)encodeToBase64String;
+
 - (UIImage *)tintedImage:(NSString*)color;
 
 - (UIImage *)imageScaledToQuarter;

@@ -75,7 +75,7 @@ static CGFloat const kBounceValue = 0.0f;
 
 - (void)closeCell
 {
-    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:NO];
+    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
 }
 
 - (void)openCell
@@ -85,7 +85,10 @@ static CGFloat const kBounceValue = 0.0f;
 
 - (IBAction)buttonClicked:(UIButton*)sender
 {
-    self.onSwipeEvent(2, @{@"tag":@(sender.tag),@"index":@(indexing),@"section":@(section),@"host":self});
+    if(self.onSwipeEvent)
+    {
+        self.onSwipeEvent(2, @{@"tag":@(sender.tag),@"index":@(indexing),@"section":@(section),@"host":self});
+    }
 }
 
 - (UIView*)cellContentView
@@ -98,6 +101,126 @@ static CGFloat const kBounceValue = 0.0f;
     return [widthRange floatValue];
 }
 
+- (BOOL)isOpen
+{
+    return self.contentViewRightConstraint.constant == [widthRange floatValue];
+}
+
+//- (void)panThisCell:(UIPanGestureRecognizer *)recognizer
+//{
+//    if(!isEnable)
+//    {
+//        return;
+//    }
+//    
+//    float limit = self.contentView.frame.origin.x;
+//    
+//    switch (recognizer.state) {
+//        case UIGestureRecognizerStateBegan:
+//            self.panStartPoint = [recognizer translationInView:self.myContentView];
+//            self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
+//            break;
+//            
+//        case UIGestureRecognizerStateChanged: {
+//            self.onSwipeEvent(4, @{@"index":@(indexing),@"section":@(section),@"host":self});
+//            CGPoint currentPoint = [recognizer translationInView:self.myContentView];
+//            CGFloat deltaX = currentPoint.x - self.panStartPoint.x;
+//            
+//            if(deltaX > -70)
+//            {
+//                return;
+//            }
+//            
+//            BOOL panningLeft = NO;
+//            if (currentPoint.x < self.panStartPoint.x) {  //1
+//                panningLeft = YES;
+//            }
+//        
+//            if (self.startingRightLayoutConstraintConstant == 0) { //2
+//                //The cell was closed and is now opening
+//                if (!panningLeft) {
+//                    CGFloat constant = MAX(-deltaX, 0); //3
+//                    if (constant == 0) { //4
+//                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //5
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant; //6
+//                    }
+//                } else {
+//                    CGFloat constant = MIN(-deltaX, [self buttonTotalWidth]); //7
+//                    if (constant == [self buttonTotalWidth]) { //8
+//                        [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES]; //9
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant; //10
+//                    }
+//                }
+//            }else {
+//                //The cell was at least partially open.
+//                CGFloat adjustment = self.startingRightLayoutConstraintConstant - deltaX; //11
+//
+//                if (!panningLeft) {
+//                    CGFloat constant = MAX(adjustment, 0); //12
+//                    if (constant == 0) { //13
+//                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //14
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant; //15
+//                    }
+//                } else {
+//                    CGFloat constant = MIN(adjustment, [self buttonTotalWidth]); //16
+//                    if (constant == [self buttonTotalWidth]) { //17
+//                        [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES]; //18
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant;//19
+//                    }
+//                }
+//            }
+//            
+//                self.contentViewLeftConstraint.constant = -self.contentViewRightConstraint.constant; //20
+//        }
+//            break;
+//            
+//        case UIGestureRecognizerStateEnded:
+//            if (self.startingRightLayoutConstraintConstant == 0) { //1
+//                //We were opening
+//                CGFloat halfOfButtonOne = [widthRange floatValue] / 2; //2
+//                if (self.contentViewRightConstraint.constant >= halfOfButtonOne) { //3
+//                    //Open all the way
+//                    [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
+//                } else {
+//                    //Re-close
+//                    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
+//                }
+//                
+//            } else {
+//                //We were closing
+//                CGFloat buttonOnePlusHalfOfButton2 = ([widthRange floatValue] / 2); //4
+//                if (self.contentViewRightConstraint.constant >= buttonOnePlusHalfOfButton2) { //5
+//                    //Re-open all the way
+//                    [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
+//                } else {
+//                    //Close
+//                    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
+//                }
+//            }
+//            self.onSwipeEvent(5, @{@"index":@(indexing),@"section":@(section),@"host":self});
+//            break;
+//            
+//        case UIGestureRecognizerStateCancelled:
+//            if (self.startingRightLayoutConstraintConstant == 0) {
+//                //We were closed - reset everything to 0
+//                [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
+//            } else {
+//                //We were open - reset to the open state
+//                [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
+//            }
+//            self.onSwipeEvent(5, @{@"index":@(indexing),@"section":@(section),@"host":self});
+//            break;
+//            
+//            
+//        default:
+//            break;
+//    }
+//}
+
 - (void)panThisCell:(UIPanGestureRecognizer *)recognizer
 {
     if(!isEnable)
@@ -105,6 +228,8 @@ static CGFloat const kBounceValue = 0.0f;
         return;
     }
     
+    float limit = self.contentView.frame.origin.x;
+
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
             self.panStartPoint = [recognizer translationInView:self.myContentView];
@@ -125,45 +250,58 @@ static CGFloat const kBounceValue = 0.0f;
                 panningLeft = YES;
             }
             
+            if(!panningLeft)
+            {
+                return;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
             if (self.startingRightLayoutConstraintConstant == 0) { //2
                 //The cell was closed and is now opening
-                if (!panningLeft) {
-                    CGFloat constant = MAX(-deltaX, 0); //3
-                    if (constant == 0) { //4
-                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //5
-                    } else {
-                        self.contentViewRightConstraint.constant = constant; //6
-                    }
-                } else {
+//                if (!panningLeft) {
+//                    CGFloat constant = MAX(-deltaX, 0); //3
+//                    if (constant == 0) { //4
+//                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //5
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant; //6
+//                    }
+//                } else
+                {
                     CGFloat constant = MIN(-deltaX, [self buttonTotalWidth]); //7
                     if (constant == [self buttonTotalWidth]) { //8
-                        [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:NO]; //9
+                        [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES]; //9
                     } else {
-                        self.contentViewRightConstraint.constant = constant; //10
+//                        self.contentViewRightConstraint.constant = constant; //10
                     }
                 }
             }else {
                 //The cell was at least partially open.
-                CGFloat adjustment = self.startingRightLayoutConstraintConstant - deltaX; //11
-                
-                if (!panningLeft) {
-                    CGFloat constant = MAX(adjustment, 0); //12
-                    if (constant == 0) { //13
-                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //14
-                    } else {
-                        self.contentViewRightConstraint.constant = constant; //15
-                    }
-                } else {
-                    CGFloat constant = MIN(adjustment, [self buttonTotalWidth]); //16
-                    if (constant == [self buttonTotalWidth]) { //17
-                        [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:NO]; //18
-                    } else {
-                        self.contentViewRightConstraint.constant = constant;//19
-                    }
-                }
+//                CGFloat adjustment = self.startingRightLayoutConstraintConstant - deltaX; //11
+//                
+//                if (!panningLeft) {
+//                    CGFloat constant = MAX(adjustment, 0); //12
+//                    if (constant == 0) { //13
+//                        [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES]; //14
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant; //15
+//                    }
+//                } else {
+//                    CGFloat constant = MIN(adjustment, [self buttonTotalWidth]); //16
+//                    if (constant == [self buttonTotalWidth]) { //17
+//                        [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES]; //18
+//                    } else {
+//                        self.contentViewRightConstraint.constant = constant;//19
+//                    }
+//                }
             }
             
-            self.contentViewLeftConstraint.constant = -self.contentViewRightConstraint.constant; //20
+//            self.contentViewLeftConstraint.constant = -self.contentViewRightConstraint.constant; //20
         }
             break;
 
@@ -171,36 +309,47 @@ static CGFloat const kBounceValue = 0.0f;
             if (self.startingRightLayoutConstraintConstant == 0) { //1
                 //We were opening
                 CGFloat halfOfButtonOne = [widthRange floatValue] / 2; //2
-                if (self.contentViewRightConstraint.constant == halfOfButtonOne) { //3
+                if (self.contentViewRightConstraint.constant >= halfOfButtonOne) { //3
                     //Open all the way
                     [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
                 } else {
                     //Re-close
-                    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
+                    //[self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
                 }
                 
             } else {
                 //We were closing
-                CGFloat buttonOnePlusHalfOfButton2 = ([widthRange floatValue] / 2); //4
-                if (self.contentViewRightConstraint.constant >= buttonOnePlusHalfOfButton2) { //5
-                    //Re-open all the way
-                    [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
-                } else {
-                    //Close
-                    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
-                }
+//                CGFloat buttonOnePlusHalfOfButton2 = ([widthRange floatValue] / 2); //4
+//                if (self.contentViewRightConstraint.constant >= buttonOnePlusHalfOfButton2) { //5
+//                    //Re-open all the way
+//                    [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
+//                } else {
+//                    //Close
+//                    [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
+//                }
+            }
+            
+            if(self.onSwipeEvent)
+            {
+                self.onSwipeEvent(5, @{@"index":@(indexing),@"section":@(section),@"host":self});
             }
             break;
 
         case UIGestureRecognizerStateCancelled:
             if (self.startingRightLayoutConstraintConstant == 0) {
                 //We were closed - reset everything to 0
-                [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
+//                [self resetConstraintContstantsToZero:YES notifyDelegateDidClose:YES];
             } else {
                 //We were open - reset to the open state
-                [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
+//                [self setConstraintsToShowAllButtons:YES notifyDelegateDidOpen:YES];
+            }
+            
+            if(self.onSwipeEvent)
+            {
+                self.onSwipeEvent(5, @{@"index":@(indexing),@"section":@(section),@"host":self});
             }
             break;
+            
             
         default:
             break;
@@ -225,12 +374,14 @@ static CGFloat const kBounceValue = 0.0f;
 - (void)resetConstraintContstantsToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)notifyDelegate
 {
     if (notifyDelegate) {
-        self.onSwipeEvent(1, @{@"index":@(indexing),@"section":@(section),@"host":self});
+        if(self.onSwipeEvent)
+        {
+            self.onSwipeEvent(1, @{@"index":@(indexing),@"section":@(section),@"host":self});
+        }
     }
     
     if (self.startingRightLayoutConstraintConstant == 0 &&
         self.contentViewRightConstraint.constant == 0) {
-        //Already all the way closed, no bounce necessary
         return;
     }
     
@@ -240,9 +391,13 @@ static CGFloat const kBounceValue = 0.0f;
     [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
         self.contentViewRightConstraint.constant = 0;
         self.contentViewLeftConstraint.constant = 0;
-        
+
         [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
             self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
+            if(self.onSwipeEvent)
+            {
+                self.onSwipeEvent(1, @{@"index":@(indexing),@"section":@(section),@"host":self});
+            }
         }];
     }];
 }
@@ -251,7 +406,10 @@ static CGFloat const kBounceValue = 0.0f;
 - (void)setConstraintsToShowAllButtons:(BOOL)animated notifyDelegateDidOpen:(BOOL)notifyDelegate
 {
     if (notifyDelegate) {
-        self.onSwipeEvent(0, @{@"index":@(indexing),@"section":@(section),@"host":self});
+        if(self.onSwipeEvent)
+        {
+            self.onSwipeEvent(0, @{@"index":@(indexing),@"section":@(section),@"host":self});
+        }
     }
     //1
     if (self.startingRightLayoutConstraintConstant == [self buttonTotalWidth] &&
@@ -270,6 +428,10 @@ static CGFloat const kBounceValue = 0.0f;
         [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
             //4
             self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
+            if(self.onSwipeEvent)
+            {
+                self.onSwipeEvent(0, @{@"index":@(indexing),@"section":@(section),@"host":self});
+            }
         }];
     }];
 }

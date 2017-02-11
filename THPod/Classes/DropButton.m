@@ -45,6 +45,45 @@ static DropButton * shareButton = nil;
     return shareButton;
 }
 
+- (void)didDropDownWithData:(NSArray*)dataList andCustom:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion
+{
+    completionBlock = completion;
+    
+    if(dropDown == nil)
+    {
+        template = nil;
+        
+        template = [[NSDictionary new] dictionaryWithPlist:self.pList];
+        
+        if(!template)
+        {
+            return;
+        }
+        
+        CGFloat f = [dict[@"height"] floatValue];
+        
+        CGFloat startRect = [self convertRect:self.bounds toView:nil].origin.x;
+        
+        CGFloat start = (startRect + [dict[@"width"] floatValue]) > screenWidth ? self.bounds.origin.x - ([dict[@"width"] floatValue] - (self.bounds.origin.x + self.bounds.size.width) - ([dict responseForKey:@"offSetX"] ? [dict[@"offSetX"] floatValue] : 0)) : self.bounds.origin.x;
+
+        CGRect windowRect = [self convertRect:[dict responseForKey:@"width"] ? CGRectMake(start, self.bounds.origin.y  + [dict[@"offSetY"] floatValue], [dict[@"width"] floatValue], self.bounds.size.height) : self.bounds toView:nil];
+        
+        dropDown = [NIDropDown new];
+        
+        dropDown._template = template;
+        
+        dropDown.delegate = self;
+        
+        [dropDown showDropDownWithRect:windowRect andHeight:&f andData:dataList andDirection:template[@"direction"]];
+    }
+    else
+    {
+        [dropDown hideDropDown];
+        
+        dropDown = nil;
+    }
+}
+
 - (void)didDropDownWithData:(NSArray*)dataList andInfo:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion
 {
     completionBlock = completion;
@@ -350,6 +389,15 @@ static DropButton * shareButton = nil;
         }
     }
     
+    if([_template responseForKey:@"hilight"])
+    {
+        UIView *bgColorView = [[UIView alloc] init];
+        
+        bgColorView.backgroundColor = [AVHexColor colorWithHexString:_template[@"hilight"]];
+        
+        [cell setSelectedBackgroundView:bgColorView];
+    }
+    
     if([_template responseForKey:@"cellbackground"] && ((NSArray*)_template[@"cellbackground"]).count > 1)
     {
         cell.backgroundColor = [AVHexColor colorWithHexString:((NSString*)_template[@"cellbackground"][indexPath.row % 2 == 0 ? 0 : 1]).length == 0 ? @"#FFFFFF" : _template[@"cellbackground"][indexPath.row % 2 == 0 ? 0 : 1]];
@@ -361,7 +409,9 @@ static DropButton * shareButton = nil;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self hideDropDown];
+
     selectedDetails = @{@"data":self.datalist[indexPath.row],@"index":@(indexPath.row)};
+    
     [self myDelegate];
 }
 
