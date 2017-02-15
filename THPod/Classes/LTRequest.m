@@ -324,8 +324,6 @@ static LTRequest *__sharedLTRequest = nil;
             
             [self didFailedResult:dict andError:error];
             
-            NSLog(@"%@", [error description]);
-            
         }];
     }
 }
@@ -370,7 +368,7 @@ static LTRequest *__sharedLTRequest = nil;
     if([dict responseForKey:@"method"])
     {
         if(response)
-        {            
+        {
             [self addValue:[response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : [response isKindOfClass:[NSArray class]] ? [@{@"array":response} bv_jsonStringWithPrettyPrint:NO] : response andKey:[dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : url];
         }
     }

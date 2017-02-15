@@ -192,7 +192,7 @@ static FB * instance = nil;
 - (void)didRequestAvatarWithInfo:(NSDictionary *)dict
 {
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                                  initWithGraphPath:[NSString stringWithFormat:@"me/?fields=width(516).height(516),id,name"]
+                                  initWithGraphPath:[NSString stringWithFormat:@"me/?fields=picture.width(720).height(720),id,name"]
                                   parameters:nil
                                   HTTPMethod:@"GET"];
     [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
@@ -202,6 +202,8 @@ static FB * instance = nil;
          if (!error)
          {
              NSMutableDictionary * data = [dict reFormat];
+             
+             NSLog(@"%@", result);
              
              data[@"avatar"] = result[@"picture"][@"data"][@"url"];
              
