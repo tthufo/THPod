@@ -78,6 +78,7 @@ typedef void (^PlayerEvent)(EventState eventState,NSDictionary * eventInfo);
 @property (strong, nonatomic) AVPlayerItem *currentItem;
 @property (nonatomic, copy) PlayerAction onAction;
 @property (nonatomic, copy) PlayerEvent onEvent;
+@property (strong, nonatomic) UIView *controlView;
 
 - (instancetype)initWithInfo:(NSDictionary*)info;
 

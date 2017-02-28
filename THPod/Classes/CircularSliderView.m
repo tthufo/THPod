@@ -51,7 +51,7 @@ static bool isKnobBeingTouched = false;
 
 - (void)awakeFromNib
 {
-    [self setup];
+   // [self setup];
 }
 
 - (void)setTintColor:(UIColor*)minColor_ andMax:(UIColor*)maxColor_
@@ -234,7 +234,7 @@ static bool isKnobBeingTouched = false;
     knobCenter.y = barCenter.y-(barRadius*sinf(knobAngle));
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+        
     //draw the slider bar
     CGContextSetLineWidth(context, 3.0);
     

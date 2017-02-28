@@ -16,7 +16,7 @@
 
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
 
-@property (strong, nonatomic) UIView *controllersView, *topView, *controlView;
+@property (strong, nonatomic) UIView *controllersView, *topView;
 @property (strong, nonatomic) UIImageView* coverView;
 @property (strong, nonatomic) UILabel *airPlayLabel;
 
@@ -31,9 +31,9 @@
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) NSTimer *progressTimer;
 @property (strong, nonatomic) NSTimer *controllersTimer;
-@property (assign, nonatomic) BOOL seeking, isInit;
+@property (assign, nonatomic) BOOL seeking;
 @property (assign, nonatomic) CGRect defaultFrame;
-@property (readonly, strong, nonatomic) MYAudioTapProcessor *audioTapProcessor;
+@property (strong, nonatomic) MYAudioTapProcessor *audioTapProcessor;
 
 @end
 
@@ -92,23 +92,25 @@
 
 - (MYAudioTapProcessor *)audioTapProcessor
 {
-    if (!_audioTapProcessor)
+    AVAssetTrack *firstAudioAssetTrack;
+    
+    for (AVAssetTrack *assetTrack in self.player.currentItem.asset.tracks)
     {
-        AVAssetTrack *firstAudioAssetTrack;
-        for (AVAssetTrack *assetTrack in self.player.currentItem.asset.tracks)
+        if ([assetTrack.mediaType isEqualToString:AVMediaTypeAudio])
         {
-            if ([assetTrack.mediaType isEqualToString:AVMediaTypeAudio])
-            {
-                firstAudioAssetTrack = assetTrack;
-                break;
-            }
-        }
-        if (firstAudioAssetTrack)
-        {
-            _audioTapProcessor = [[MYAudioTapProcessor alloc] initWithAudioAssetTrack:firstAudioAssetTrack];
-            _audioTapProcessor.delegate = self;
+            firstAudioAssetTrack = assetTrack;
+            break;
         }
     }
+    if (firstAudioAssetTrack)
+    {
+        _audioTapProcessor = [MYAudioTapProcessor shareInstance];
+        
+        [_audioTapProcessor withAssetTrack:firstAudioAssetTrack];
+        
+        _audioTapProcessor.delegate = self;
+    }
+
     return _audioTapProcessor;
 }
 
@@ -342,7 +344,7 @@
     
     progressIndicator = [GUISlider new];
     [progressIndicator setTranslatesAutoresizingMaskIntoConstraints:NO];
-    progressIndicator.thickNess = @(5);
+    progressIndicator.thickNess = @(0);
     [progressIndicator setContinuous:YES];
     progressIndicator.userInteractionEnabled = NO;
     
@@ -793,8 +795,8 @@
     
     progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                      target:self
-                                                   selector:@selector(refreshProgressIndicator)
-                                                   userInfo:nil
+                                                   selector:@selector(refreshProgressIndicator:)
+                                                   userInfo:@{@"1":@"resumeRefreshing"}
                                                     repeats:YES];
 }
 
@@ -813,7 +815,7 @@
     return result;
 }
 
-- (void)refreshProgressIndicator {
+- (void)refreshProgressIndicator:(NSTimer*)timer {
     CGFloat duration = CMTimeGetSeconds(currentItem.asset.duration);
     
     if (duration == 0 || isnan(duration)) {
@@ -919,11 +921,12 @@
         }
         else
         {
-            if(self.onEvent)
+            if(self.onEvent && !seeking)
             {
                 self.onEvent(5, @{@"value":@(progressIndicator.value)});
             }
         }
+        
         [progressIndicator setHidden:NO];
     }
 }
@@ -1044,6 +1047,13 @@
         controllersTimer = nil;
     }
     
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:nil];
@@ -1055,11 +1065,15 @@
     [player removeObserver:self forKeyPath:@"rate"];
     @try
     {
-//        AVMutableAudioMixInputParameters *params = ((AVMutableAudioMixInputParameters*)((AVPlayerItem*)self.player.currentItem).audioMix.inputParameters[0]);
+        AVMutableAudioMixInputParameters *params = ((AVMutableAudioMixInputParameters*)((AVPlayerItem*)self.player.currentItem).audioMix.inputParameters[0]);
+        
+        MTAudioProcessingTapRef tap = params.audioTapProcessor;
+        
+        ((AVPlayerItem*)self.player.currentItem).audioMix = nil;
 //        
-//        MTAudioProcessingTapRef tap = params.audioTapProcessor;
+//        [self.audioTapProcessor releaseMix];
 //        
-//        ((AVPlayerItem*)self.player.currentItem).audioMix = nil;
+//        self.audioTapProcessor = nil;
 //        
 //        if(tap)
 //        {
@@ -1067,11 +1081,14 @@
 //        }
 
         [currentItem removeObserver:self forKeyPath:@"status"];
+        
+        currentItem = nil;
     }
     @catch(id anException)
     {
         
     }
+    
     [self setPlayer:nil];
     [self.playerLayer removeFromSuperlayer];
     [self setPlayerLayer:nil];
@@ -1095,10 +1112,17 @@
     
     [[self elementWithTag:11] setSelected:YES];
     
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
+    
     progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                      target:self
-                                                   selector:@selector(refreshProgressIndicator)
-                                                   userInfo:nil
+                                                   selector:@selector(refreshProgressIndicator:)
+                                                   userInfo:@{@"1":@"resume"}
                                                     repeats:YES];
 }
 
@@ -1113,10 +1137,17 @@
     
     [[self elementWithTag:11] setSelected:YES];
     
+    if(progressTimer)
+    {
+        [progressTimer invalidate];
+        
+        progressTimer = nil;
+    }
+    
     progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                      target:self
-                                                   selector:@selector(refreshProgressIndicator)
-                                                   userInfo:nil
+                                                   selector:@selector(refreshProgressIndicator:)
+                                                   userInfo:@{@"1":@"play"}
                                                     repeats:YES];
 }
 
@@ -1293,10 +1324,7 @@
             }
             else
             {
-//                if(self.onEvent)
-//                {
-//                    self.onEvent(0, @{});
-//                }
+
             }
         }
     }
@@ -1338,10 +1366,7 @@
                     }
                     else
                     {
-//                        if(self.onEvent)
-//                        {
-//                            self.onEvent(3, @{});
-//                        }
+
                     }
                     
                     coverView.image = [UIImage imageNamed:@""];
@@ -1350,16 +1375,14 @@
         }
     }
 
-    if([options responseForKey:@"EQ"] && !_isInit)
+    if([options responseForKey:@"EQ"])
     {
-        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
-        
-        if (audioMix)
-        {
-            self.player.currentItem.audioMix = audioMix;
-            
-            _isInit = YES;
-        }
+//        AVAudioMix *audioMix = self.audioTapProcessor.audioMix;
+//        
+//        if (audioMix)
+//        {
+//            self.player.currentItem.audioMix = audioMix;
+//        }
     }
 }
 

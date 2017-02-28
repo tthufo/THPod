@@ -22,6 +22,12 @@
 
 }
 
++ (MYAudioTapProcessor*)shareInstance;
+
+- (void)releaseMix;
+
+- (void)withAssetTrack:(AVAssetTrack *)audioAssetTrack;
+
 - (id)initWithAudioAssetTrack:(AVAssetTrack *)audioAssetTrack;
 
 - (void)setGain:(AudioUnitParameterValue)gain forBandAtPosition:(NSUInteger)bandPosition;
@@ -36,13 +42,6 @@
 
 @property (nonatomic) float centerFrequency; // [0 .. 1]
 @property (nonatomic) float bandwidth; // [0 .. 1]
-
-
-@property (readwrite) AUGraph   processingGraph;
-@property (readwrite) AudioUnit samplerUnit;
-@property (readwrite) AudioUnit ioUnit;
-@property (readwrite) AudioUnit rvUnit;
-@property (readwrite) AudioUnit eqUnit;
 
 @end
 

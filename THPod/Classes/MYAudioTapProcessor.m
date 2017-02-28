@@ -9,6 +9,7 @@
 
 #import "MYAudioTapProcessor.h"
 
+static MYAudioTapProcessor * shareProccessor = nil;
 
 typedef struct AVAudioTapProcessorContext {
 	Boolean supportedTapProcessingFormat;
@@ -37,24 +38,24 @@ static OSStatus AU_RenderCallback(void *inRefCon, AudioUnitRenderActionFlags *io
 	AVAudioMix *_audioMix;
 }
 
-@property (readwrite) Float64   graphSampleRate;
-//@property (readwrite) AUGraph   processingGraph;
-//@property (readwrite) AudioUnit samplerUnit;
-//@property (readwrite) AudioUnit ioUnit;
-//@property (readwrite) AudioUnit rvUnit;
-//@property (readwrite) AudioUnit eqUnit;
-@property (readonly, nonatomic, getter=iPodEQPresetsArray) CFArrayRef mEQPresetsArray;
-
 @end
 
 @implementation MYAudioTapProcessor
 
-@synthesize graphSampleRate     = _graphSampleRate;
-//@synthesize samplerUnit         = _samplerUnit;
-@synthesize ioUnit              = _ioUnit;
-@synthesize rvUnit              = _rvUnit;
-@synthesize processingGraph     = _processingGraph;
-@synthesize mEQPresetsArray;
++ (MYAudioTapProcessor*)shareInstance
+{
+    if(!shareProccessor)
+    {
+        shareProccessor = [MYAudioTapProcessor new];
+    }
+    
+    return shareProccessor;
+}
+
+- (void)withAssetTrack:(AVAssetTrack *)audioAssetTrack
+{
+    _audioAssetTrack = audioAssetTrack;
+}
 
 - (id)initWithAudioAssetTrack:(AVAssetTrack *)audioAssetTrack
 {
@@ -73,6 +74,11 @@ static OSStatus AU_RenderCallback(void *inRefCon, AudioUnitRenderActionFlags *io
 }
 
 #pragma mark - Properties
+
+- (void)releaseMix
+{
+    _audioMix = nil;
+}
 
 - (AVAudioMix *)audioMix
 {
@@ -234,227 +240,6 @@ static OSStatus AU_RenderCallback(void *inRefCon, AudioUnitRenderActionFlags *io
     AudioUnit audioUnit = context->audioUnit;
     return audioUnit;
 }
-
-- (BOOL)createAUGraph:(AudioUnit)audioUnit
-{
-    OSStatus result = noErr;
-    AUNode ioNode, rvNode, eqNote;
-
-    AudioComponentDescription cd = {};
-    cd.componentManufacturer     = kAudioUnitManufacturer_Apple;
-    cd.componentFlags            = 0;
-    cd.componentFlagsMask        = 0;
-    
-    result = NewAUGraph (&_processingGraph);
-    NSCAssert (result == noErr, @"Unable to create an AUGraph object. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    
-    cd.componentType = kAudioUnitType_Effect ;
-    cd.componentSubType = kAudioUnitSubType_NBandEQ ;
-
-//    cd.componentSubType = kAudioUnitSubType_AUiPodEQ ;
-//    // Add the Reverb unit node to the graph
-    result = AUGraphAddNode (self.processingGraph, &cd, &eqNote);
-    NSCAssert (result == noErr, @"Unable to add the EQ unit to the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    
-    cd.componentType = kAudioUnitType_Effect ;
-    cd.componentSubType = kAudioUnitSubType_Reverb2 ;
-    // Add the EQ unit node to the graph
-    result = AUGraphAddNode (self.processingGraph, &cd, &rvNode);
-    NSCAssert (result == noErr, @"Unable to add the reverb unit to the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    
-    cd.componentType = kAudioUnitType_Output;
-    cd.componentSubType = kAudioUnitSubType_RemoteIO;
-    // Add the Output unit node to the graph
-    result = AUGraphAddNode (self.processingGraph, &cd, &ioNode);
-    NSCAssert (result == noErr, @"Unable to add the Output unit to the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-
-    
-    // Open the graph
-    result = AUGraphOpen (self.processingGraph);
-    NSCAssert (result == noErr, @"Unable to open the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    result = AUGraphConnectNodeInput (self.processingGraph, eqNote, 0, rvNode, 0);
-    NSCAssert (result == noErr, @"Unable to interconnect the nodes in the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    result = AUGraphConnectNodeInput (self.processingGraph, rvNode, 0, ioNode, 0);
-    NSCAssert (result == noErr, @"Unable to interconnect Reverb the nodes in the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    
-    
-    result = AUGraphNodeInfo (self.processingGraph, eqNote, 0, &audioUnit);
-    NSCAssert (result == noErr, @"Unable to obtain a reference to the Reverb unit. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    result = AUGraphNodeInfo (self.processingGraph, rvNode, 0, &_rvUnit);
-    NSCAssert (result == noErr, @"Unable to obtain a reference to the Reverb unit. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-        result = AUGraphNodeInfo (self.processingGraph, ioNode, 0, &_ioUnit);
-    NSCAssert (result == noErr, @"Unable to obtain a reference to the I/O unit. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    return YES;
-}
-
-- (void) configureAndStartAudioProcessingGraph: (AUGraph) graph
-{
-    
-    OSStatus result = noErr;
-    UInt32 framesPerSlice = 0;
-    UInt32 framesPerSlicePropertySize = sizeof (framesPerSlice);
-    UInt32 sampleRatePropertySize = sizeof (self.graphSampleRate);
-    
-    result = AudioUnitInitialize (self.ioUnit);
-    NSCAssert (result == noErr, @"Unable to initialize the I/O unit. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    // Set the I/O unit's output sample rate.
-    result =    AudioUnitSetProperty (
-                                      self.ioUnit,
-                                      kAudioUnitProperty_SampleRate,
-                                      kAudioUnitScope_Output,
-                                      0,
-                                      &_graphSampleRate,
-                                      sampleRatePropertySize
-                                      );
-    
-    NSAssert (result == noErr, @"AudioUnitSetProperty (set Sampler unit output stream sample rate). Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    // Obtain the value of the maximum-frames-per-slice from the I/O unit.
-    result =    AudioUnitGetProperty (
-                                      self.ioUnit,
-                                      kAudioUnitProperty_MaximumFramesPerSlice,
-                                      kAudioUnitScope_Global,
-                                      0,
-                                      &framesPerSlice,
-                                      &framesPerSlicePropertySize
-                                      );
-    
-    NSCAssert (result == noErr, @"Unable to retrieve the maximum frames per slice property from the I/O unit. Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-    
-//    // Set the Sampler unit's output sample rate.
-//    result =    AudioUnitSetProperty (
-//                                      self.samplerUnit,
-//                                      kAudioUnitProperty_SampleRate,
-//                                      kAudioUnitScope_Output,
-//                                      0,
-//                                      &_graphSampleRate,
-//                                      sampleRatePropertySize
-//                                      );
-//    
-//    NSAssert (result == noErr, @"AudioUnitSetProperty (set Sampler unit output stream sample rate). Error code: %d '%.4s'", (int) result, (const char *)&result);
-    
-//    result =    AudioUnitSetProperty (
-//                                      self.samplerUnit,
-//                                      kAudioUnitProperty_MaximumFramesPerSlice,
-//                                      kAudioUnitScope_Global,
-//                                      0,
-//                                      &framesPerSlice,
-//                                      framesPerSlicePropertySize
-//                                      );
-//
-//    NSAssert( result == noErr, @"AudioUnitSetProperty (set Sampler unit maximum frames per slice). Error code: %d '%.4s'", (int) result, (const char *)&result);
-
-    
-//    UInt32 size = sizeof(mEQPresetsArray);
-//    result = AudioUnitGetProperty(_eqUnit, kAudioUnitProperty_FactoryPresets, kAudioUnitScope_Global, 0, &mEQPresetsArray, &size);
-//    if (result) { printf("AudioUnitGetProperty result %ld %08X %4.4s\n", result, (unsigned int)result, (char*)&result); return; }
-//    
-//    printf("iPodEQ Factory Preset List:\n");
-//    UInt8 count = CFArrayGetCount(mEQPresetsArray);
-//    for (int i = 0; i < count; ++i) {
-//        AUPreset *aPreset = (AUPreset*)CFArrayGetValueAtIndex(mEQPresetsArray, i);
-//        CFShow(aPreset->presetName);
-//    }
-    
-    
-    if (graph) {
-        
-        // Initialize the audio processing graph.
-        result = AUGraphInitialize (graph);
-        NSAssert (result == noErr, @"Unable to initialze AUGraph object. Error code: %d '%.4s'", (int) result, (const char *)&result);
-        
-        // Start the graph
-        result = AUGraphStart (graph);
-        NSAssert (result == noErr, @"Unable to start audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-        
-        // Print out the graph to the console
-        CAShow (graph); 
-    }
-    
-    [self configureAudioUnit:_rvUnit Parameter:kReverb2Param_DryWetMix withValue:100];
-}
-
-- (BOOL) setupAudioSession {
-    
-    AVAudioSession *mySession = [AVAudioSession sharedInstance];
-    
-    // Specify that this object is the delegate of the audio session, so that
-    //    this object's endInterruption method will be invoked when needed.
-    [mySession setDelegate: self];
-    
-    // Assign the Playback category to the audio session. This category supports
-    //    audio output with the Ring/Silent switch in the Silent position.
-    NSError *audioSessionError = nil;
-    [mySession setCategory: AVAudioSessionCategoryPlayAndRecord error: &audioSessionError];
-    if (audioSessionError != nil) {NSLog (@"Error setting audio session category."); return NO;}
-    
-    // Request a desired hardware sample rate.
-    self.graphSampleRate = 44100.0;    // Hertz
-    
-    [mySession setPreferredHardwareSampleRate: self.graphSampleRate error: &audioSessionError];
-    if (audioSessionError != nil) {NSLog (@"Error setting preferred hardware sample rate."); return NO;}
-    
-    // Activate the audio session
-    [mySession setActive: YES error: &audioSessionError];
-    if (audioSessionError != nil) {NSLog (@"Error activating the audio session."); return NO;}
-    
-    // Obtain the actual hardware sample rate and store it for later use in the audio processing graph.
-    self.graphSampleRate = [mySession currentHardwareSampleRate];
-    
-    return YES;
-}
-
-// Stop the audio processing graph
-- (void) stopAudioProcessingGraph {
-    
-    OSStatus result = noErr;
-    if (self.processingGraph) result = AUGraphStop(self.processingGraph);
-    NSAssert (result == noErr, @"Unable to stop the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-}
-
-// Restart the audio processing graph
-- (void) restartAudioProcessingGraph {
-    
-    OSStatus result = noErr;
-    if (self.processingGraph) result = AUGraphStart (self.processingGraph);
-    NSAssert (result == noErr, @"Unable to restart the audio processing graph. Error code: %d '%.4s'", (int) result, (const char *)&result);
-}
-
-//- (void)selectEQPreset:(NSInteger)value;
-//{
-//    AUPreset *aPreset = (AUPreset*)CFArrayGetValueAtIndex(mEQPresetsArray, value);
-//    OSStatus result = AudioUnitSetProperty(_eqUnit, kAudioUnitProperty_PresentPreset, kAudioUnitScope_Global, 0, aPreset, sizeof(AUPreset));
-//    if (result) { printf("AudioUnitSetProperty result %ld %08X %4.4s\n", result, (unsigned int)result, (char*)&result); return; };
-//    
-//    printf("SET EQ PRESET %d ", value);
-//    CFShow(aPreset->presetName);
-//}
-
-- (void) configureAudioUnit:(AudioUnit)audioUnit Parameter:(int)param withValue:(float)value
-{
-    AudioUnitSetParameter(_rvUnit,
-                          kAudioUnitScope_Global,
-                          0,
-                          param,
-                          value,
-                          0.0);
-    
-}
-
-#pragma mark - End Graph
-
 
 @end
 
@@ -702,6 +487,12 @@ static void tap_UnprepareCallback(MTAudioProcessingTapRef tap)
 		context->audioUnit = NULL;
         context->self = NULL;
 	}
+    if (context->audioVerb)
+    {
+        AudioUnitUninitialize(context->audioVerb);
+        AudioComponentInstanceDispose(context->audioVerb);
+        context->audioVerb = NULL;
+    }
 }
 
 static void tap_ProcessCallback(MTAudioProcessingTapRef tap, CMItemCount numberFrames, MTAudioProcessingTapFlags flags, AudioBufferList *bufferListInOut, CMItemCount *numberFramesOut, MTAudioProcessingTapFlags *flagsOut)

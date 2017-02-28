@@ -176,9 +176,9 @@
 
 - (BOOL)isPassTime:(NSString*)time
 {
-    NSDate * limitDate = [[NSString stringWithFormat:@"%@ %@", [[NSDate date] stringWithFormat:@"dd/MM/yyyy"], time] dateWithFormat:@"dd/MM/yyyy HH:mm:ss"];
-    
-    return ([[NSDate date] timeIntervalSince1970] > [limitDate timeIntervalSince1970]) ? YES : NO;
+    NSDate * limitDate = [[NSString stringWithFormat:@"%@ %@", [[NSDate date] stringWithFormat:@"dd/MM/yyyy"], time] dateWithFormat:@"dd/MM/yyyy HH:mm"];
+        
+    return ([[NSDate date] timeIntervalSince1970] >= [limitDate timeIntervalSince1970]) ? YES : NO;
 }
 
 - (BOOL)isLiveRange:(NSString*)region
@@ -1418,6 +1418,8 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 - (void)cellVisible
 {
+    [self reloadData];
+
     for(UITableViewCell * cell in self.visibleCells)
     {
         for(UIView * view in cell.contentView.subviews)
@@ -1425,7 +1427,6 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
             view.hidden = NO;
         }
     }
-    [self reloadData];
 }
 
 - (void)didScrolltoBottom:(BOOL)animate
@@ -1482,6 +1483,8 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 - (void)cellVisible
 {
+    [self reloadData];
+    
     for(UICollectionViewCell * cell in self.visibleCells)
     {
         for(UIView * view in cell.contentView.subviews)
@@ -1489,8 +1492,6 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
             view.hidden = NO;
         }
     }
-    
-    [self reloadData];
 }
 
 - (void)withCell:(NSString*)nibAndIdent

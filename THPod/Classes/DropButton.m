@@ -70,7 +70,14 @@ static DropButton * shareButton = nil;
         
         dropDown = [NIDropDown new];
         
-        dropDown._template = template;
+        NSMutableDictionary * extras = [[NSMutableDictionary alloc] initWithDictionary:template];
+        
+        if([dict responseForKey:@"active"])
+        {
+            extras[@"active"] = dict[@"active"];
+        }
+        
+        dropDown._template = extras;
         
         dropDown.delegate = self;
         
@@ -116,7 +123,14 @@ static DropButton * shareButton = nil;
         
         dropDown = [NIDropDown new];
         
-        dropDown._template = template;
+        NSMutableDictionary * extras = [[NSMutableDictionary alloc] initWithDictionary:template];
+        
+        if([dict responseForKey:@"active"])
+        {
+            extras[@"active"] = dict[@"active"];
+        }
+        
+        dropDown._template = extras;
         
         dropDown.delegate = self;
         
@@ -308,6 +322,10 @@ static DropButton * shareButton = nil;
         
         [[[UIApplication sharedApplication] keyWindow] addSubview:self];
         
+        if([_template responseForKey:@"active"])
+        {
+            [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[_template[@"active"] intValue] inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }
     return self;
 }
@@ -324,10 +342,8 @@ static DropButton * shareButton = nil;
 - (void)hideDropDown
 {
     CGRect btn = rect;
-    
-    [UIView beginAnimations:nil context:nil];
-    
-    [UIView setAnimationDuration:0.5];
+
+    [UIView animateWithDuration:0.5 animations:^{
     
     if ([direction isEqualToString:@"up"])
     {
@@ -337,9 +353,17 @@ static DropButton * shareButton = nil;
     {
         self.frame = CGRectMake(btn.origin.x, btn.origin.y+btn.size.height, btn.size.width, 0);
     }
+        
     tableView.frame = CGRectMake(0, 0, btn.size.width, 0);
-    
-    [UIView commitAnimations];
+        
+    } completion:^(BOOL finished) {
+        
+        if(finished)
+        {
+            [self removeFromSuperview];
+        }
+        
+    }];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

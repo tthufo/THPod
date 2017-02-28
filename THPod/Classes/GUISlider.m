@@ -24,10 +24,10 @@
   return self;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)bounds
-{
-    return CGRectMake(0, (self.frame.size.height - [self.thick floatValue]) / 2, self.frame.size.width, [self.thick floatValue]);
-}
+//- (CGRect)trackRectForBounds:(CGRect)bounds
+//{
+//    return CGRectMake(0, (self.frame.size.height - [self.thick floatValue]) / 2, self.frame.size.width, [self.thick floatValue]);
+//}
 
 - (void)setup {
   [self setMaximumTrackTintColor:[UIColor clearColor]];

@@ -324,6 +324,7 @@ static LTRequest *__sharedLTRequest = nil;
             
             [self didFailedResult:dict andError:error];
             
+            NSLog(@"%@", [error description]);
         }];
     }
 }
