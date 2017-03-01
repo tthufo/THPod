@@ -38,6 +38,23 @@ typedef enum __eventState
     ticking,//
 }EventState;
 
+@class TimeAll;
+
+@interface TimeAll : NSTimer
+{
+    
+}
+
++ (TimeAll*)shareIn;
+
+- (void)cleanTime;
+
+@property(nonatomic,weak) NSTimer * timer;
+
+
+@end
+
+
 @class GUIPlayerView;
 
 typedef void (^PlayerAction)(ActionState actionState, NSDictionary * actionInfo);

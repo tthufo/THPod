@@ -12,6 +12,43 @@
 
 #import "NSObject+Category.h"
 
+@class TimeAll;
+
+static TimeAll * shareTime = nil;
+
+@interface TimeAll ()
+{
+
+}
+
+@end
+
+@implementation TimeAll
+
+@synthesize timer;
+
++ (TimeAll*)shareIn
+{
+    if(!shareTime)
+    {
+        shareTime = [TimeAll new];
+    }
+    
+    return shareTime;
+}
+
+- (void)cleanTime
+{
+    if(timer)
+    {
+        [timer invalidate];
+        
+        timer = nil;
+    }
+}
+
+@end
+
 @interface GUIPlayerView () <MYAudioTabProcessorDelegate, AVAssetResourceLoaderDelegate, NSURLConnectionDataDelegate>
 
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
@@ -29,7 +66,7 @@
 @property (strong, nonatomic) UIView *spacerView;
 
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
-@property (strong, nonatomic) NSTimer *progressTimer;
+//@property (strong, nonatomic) NSTimer *progressTimer;
 @property (strong, nonatomic) NSTimer *controllersTimer;
 @property (assign, nonatomic) BOOL seeking;
 @property (assign, nonatomic) CGRect defaultFrame;
@@ -42,7 +79,7 @@
 @synthesize player, playerLayer, currentItem, controlView;
 @synthesize controllersView, airPlayLabel;
 @synthesize playButton, fullscreenButton, volumeView, progressIndicator, currentTimeLabel, remainingTimeLabel, liveLabel, spacerView;
-@synthesize activityIndicator, progressTimer, controllersTimer, seeking, fullscreen, defaultFrame;
+@synthesize activityIndicator, controllersTimer, seeking, fullscreen, defaultFrame;
 @synthesize retryButton, topView, options, coverView;
 @synthesize videoURL, controllersTimeoutPeriod, delegate, isRight;
 @synthesize audioTapProcessor = _audioTapProcessor;
@@ -774,30 +811,20 @@
 {
     seeking = YES;
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
+    [[TimeAll shareIn] cleanTime];
 }
 
 - (void)resumeRefreshing
 {
     seeking = NO;
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
+    [[TimeAll shareIn] cleanTime];
     
-    progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
-                                                     target:self
-                                                   selector:@selector(refreshProgressIndicator:)
-                                                   userInfo:@{@"1":@"resumeRefreshing"}
-                                                    repeats:YES];
+    [TimeAll shareIn].timer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                                               target:self
+                                                             selector:@selector(refreshProgressIndicator)
+                                                             userInfo:nil
+                                                              repeats:YES];
 }
 
 - (NSTimeInterval)availableDuration
@@ -815,7 +842,8 @@
     return result;
 }
 
-- (void)refreshProgressIndicator:(NSTimer*)timer {
+- (void)refreshProgressIndicator
+{
     CGFloat duration = CMTimeGetSeconds(currentItem.asset.duration);
     
     if (duration == 0 || isnan(duration)) {
@@ -845,12 +873,8 @@
                 self.onEvent(3, @{});
             }
         }
-        if(progressTimer)
-        {
-            [progressTimer invalidate];
-            
-            progressTimer = nil;
-        }
+        
+        [[TimeAll shareIn] cleanTime];
     }
     
     else {
@@ -969,9 +993,9 @@
 
 - (void)prepareAndPlayAutomatically:(BOOL)playAutomatically
 {
-    if (player)
+    if(player)
     {
-        [self end];
+       [self end];
     }
     
     player = [[AVPlayer alloc] initWithPlayerItem:nil];
@@ -1047,13 +1071,8 @@
         controllersTimer = nil;
     }
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
-    
+    [[TimeAll shareIn] cleanTime];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:nil];
@@ -1112,18 +1131,13 @@
     
     [[self elementWithTag:11] setSelected:YES];
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
+    [[TimeAll shareIn] cleanTime];
     
-    progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
-                                                     target:self
-                                                   selector:@selector(refreshProgressIndicator:)
-                                                   userInfo:@{@"1":@"resume"}
-                                                    repeats:YES];
+    [TimeAll shareIn].timer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                                               target:self
+                                                             selector:@selector(refreshProgressIndicator)
+                                                             userInfo:nil
+                                                              repeats:YES];
 }
 
 - (void)play
@@ -1136,18 +1150,13 @@
     [playButton setSelected:YES];
     
     [[self elementWithTag:11] setSelected:YES];
+
+    [[TimeAll shareIn] cleanTime];
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
-    
-    progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+    [TimeAll shareIn].timer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                      target:self
-                                                   selector:@selector(refreshProgressIndicator:)
-                                                   userInfo:@{@"1":@"play"}
+                                                   selector:@selector(refreshProgressIndicator)
+                                                   userInfo:nil
                                                     repeats:YES];
 }
 
@@ -1171,12 +1180,7 @@
         }
     }
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
+    [[TimeAll shareIn] cleanTime];
 }
 
 - (void)end
@@ -1192,12 +1196,7 @@
         [[self elementWithTag:11] setSelected:NO];
     }
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
+    [[TimeAll shareIn] cleanTime];
 }
 
 - (void)stop
@@ -1218,12 +1217,7 @@
         }
     }
     
-    if(progressTimer)
-    {
-        [progressTimer invalidate];
-        
-        progressTimer = nil;
-    }
+    [[TimeAll shareIn] cleanTime];
 }
 
 - (BOOL)isPlaying
@@ -1390,3 +1384,4 @@
 }
 
 @end
+
