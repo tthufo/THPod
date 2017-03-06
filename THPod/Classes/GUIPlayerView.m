@@ -1137,7 +1137,7 @@ static TimeAll * shareTime = nil;
                                                                target:self
                                                              selector:@selector(refreshProgressIndicator)
                                                              userInfo:nil
-                                                              repeats:YES];
+                                                            repeats:YES];
 }
 
 - (void)play

@@ -284,6 +284,15 @@
 - (void)showToast:(NSString*)toast andPos:(int)pos
 {
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    
+    for(UIView * v in window.subviews)
+    {
+        if(v.gestureRecognizers.count != 0)
+        {
+            [v removeFromSuperview];
+        }
+    }
+    
     [window makeToast:toast duration:2 position:pos == 0 ? CSToastPositionBottom : pos == 1 ? CSToastPositionCenter : CSToastPositionTop];
 }
 
@@ -1487,6 +1496,11 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     
     for(UICollectionViewCell * cell in self.visibleCells)
     {
+        for(UIView * view in cell.subviews)
+        {
+            view.hidden = NO;
+        }
+        
         for(UIView * view in cell.contentView.subviews)
         {
             view.hidden = NO;

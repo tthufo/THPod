@@ -66,11 +66,11 @@ static LTRequest *__sharedLTRequest = nil;
         {
             deviceToken = [self getValue:@"fakeUUID"];
         }
-#if TARGET_IPHONE_SIMULATOR
+//#if TARGET_IPHONE_SIMULATOR
         
         deviceToken = [self getValue:@"fakeUUID"];
         
-#endif
+//#endif
     }
 }
 
@@ -89,6 +89,20 @@ static LTRequest *__sharedLTRequest = nil;
 - (void)didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSLog(@"UserPushInfor----->%@", userInfo);
+}
+
+- (NSString*)requestURL:(NSMutableDictionary*)dict
+{
+    NSDictionary * info = [self dictWithPlist:@"Info"];
+    
+    if([dict responseForKey:@"method"])
+    {
+        return [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [NSString stringWithFormat:@"%@/%@%@%@", self.address, dict[[info responseForKey:@"cCode"] ? info[@"cCode"] : @"CMD_CODE"], [dict responseForKey:@"overrideOrder"] ? @"/" : @"?" ,[self returnGetUrl:dict]];
+    }
+    else
+    {
+        return [dict responseForKey:@"absoluteLink"] ? dict[@"absoluteLink"] : [dict responseForKey:@"postFix"] ? [NSString stringWithFormat:@"%@/%@",self.address,dict[@"postFix"]] : self.address;
+    }
 }
 
 - (void)initRequest
@@ -110,6 +124,7 @@ static LTRequest *__sharedLTRequest = nil;
     {
         self.address = dictionary[@"host"];
     }
+    
     self.lang = [dictionary responseForKey:@"lang"];
 }
 
@@ -333,10 +348,10 @@ static LTRequest *__sharedLTRequest = nil;
 {
     if(![self isConnectionAvailable])
     {
+        [self showToast:self.lang ? @"Please check your Internet connection" : @"Vui lòng kiểm tra lại kết nối Internet" andPos:0];
+        
         if([dict responseForKey:@"host"])
         {
-            [self showToast:self.lang ? @"Please check your Internet connection" : @"Vui lòng kiểm tra lại kết nối Internet" andPos:0];
-            
             [dict[@"host"] hideSVHUD];
         }
         
