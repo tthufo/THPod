@@ -1436,6 +1436,8 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
             view.hidden = NO;
         }
     }
+    
+    [self reloadData];
 }
 
 - (void)didScrolltoBottom:(BOOL)animate
@@ -1492,8 +1494,6 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 - (void)cellVisible
 {
-    [self reloadData];
-    
     for(UICollectionViewCell * cell in self.visibleCells)
     {
         for(UIView * view in cell.subviews)
@@ -1506,6 +1506,8 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
             view.hidden = NO;
         }
     }
+    
+    [self reloadData];
 }
 
 - (void)withCell:(NSString*)nibAndIdent
