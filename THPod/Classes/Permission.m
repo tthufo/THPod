@@ -161,14 +161,14 @@ static Permission * shareInstan = nil;
 
 - (void)initLocation:(BOOL)isAlways andCompletion:(Location)locationCompletion
 {
+    self.LocationCompletion = locationCompletion;
+    
     if(![CLLocationManager locationServicesEnabled])
     {
-        [self alert:@"Location Services Required" message:@"Location services is disabled. Please go to Settings to check your Location Services"];
+        self.LocationCompletion(5);
         
         return;
     }
-    
-    self.LocationCompletion = locationCompletion;
     
     if(!locationManager)
     {

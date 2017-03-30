@@ -38,7 +38,8 @@ typedef NS_ENUM(NSInteger, LocationPermisionType) {
     lDenied,
     lRestricted,
     lWhenUse,
-    lNotSure
+    lNotSure,
+    lDisabled
 };
 
 //typedef NS_ENUM(NSInteger, MusicPermisionType) {
