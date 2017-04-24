@@ -56,4 +56,6 @@
 
 #import "SwipeableCell.h"
 
+#import "UIImageView+UIImageView_FaceAwareFill.h"
+
 //#endif /* FBPlugInHeader_h */

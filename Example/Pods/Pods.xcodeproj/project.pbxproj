@@ -630,6 +630,8 @@
 		FA76475EE5F044D6AAB7FE7B925268DF /* BFURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 98542AA07C4603B02CCB315C8F0C47BC /* BFURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FAC0EA1E5660BB1908CF1AE2F72D7E49 /* all.png in Resources */ = {isa = PBXBuildFile; fileRef = FA1719F97AF5451C0BB0670D08E60D66 /* all.png */; };
 		FBA63313A76F701B94A888116DE7FAF7 /* ViewPagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1044F38A357640165B55F9A47D5C690D /* ViewPagerController.m */; };
+		FC03B9FA1EADB2250039FFDC /* UIImageView+UIImageView_FaceAwareFill.h in Headers */ = {isa = PBXBuildFile; fileRef = FC03B9F81EADB2240039FFDC /* UIImageView+UIImageView_FaceAwareFill.h */; };
+		FC03B9FB1EADB2250039FFDC /* UIImageView+UIImageView_FaceAwareFill.m in Sources */ = {isa = PBXBuildFile; fileRef = FC03B9F91EADB2240039FFDC /* UIImageView+UIImageView_FaceAwareFill.m */; };
 		FC55B9778AE136ADEA196BAC7017C913 /* FBSDKAppGroupContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 231DB99C2C99E8F79FE8844FA5C748B2 /* FBSDKAppGroupContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC7FFD2F1E149FF4002DBC27 /* SwipeableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7FFD2D1E149FF4002DBC27 /* SwipeableCell.h */; };
 		FC7FFD301E149FF4002DBC27 /* SwipeableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7FFD2E1E149FF4002DBC27 /* SwipeableCell.m */; };
@@ -1534,6 +1536,8 @@
 		FA5B4CA185EF3E299D7C1479DE21B2D4 /* hpple-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "hpple-dummy.m"; sourceTree = "<group>"; };
 		FADD4AFD995D6194D5BA745A0A8FD3A4 /* GUIPlayerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GUIPlayerView.h; sourceTree = "<group>"; };
 		FB8E5A6891D3A5FF8C98784EA73C4637 /* Toast-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Toast-dummy.m"; sourceTree = "<group>"; };
+		FC03B9F81EADB2240039FFDC /* UIImageView+UIImageView_FaceAwareFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIImageView_FaceAwareFill.h"; sourceTree = "<group>"; };
+		FC03B9F91EADB2240039FFDC /* UIImageView+UIImageView_FaceAwareFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIImageView_FaceAwareFill.m"; sourceTree = "<group>"; };
 		FC7FFD2D1E149FF4002DBC27 /* SwipeableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeableCell.h; sourceTree = "<group>"; };
 		FC7FFD2E1E149FF4002DBC27 /* SwipeableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeableCell.m; sourceTree = "<group>"; };
 		FD17EB20634248B9F483BF7BCAE36E8A /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVIndefiniteAnimatedView.m; path = SVProgressHUD/SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
@@ -2577,6 +2581,8 @@
 		A1577B4ADEE46DA5E0A4B3BDE745FF17 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FC03B9F81EADB2240039FFDC /* UIImageView+UIImageView_FaceAwareFill.h */,
+				FC03B9F91EADB2240039FFDC /* UIImageView+UIImageView_FaceAwareFill.m */,
 				FC7FFD2D1E149FF4002DBC27 /* SwipeableCell.h */,
 				FC7FFD2E1E149FF4002DBC27 /* SwipeableCell.m */,
 				B9C5423B3CB1F5C0E89AE1DD1F8B1836 /* AutoScrollLabel.h */,
@@ -3093,6 +3099,7 @@
 				AE976B0E8E3DD81E4F49DBEF19D3C0AD /* AFURLSessionManager.h in Headers */,
 				45F802D04B3BE0CAEC586C2F3016027B /* UIActivityIndicatorView+AFNetworking.h in Headers */,
 				2B0705CC26A4CBEE32A5A60284AED35B /* UIButton+AFNetworking.h in Headers */,
+				FC03B9FA1EADB2250039FFDC /* UIImageView+UIImageView_FaceAwareFill.h in Headers */,
 				9264BD69AFA8EE74F0D7F0EBD74F762F /* UIImage+AFNetworking.h in Headers */,
 				0D1FFD30267C0776FD3E88EFF51E312F /* UIImageView+AFNetworking.h in Headers */,
 				E23B9A6F533461CB33C0FA6FB59E3AB2 /* UIKit+AFNetworking.h in Headers */,
@@ -3756,6 +3763,7 @@
 				140F458AB7312414FC423FEED70A3733 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				32076D3DD644045CF79DFFEBB6BFF3F2 /* UIButton+AFNetworking.m in Sources */,
 				F2D899C7AA0D7FC20160091BB9D31CF3 /* UIImageView+AFNetworking.m in Sources */,
+				FC03B9FB1EADB2250039FFDC /* UIImageView+UIImageView_FaceAwareFill.m in Sources */,
 				34C88657FE7ABE9F833623F94952D253 /* UIProgressView+AFNetworking.m in Sources */,
 				B16A078FC7FBC172A266A336AEF7F673 /* UIRefreshControl+AFNetworking.m in Sources */,
 				7CE16B1BF75DF396768A0A3CFD968DB1 /* UIWebView+AFNetworking.m in Sources */,
