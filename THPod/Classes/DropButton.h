@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class NIDropDown;
+
 typedef void (^DropButtonCompletion)(id object);
 
 @class DropButton;
@@ -16,6 +18,8 @@ typedef void (^DropButtonCompletion)(id object);
 
 + (DropButton*)shareInstance;
 
+- (void)didDropDownWithView:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion;
+
 - (void)didDropDownWithData:(NSArray*)dataList andCustom:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion;
 
 - (void)didDropDownWithData:(NSArray*)dataList andCompletion:(DropButtonCompletion)completion;
@@ -23,6 +27,10 @@ typedef void (^DropButtonCompletion)(id object);
 - (void)didDropDownWithData:(NSArray*)dataList andInfo:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion;
 
 @property (nonatomic, retain) NSString * pList;
+
+@property (nonatomic, retain) NIDropDown * dropDown;
+
+@property (nonatomic, readwrite) int yPos;
 
 @end
 
@@ -52,6 +60,10 @@ typedef void (^DropButtonCompletion)(id object);
 @property (nonatomic, retain) NSDictionary * _template;
 
 - (void)hideDropDown;
+
+- (void)myDelegate;
+
+- (id)showDropDownWithRect:(CGRect)_rect andHeight:(CGFloat *)height andView:(NSDictionary*)info;
 
 - (id)showDropDownWithRect:(CGRect)_rect andHeight:(CGFloat *)height andData:(NSArray *)data andDirection:(NSString *)_direction;
 

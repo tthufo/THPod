@@ -21,9 +21,7 @@
 static DropButton * shareButton = nil;
 
 @interface DropButton () <NIDropDownDelegate>
-{
-    NIDropDown * dropDown;
-    
+{    
     DropButtonCompletion completionBlock;
     
     NSDictionary * template;
@@ -33,7 +31,7 @@ static DropButton * shareButton = nil;
 
 @implementation DropButton
 
-@synthesize pList;
+@synthesize pList, dropDown, yPos;
 
 + (DropButton*)shareInstance
 {
@@ -44,6 +42,39 @@ static DropButton * shareButton = nil;
     
     return shareButton;
 }
+
+- (void)didDropDownWithView:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion
+{
+    completionBlock = completion;
+    
+    if(dropDown == nil)
+    {
+        CGFloat f = [dict[@"height"] floatValue];
+        
+        CGFloat startRect = [dict[@"X"] floatValue];//[self convertRect:self.bounds toView:nil].origin.x;
+        
+        CGFloat start =  startRect;//(startRect + [dict[@"width"] floatValue]) > screenWidth ? self.bounds.origin.x - ([dict[@"width"] floatValue] - (self.bounds.origin.x + self.bounds.size.width) - ([dict responseForKey:@"offSetX"] ? [dict[@"offSetX"] floatValue] : 0)) : self.bounds.origin.x;
+        
+        CGRect windowRect = [self convertRect:/*[dict responseForKey:@"width"] ?*/ CGRectMake(start, self.bounds.origin.y  + [dict[@"offSetY"] floatValue], [dict[@"width"] floatValue], self.bounds.size.height) /*: self.bounds*/ toView:nil];
+        
+        CGRect final = CGRectMake(startRect, windowRect.origin.y, [dict[@"width"] floatValue], self.bounds.size.height);
+        
+        yPos = windowRect.origin.y;
+        
+        dropDown = [NIDropDown new];
+        
+        dropDown.delegate = self;
+        
+        [dropDown showDropDownWithRect:final andHeight:&f andView:dict];
+    }
+    else
+    {
+        [dropDown hideDropDown];
+        
+        dropDown = nil;
+    }
+}
+
 
 - (void)didDropDownWithData:(NSArray*)dataList andCustom:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion
 {
@@ -189,6 +220,7 @@ static DropButton * shareButton = nil;
     {
         completionBlock(sender.selectedDetails);
     }
+    
     dropDown = nil;
 }
 
@@ -223,6 +255,84 @@ static DropButton * shareButton = nil;
 @synthesize selectedDetails;
 
 @synthesize _template;
+
+- (id)showDropDownWithRect:(CGRect)_rect andHeight:(CGFloat *)height andView:(NSDictionary*)info
+{
+    rect = _rect;
+    
+    {
+        direction = @"down";
+    }
+        
+    if (self)
+    {
+        ((UIView*)info[@"view"]).frame = CGRectMake(0, 0, rect.size.width, *height);
+        
+        ((UIView*)info[@"view"]).tag = 9999;
+        
+        ((UIView*)info[@"view"]).alpha = 0;
+        
+        ((UIView*)info[@"view"]).accessibilityLabel = [NSString stringWithFormat:@"%f",rect.origin.y];
+        
+        CGRect btn = rect;
+        
+        self.layer.masksToBounds = NO;
+
+        float heightTemp = *height;
+        
+        direction = (heightTemp + _rect.origin.y + _rect.size.height) > screenHeight ? @"up" : @"down";
+        
+        if ([direction isEqualToString:@"up"])
+        {
+            self.frame = CGRectMake(btn.origin.x, btn.origin.y, btn.size.width, 0);
+            
+            self.layer.shadowOffset = CGSizeMake(-5, -5);
+        }
+        else if ([direction isEqualToString:@"down"])
+        {
+            self.frame = CGRectMake(btn.origin.x, btn.origin.y+btn.size.height, btn.size.width, 0);
+            
+            self.layer.shadowOffset = CGSizeMake(-5, 5);
+        }
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            if ([direction isEqualToString:@"up"])
+            {
+                self.frame = CGRectMake(btn.origin.x, btn.origin.y - heightTemp, btn.size.width, heightTemp);
+            }
+            else if([direction isEqualToString:@"down"])
+            {
+                self.frame = CGRectMake(btn.origin.x, btn.origin.y + btn.size.height, btn.size.width, heightTemp);
+            }
+            
+            ((UIView*)info[@"view"]).frame = CGRectMake(0, 0, btn.size.width, heightTemp);
+            
+            ((UIView*)info[@"view"]).alpha = 1;
+            
+            ((UIView*)[self withView:((UIView*)info[@"view"]) tag:![direction isEqualToString:@"up"] ? 1 : 2]).alpha = 1;
+            
+        } completion:^(BOOL finish){}];
+        
+        [self addSubview:((UIView*)info[@"view"])];
+        
+        cover = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        cover.backgroundColor = [UIColor blackColor];
+        
+        cover.alpha = 0.4;
+        
+        cover.frame = CGRectMake(0, 0, screenWidth, screenHeight);
+        
+        [cover addTarget:self action:@selector(didPressCoverButton) forControlEvents:UIControlEventTouchUpInside];
+        
+        [[[UIApplication sharedApplication] keyWindow] addSubview:cover];
+        
+        [[[UIApplication sharedApplication] keyWindow] addSubview:self];
+    }
+    
+    return self;
+}
 
 - (id)showDropDownWithRect:(CGRect)_rect andHeight:(CGFloat *)height andData:(NSArray *)data andDirection:(NSString *)_direction
 {
@@ -345,16 +455,23 @@ static DropButton * shareButton = nil;
 
     [UIView animateWithDuration:0.5 animations:^{
     
-    if ([direction isEqualToString:@"up"])
-    {
-        self.frame = CGRectMake(btn.origin.x, btn.origin.y, btn.size.width, 0);
-    }
-    else if ([direction isEqualToString:@"down"])
-    {
-        self.frame = CGRectMake(btn.origin.x, btn.origin.y+btn.size.height, btn.size.width, 0);
-    }
-        
-    tableView.frame = CGRectMake(0, 0, btn.size.width, 0);
+        if(![self.subviews containsObject:((UIView*)[self withView:self tag:9999])])
+        {
+            if ([direction isEqualToString:@"up"])
+            {
+                self.frame = CGRectMake(btn.origin.x, btn.origin.y, btn.size.width, 0);
+            }
+            else if ([direction isEqualToString:@"down"])
+            {
+                self.frame = CGRectMake(btn.origin.x, btn.origin.y+btn.size.height, btn.size.width, 0);
+            }
+            
+            tableView.frame = CGRectMake(0, 0, btn.size.width, 0);
+        }
+        else
+        {
+            ((UIView*)[self withView:self tag:9999]).alpha = 0;
+        }
         
     } completion:^(BOOL finished) {
         
@@ -434,7 +551,14 @@ static DropButton * shareButton = nil;
 {
     [self hideDropDown];
 
-    selectedDetails = @{@"data":self.datalist[indexPath.row],@"index":@(indexPath.row)};
+    if([self.subviews containsObject:((UIView*)[self withView:self tag:9999])])
+    {
+        selectedDetails = @{@"data":self.datalist[indexPath.row], @"index":@(indexPath.row), @"object":self, @"view":((UIView*)[self withView:self tag:9999])};
+    }
+    else
+    {
+        selectedDetails = @{@"data":self.datalist[indexPath.row], @"index":@(indexPath.row), @"object":self};
+    }
     
     [self myDelegate];
 }
@@ -442,6 +566,7 @@ static DropButton * shareButton = nil;
 - (void)myDelegate
 {
     [self.delegate niDropDownDelegateMethod:self];
+    
     [cover removeFromSuperview];
 }
 
