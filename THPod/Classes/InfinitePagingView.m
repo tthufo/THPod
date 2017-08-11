@@ -78,14 +78,14 @@
     _innerScrollView.delegate = nil;
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    UIView *hitView = [super hitTest:point withEvent:event];
-    if (nil != hitView) {
-        return _innerScrollView;
-    }
-    return nil;
-}
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+//{
+//    UIView *hitView = [super hitTest:point withEvent:event];
+//    if (nil != hitView) {
+//        return _innerScrollView;
+//    }
+//    return nil;
+//}
 
 - (void)pageSize:(CGSize)pageSize_
 {
