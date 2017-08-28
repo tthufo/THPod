@@ -12,11 +12,15 @@
 
 typedef void (^DropButtonCompletion)(id object);
 
+typedef void (^DropButtonUpCompletion)();
+
 @class DropButton;
 
 @interface DropButton : UIButton 
 
 + (DropButton*)shareInstance;
+
+- (void)completion:(DropButtonUpCompletion)_completion;
 
 - (void)didDropDownWithView:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion;
 

@@ -24,6 +24,8 @@ static DropButton * shareButton = nil;
 {    
     DropButtonCompletion completionBlock;
     
+    DropButtonUpCompletion completionUpBlock;
+
     NSDictionary * template;
 }
 
@@ -65,6 +67,8 @@ static DropButton * shareButton = nil;
         
         dropDown.delegate = self;
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        
         [dropDown showDropDownWithRect:final andHeight:&f andView:dict];
     }
     else
@@ -75,6 +79,36 @@ static DropButton * shareButton = nil;
     }
 }
 
+- (void)completion:(DropButtonUpCompletion)_completion
+{
+    completionUpBlock = _completion;
+}
+
+- (void)keyboardWillShow: (NSNotification *)notification
+{
+    CGSize screenSize = CGSizeMake(screenWidth, screenHeight);
+    CGSize dialogSize = CGSizeMake(screenWidth - 16, 110);
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+        CGFloat tmp = keyboardSize.height;
+        keyboardSize.height = keyboardSize.width;
+        keyboardSize.width = tmp;
+    }
+    
+    [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
+                     animations:^{
+                         dropDown.frame = CGRectMake((screenSize.width - dialogSize.width) / 2, (screenSize.height - keyboardSize.height - dialogSize.height) / 2, dialogSize.width, dialogSize.height);
+                         
+                         if(completionUpBlock)
+                         {
+                             completionUpBlock();
+                         }
+                     }
+                     completion:nil
+     ];
+}
 
 - (void)didDropDownWithData:(NSArray*)dataList andCustom:(NSDictionary*)dict andCompletion:(DropButtonCompletion)completion
 {
@@ -221,11 +255,12 @@ static DropButton * shareButton = nil;
         completionBlock(sender.selectedDetails);
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    
     dropDown = nil;
 }
 
 @end
-
 
 
 
