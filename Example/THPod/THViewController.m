@@ -171,7 +171,7 @@
 
 - (IBAction)switches:(UISwitch*)sender
 {
-    [_playerView configureEQ:sender.isOn];
+//    [_playerView configureEQ:sender.isOn];
 }
 
 - (IBAction)sliderChange:(UISlider*)sender

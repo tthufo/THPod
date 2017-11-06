@@ -54,8 +54,8 @@
 
 #import "CircularSliderView.h"
 
-#import "SwipeableCell.h"
+//#import "SwipeableCell.h"
 
-#import "UIImageView+UIImageView_FaceAwareFill.h"
+//#import "UIImageView+UIImageView_FaceAwareFill.h"
 
 //#endif /* FBPlugInHeader_h */

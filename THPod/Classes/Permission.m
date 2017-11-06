@@ -210,6 +210,8 @@ static Permission * shareInstan = nil;
             return NO;
         }
     }
+    
+    return NO;
 }
 
 - (NSDictionary *)currentLocation
