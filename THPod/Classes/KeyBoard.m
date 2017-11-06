@@ -77,7 +77,7 @@ static KeyBoard * instance = nil;
 {
     if(!isOn)
     {
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 
         CGRect rect = ((UIView*)keboardElement[@"bar"]).frame;
         
@@ -95,7 +95,7 @@ static KeyBoard * instance = nil;
 {
     if(isOn)
     {
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 
         CGRect rect = ((UIView*)keboardElement[@"bar"]).frame;
         
