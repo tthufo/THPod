@@ -289,7 +289,7 @@
     {
         if(v.gestureRecognizers.count != 0)
         {
-            [v removeFromSuperview];
+           // [v removeFromSuperview];
         }
     }
     

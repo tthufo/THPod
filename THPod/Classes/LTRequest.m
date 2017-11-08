@@ -261,6 +261,14 @@ static LTRequest *__sharedLTRequest = nil;
     
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     
+    if([dict responseForKey:@"header"])
+    {
+        for(NSString * key in dict[@"header"])
+        {
+            [manager.requestSerializer setValue:dict[@"header"][key] forHTTPHeaderField:key];
+        }
+    }
+    
     NSString * url;
     
     if([dict responseForKey:@"method"])
