@@ -88,7 +88,7 @@ static DropButton * shareButton = nil;
 {
     CGSize screenSize = CGSizeMake(screenWidth, screenHeight);
     CGSize dialogSize = CGSizeMake(screenWidth - 16, 110);
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
     UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {

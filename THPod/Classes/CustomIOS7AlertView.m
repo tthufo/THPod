@@ -382,7 +382,7 @@ CGFloat buttonSpacerHeight = 0;
 {
     CGSize screenSize = [self countScreenSize];
     CGSize dialogSize = [self countDialogSize];
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
     UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {

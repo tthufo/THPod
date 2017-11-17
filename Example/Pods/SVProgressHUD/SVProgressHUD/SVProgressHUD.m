@@ -622,7 +622,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     // Get keyboardHeight in regards to current state
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
-        CGRect keyboardFrame = [keyboardInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+        CGRect keyboardFrame = [keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
         animationDuration = [keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
