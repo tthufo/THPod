@@ -274,7 +274,19 @@
 
 @end
 
-@interface UITableView (extras)
+@protocol UITableViewDelegateLongPress;
+
+@interface UITableView (extras)<UIGestureRecognizerDelegate>
+
+@property(nonatomic,assign)   id <UITableViewDelegateLongPress>   delegate;
+
+- (void)addLongPressRecognizer;
+
+@end
+
+@protocol UITableViewDelegateLongPress <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didRecognizeLongPressOnRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)cellVisible;
 
@@ -352,3 +364,4 @@ typedef void (^TouchAction)(NSDictionary * touchInfo);
 - (void)actionForTouch:(id)object and:(TouchAction)touchEvent;
 
 @end
+

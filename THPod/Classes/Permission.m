@@ -29,7 +29,7 @@ static Permission * shareInstan = nil;
 //- (void)askMusic:(Music)musicPermission
 //{
 //    self.MusicCompletion = musicPermission;
-//    
+//
 //    [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
 //        switch (status) {
 //            case MPMediaLibraryAuthorizationStatusNotDetermined:
@@ -216,7 +216,17 @@ static Permission * shareInstan = nil;
 
 - (NSDictionary *)currentLocation
 {
-    if(!locationManager) return nil;
+    if(!locationManager)
+    {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.distanceFilter = kCLDistanceFilterNone;
+        
+        [locationManager startUpdatingLocation];
+        [locationManager stopUpdatingLocation];
+    }
     
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted)
     {
@@ -239,19 +249,24 @@ static Permission * shareInstan = nil;
 {
     switch (status) {
         case kCLAuthorizationStatusAuthorizedAlways:
-            self.LocationCompletion(0);
+            if(self.LocationCompletion)
+                self.LocationCompletion(0);
             break;
         case kCLAuthorizationStatusDenied:
-            self.LocationCompletion(1);
+            if(self.LocationCompletion)
+                self.LocationCompletion(1);
             break;
         case kCLAuthorizationStatusRestricted:
-            self.LocationCompletion(2);
+            if(self.LocationCompletion)
+                self.LocationCompletion(2);
             break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
-            self.LocationCompletion(3);
+            if(self.LocationCompletion)
+                self.LocationCompletion(3);
             break;
         case kCLAuthorizationStatusNotDetermined:
-            self.LocationCompletion(4);
+            if(self.LocationCompletion)
+                self.LocationCompletion(4);
             break;
         default:
             break;
@@ -260,11 +275,10 @@ static Permission * shareInstan = nil;
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-//    [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
+    //    [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
     
     NSLog(@"Location Disabled");
 }
 
-
-
 @end
+

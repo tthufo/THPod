@@ -1425,6 +1425,8 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 
 @implementation UITableView (extras)
 
+@dynamic delegate;
+
 - (void)cellVisible
 {
     [self reloadData];
@@ -1487,8 +1489,30 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     [self registerNib:[UINib nibWithNibName:nibAndIdent bundle:nil] forHeaderFooterViewReuseIdentifier:nibAndIdent];
 }
 
-@end
+- (void)addLongPressRecognizer {
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 1.2; //seconds
+    lpgr.delegate = self;
+    [self addGestureRecognizer:lpgr];
+}
 
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self];
+    
+    NSIndexPath *indexPath = [self indexPathForRowAtPoint:p];
+    if (indexPath == nil) {
+        NSLog(@"long press on table view but not on a row");
+    }
+    else {
+        if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+            [(id<UITableViewDelegateLongPress>)self.delegate tableView:self didRecognizeLongPressOnRowAtIndexPath:indexPath];
+        }
+    }
+}
+
+@end
 
 @implementation UICollectionView (collect)
 
