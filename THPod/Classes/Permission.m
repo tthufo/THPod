@@ -170,6 +170,11 @@ static Permission * shareInstan = nil;
         return;
     }
     
+    if(locationManager)
+    {
+        locationManager = nil;
+    }
+    
     if(!locationManager)
     {
         locationManager = [[CLLocationManager alloc] init];
@@ -216,6 +221,11 @@ static Permission * shareInstan = nil;
 
 - (NSDictionary *)currentLocation
 {
+    if(locationManager)
+    {
+        locationManager = nil;
+    }
+    
     if(!locationManager)
     {
         locationManager = [[CLLocationManager alloc] init];
@@ -281,4 +291,3 @@ static Permission * shareInstan = nil;
 }
 
 @end
-
