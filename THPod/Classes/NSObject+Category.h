@@ -278,15 +278,6 @@
 
 @interface UITableView (extras)<UIGestureRecognizerDelegate>
 
-@property(nonatomic,assign)   id <UITableViewDelegateLongPress>   delegate;
-
-- (void)addLongPressRecognizer;
-
-@end
-
-@protocol UITableViewDelegateLongPress <UITableViewDelegate>
-
-- (void)tableView:(UITableView *)tableView didRecognizeLongPressOnRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)cellVisible;
 
@@ -301,6 +292,16 @@
 - (void)withCell:(NSString*)nibAndIdent;
 
 - (void)withHeaderOrFooter:(NSString*)nibAndIdent;
+
+@property(nonatomic,assign)   id <UITableViewDelegateLongPress>   delegate;
+
+- (void)addLongPressRecognizer;
+
+@end
+
+@protocol UITableViewDelegateLongPress <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didRecognizeLongPressOnRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
