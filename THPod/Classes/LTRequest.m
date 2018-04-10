@@ -298,11 +298,11 @@ static LTRequest *__sharedLTRequest = nil;
         
         [manager GET:url parameters:nil success:^(NSURLSessionTask *task, id responseObject) {
             
-            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post];
+            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
             
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
-            [self didFailedResult:dict andError:error];
+            [self didFailedResult:dict andError:error andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)operation.response statusCode]]];
             
         }];
     }
@@ -341,18 +341,18 @@ static LTRequest *__sharedLTRequest = nil;
         
         [manager POST:url parameters:post success:^(NSURLSessionTask *task, id responseObject) {
             
-            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post];
+            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
                         
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
-            [self didFailedResult:dict andError:error];
+            [self didFailedResult:dict andError:error andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)operation.response statusCode]]];
             
             NSLog(@"%@", [error description]);
         }];
     }
 }
 
-- (void)didFailedResult:(NSDictionary*)dict andError:(NSError*)error
+- (void)didFailedResult:(NSDictionary*)dict andError:(NSError*)error andStatusCode:(NSString*)statusCode
 {
     if(![self isConnectionAvailable])
     {
@@ -379,11 +379,11 @@ static LTRequest *__sharedLTRequest = nil;
             [result addEntriesFromDictionary:@{@"checkmark":dict[@"checkmark"]}];
         }
         
-        ((RequestCompletion)dict[@"completion"])(nil, @"503", error, [self didRespond:result andHost:dict[@"host"]]);
+        ((RequestCompletion)dict[@"completion"])(nil, statusCode, error, [self didRespond:result andHost:dict[@"host"]]);
     }
 }
 
-- (void)didSuccessResult:(NSDictionary*)dict andResult:(id)response andUrl:(NSString*)url andPostData:(NSDictionary*)post
+- (void)didSuccessResult:(NSDictionary*)dict andResult:(id)response andUrl:(NSString*)url andPostData:(NSDictionary*)post andStatusCode:(NSString*)responseCode
 {
     NSDictionary * info = [self dictWithPlist:@"Info"];
     
@@ -424,7 +424,7 @@ static LTRequest *__sharedLTRequest = nil;
         [self showToast:@"Check for Plist/eCode" andPos:0];
     }
         
-    ((RequestCompletion)dict[@"completion"])([response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : [response isKindOfClass:[NSArray class]] ? [@{@"array":response} bv_jsonStringWithPrettyPrint:NO] : response, [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : @"500", nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
+    ((RequestCompletion)dict[@"completion"])([response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : [response isKindOfClass:[NSArray class]] ? [@{@"array":response} bv_jsonStringWithPrettyPrint:NO] : response, [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : responseCode, nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
 }
 
 - (NSString*)returnGetUrl:(NSDictionary*)dict
