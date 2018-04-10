@@ -96,19 +96,19 @@ static Permission * shareInstan = nil;
                     }
                 }];
             }
-                break;
+            break;
             case AVAudioSessionRecordPermissionDenied:
             {
                 self.MicroCompletion(1);
             }
-                break;
+            break;
             case AVAudioSessionRecordPermissionGranted:
             {
                 self.MicroCompletion(0);
             }
-                break;
+            break;
             default:
-                break;
+            break;
         }
     }
     else
@@ -144,18 +144,18 @@ static Permission * shareInstan = nil;
                 self.CameraCompletion(4);
             }];
         }
-            break;
+        break;
         case ALAuthorizationStatusRestricted:
-            self.CameraCompletion(2);
-            break;
+        self.CameraCompletion(2);
+        break;
         case ALAuthorizationStatusDenied:
-            self.CameraCompletion(1);
-            break;
+        self.CameraCompletion(1);
+        break;
         case ALAuthorizationStatusAuthorized:
-            self.CameraCompletion(0);
-            break;
+        self.CameraCompletion(0);
+        break;
         default:
-            break;
+        break;
     }
 }
 
@@ -254,35 +254,49 @@ static Permission * shareInstan = nil;
 {
     switch (status) {
         case kCLAuthorizationStatusAuthorizedAlways:
-            if(self.LocationCompletion)
-                self.LocationCompletion(0);
-            break;
+        if(self.LocationCompletion)
+        self.LocationCompletion(0);
+        break;
         case kCLAuthorizationStatusDenied:
-            if(self.LocationCompletion)
-                self.LocationCompletion(1);
-            break;
+        if(self.LocationCompletion)
+        self.LocationCompletion(1);
+        break;
         case kCLAuthorizationStatusRestricted:
-            if(self.LocationCompletion)
-                self.LocationCompletion(2);
-            break;
+        if(self.LocationCompletion)
+        self.LocationCompletion(2);
+        break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
-            if(self.LocationCompletion)
-                self.LocationCompletion(3);
-            break;
+        if(self.LocationCompletion)
+        self.LocationCompletion(3);
+        break;
         case kCLAuthorizationStatusNotDetermined:
-            if(self.LocationCompletion)
-                self.LocationCompletion(4);
-            break;
+        if(self.LocationCompletion)
+        self.LocationCompletion(4);
+        break;
         default:
-            break;
+        break;
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+- (void)didReturnHeading:(Heading)heading
 {
-    //    [self alert:@"Alert" message:@"Failed to get your location, please go to Settings to check your Location Services"];
+    self.HeadingCompletion = heading;
     
+    [locationManager startUpdatingHeading];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{    
     NSLog(@"Location Disabled");
 }
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
+{
+    if(self.HeadingCompletion)
+    {
+        self.HeadingCompletion(newHeading.magneticHeading, newHeading.trueHeading);
+    }
+}
+
 @end
+

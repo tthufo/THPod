@@ -266,6 +266,8 @@
 
 - (NSString *)convertPercentage;
 
+- (BOOL)isEmail;
+
 @end
 
 @interface NSMutableDictionary (Additions)

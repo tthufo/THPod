@@ -1408,6 +1408,19 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
     return convert;
 }
 
+- (BOOL)isEmail
+{
+    NSString *regExPattern = @"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$";
+    NSRegularExpression *regEx = [[NSRegularExpression alloc]
+                                  initWithPattern:regExPattern
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:nil];
+    NSUInteger regExMatches = [regEx numberOfMatchesInString:self
+                                                     options:0
+                                                       range:NSMakeRange(0, [self length])];
+    return (regExMatches == 0) ? NO : YES ;
+}
+
 @end
 
 @implementation NSMutableDictionary (Additions)

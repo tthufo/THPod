@@ -55,6 +55,8 @@ typedef void (^Micro)(MicPermisionType type);
 
 typedef void (^Location)(LocationPermisionType type);
 
+typedef void (^Heading)(float magneticHeading, float trueHeading);
+
 //typedef void (^Music)(MusicPermisionType type);
 
 
@@ -66,7 +68,7 @@ typedef void (^Location)(LocationPermisionType type);
     
     LocationPermisionType locationType;
     
-//    MusicPermisionType musicType;
+    //    MusicPermisionType musicType;
 }
 
 @property(nonatomic,copy) Camera CameraCompletion;
@@ -74,6 +76,8 @@ typedef void (^Location)(LocationPermisionType type);
 @property(nonatomic,copy) Micro MicroCompletion;
 
 @property(nonatomic,copy) Location LocationCompletion;
+
+@property(nonatomic,copy) Heading HeadingCompletion;
 
 //@property(nonatomic,copy) Music MusicCompletion;
 
@@ -92,6 +96,9 @@ typedef void (^Location)(LocationPermisionType type);
 
 - (void)initLocation:(BOOL)isAlways andCompletion:(Location)locationCompletion;
 
+- (void)didReturnHeading:(Heading)heading;
+
 - (BOOL)isLocationEnable;
 
 @end
+
