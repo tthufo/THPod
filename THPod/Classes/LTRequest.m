@@ -66,11 +66,11 @@ static LTRequest *__sharedLTRequest = nil;
         {
             deviceToken = [self getValue:@"fakeUUID"];
         }
-//#if TARGET_IPHONE_SIMULATOR
+        //#if TARGET_IPHONE_SIMULATOR
         
         deviceToken = [self getValue:@"fakeUUID"];
         
-//#endif
+        //#endif
     }
 }
 
@@ -191,7 +191,7 @@ static LTRequest *__sharedLTRequest = nil;
 
 - (BOOL)didRespond:(NSMutableDictionary*)dict andHost:(UIViewController*)host
 {
-//    NSLog(@"+___+%@",dict);
+    //    NSLog(@"+___+%@",dict);
     
     NSDictionary * info = [self dictWithPlist:@"Info"];
     
@@ -298,7 +298,14 @@ static LTRequest *__sharedLTRequest = nil;
         
         [manager GET:url parameters:nil success:^(NSURLSessionTask *task, id responseObject) {
             
-            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
+            if([responseObject length] == 0)
+            {
+                [self didFailedResult:dict andError:nil andStatusCode:@"-1"];
+            }
+            else
+            {
+                [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
+            }
             
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
@@ -341,8 +348,15 @@ static LTRequest *__sharedLTRequest = nil;
         
         [manager POST:url parameters:post success:^(NSURLSessionTask *task, id responseObject) {
             
-            [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
-                        
+            if([responseObject length] == 0)
+            {
+                [self didFailedResult:dict andError:nil andStatusCode:@"-1"];
+            }
+            else
+            {
+                [self didSuccessResult:dict andResult:[responseObject objectFromJSONData] ? [responseObject objectFromJSONData] : [NSString stringWithUTF8String:[responseObject bytes]] andUrl:url andPostData:post andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
+            }
+            
         } failure:^(NSURLSessionTask *operation, NSError *error) {
             
             [self didFailedResult:dict andError:error andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)operation.response statusCode]]];
@@ -423,7 +437,7 @@ static LTRequest *__sharedLTRequest = nil;
     {
         [self showToast:@"Check for Plist/eCode" andPos:0];
     }
-        
+    
     ((RequestCompletion)dict[@"completion"])([response isKindOfClass:[NSDictionary class]] ? [response bv_jsonStringWithPrettyPrint:NO] : [response isKindOfClass:[NSArray class]] ? [@{@"array":response} bv_jsonStringWithPrettyPrint:NO] : response, [result responseForKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] ? [result getValueFromKey:[info responseForKey:@"eCode"] ? info[@"eCode"] : @"ERR_CODE"] : responseCode, nil,[dict responseForKey:@"overrideError"] ? YES : [self didRespond:result andHost:dict[@"host"]]);
 }
 
@@ -484,3 +498,4 @@ static LTRequest *__sharedLTRequest = nil;
 }
 
 @end
+
