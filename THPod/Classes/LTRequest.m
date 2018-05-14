@@ -300,7 +300,7 @@ static LTRequest *__sharedLTRequest = nil;
             
             if([responseObject length] == 0)
             {
-                [self didFailedResult:dict andError:nil andStatusCode:@"-1"];
+                [self didFailedResult:dict andError:nil andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
             }
             else
             {
@@ -350,7 +350,7 @@ static LTRequest *__sharedLTRequest = nil;
             
             if([responseObject length] == 0)
             {
-                [self didFailedResult:dict andError:nil andStatusCode:@"-1"];
+                [self didFailedResult:dict andError:nil andStatusCode:[NSString stringWithFormat:@"%ld",[(NSHTTPURLResponse*)task.response statusCode]]];
             }
             else
             {
