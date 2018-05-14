@@ -1,5 +1,13 @@
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#else
+#ifndef FOUNDATION_EXPORT
+#if defined(__cplusplus)
+#define FOUNDATION_EXPORT extern "C"
+#else
+#define FOUNDATION_EXPORT extern
+#endif
+#endif
 #endif
 
 #import "AutoScrollLabel.h"
@@ -27,10 +35,12 @@
 #import "Permission.h"
 #import "PopUpMenu.h"
 #import "Storage.h"
+#import "SwipeableCell.h"
 #import "System.h"
 #import "UIBarButtonItem+Badge.h"
 #import "UIButton+Badge.h"
 #import "UIImageView+MHFacebookImageViewer.h"
+#import "UIImageView+UIImageView_FaceAwareFill.h"
 #import "UIScrollView+DXRefresh.h"
 #import "UIView+UpdateAutoLayoutConstraints.h"
 #import "VerticalSlider.h"

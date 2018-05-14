@@ -20,7 +20,7 @@
 {
     [super viewDidLoad];
     
-    [self didPlayingWithUrl:[NSURL URLWithString:@"http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"]];
+    //[self didPlayingWithUrl:[NSURL URLWithString:@"http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"]];
 }
 
 - (void)didPlayingWithUrl:(NSURL*)uri
@@ -51,7 +51,11 @@
     [self.view addSubview: playerView];
 }
 
-
+- (IBAction)didShow:(id)sender
+{
+    [self showToast:@"ahohohoo" andPos:0];
+}
+    
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

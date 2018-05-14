@@ -1,32 +1,32 @@
 PODS:
-  - AFNetworking (3.1.0):
-    - AFNetworking/NSURLSession (= 3.1.0)
-    - AFNetworking/Reachability (= 3.1.0)
-    - AFNetworking/Security (= 3.1.0)
-    - AFNetworking/Serialization (= 3.1.0)
-    - AFNetworking/UIKit (= 3.1.0)
-  - AFNetworking/NSURLSession (3.1.0):
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.1.0)
-  - AFNetworking/Security (3.1.0)
-  - AFNetworking/Serialization (3.1.0)
-  - AFNetworking/UIKit (3.1.0):
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - AVHexColor (2.0.0)
-  - Bolts (1.8.4):
-    - Bolts/AppLinks (= 1.8.4)
-    - Bolts/Tasks (= 1.8.4)
-  - Bolts/AppLinks (1.8.4):
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.8.4)
-  - FBSDKCoreKit (4.18.0):
+  - Bolts/Tasks (1.9.0)
+  - FBSDKCoreKit (4.33.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.18.0):
+  - FBSDKLoginKit (4.33.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.18.0):
-    - FBSDKCoreKit
+  - FBSDKShareKit (4.33.0):
+    - FBSDKCoreKit (~> 4.33.0)
   - hpple (0.2.0)
   - JCNotificationBannerPresenter (1.1.2)
   - JSONKit-NoWarning (1.2)
@@ -34,8 +34,8 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
-  - SVProgressHUD (2.1.1)
-  - THPod (0.7.6):
+  - SVProgressHUD (2.2.5)
+  - THPod (1.1.2):
     - AFNetworking (~> 3.1)
     - AVHexColor (~> 2.0)
     - FBSDKCoreKit (~> 4.4)
@@ -47,32 +47,32 @@ PODS:
     - Reachability (~> 3.2)
     - SDWebImage (~> 3.7)
     - SVProgressHUD
-    - Toast (~> 2.4)
-  - Toast (2.4)
+    - Toast (~> 4.0.0)
+  - Toast (4.0.0)
 
 DEPENDENCIES:
   - THPod (from `../`)
 
 EXTERNAL SOURCES:
   THPod:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AVHexColor: 33e5e102f3b6f3acd002779183ee226e21870c28
-  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
-  FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
-  FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FBSDKCoreKit: 572b047a7e029bc44542bcf8a59414e7ff2b543e
+  FBSDKLoginKit: 88cb456349cfb3b554427ce4f8b43729d85dfb40
+  FBSDKShareKit: b7b5002833a4104fbecad75e8e4e082e91c7a08a
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   JCNotificationBannerPresenter: f40150961943048ed3b1d2628d29dbf66a959e21
   JSONKit-NoWarning: 3d27e6f9e6846ecf741e8c64dcadd7d5aa7193cb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
-  SVProgressHUD: 1127180503b9a308ddf7006f3cc58fc05cc1092d
-  THPod: 4e2c144e03bd78d3527251e6bd5e012d274cafbb
-  Toast: 0773b8fc0e97352ca6054517bec7ebdd4110029d
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  THPod: 53de4567bd3a4fee2a3d9e1b9c2905497f02cf4c
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
 PODFILE CHECKSUM: 4c281f33f09637d85d959810baed77d2e827be31
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.4.0

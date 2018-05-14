@@ -285,13 +285,7 @@
 {
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
     
-    for(UIView * v in window.subviews)
-    {
-        if(v.gestureRecognizers.count != 0)
-        {
-           // [v removeFromSuperview];
-        }
-    }
+    [window hideAllToasts];
     
     [window makeToast:toast duration:2 position:pos == 0 ? CSToastPositionBottom : pos == 1 ? CSToastPositionCenter : CSToastPositionTop];
 }
